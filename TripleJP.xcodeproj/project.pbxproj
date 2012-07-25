@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CEB181F815BFCDCD00EC6ECC /* texturePack.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F015BFCDCD00EC6ECC /* texturePack.plist */; };
+		CEB181F915BFCDCD00EC6ECC /* texturePack-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */; };
+		CEB181FA15BFCDCD00EC6ECC /* texturePack.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F215BFCDCD00EC6ECC /* texturePack.png */; };
+		CEB181FB15BFCDCD00EC6ECC /* texturePack-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F315BFCDCD00EC6ECC /* texturePack-hd.png */; };
+		CEB181FC15BFCDCD00EC6ECC /* layout-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F415BFCDCD00EC6ECC /* layout-hd.plist */; };
+		CEB181FD15BFCDCD00EC6ECC /* layout.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F515BFCDCD00EC6ECC /* layout.plist */; };
+		CEB181FE15BFCDCD00EC6ECC /* layout.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F615BFCDCD00EC6ECC /* layout.png */; };
+		CEB181FF15BFCDCD00EC6ECC /* layout-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F715BFCDCD00EC6ECC /* layout-hd.png */; };
 		CEC437B815BF9F3E0088A8D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC437B715BF9F3E0088A8D1 /* QuartzCore.framework */; };
 		CEC437BA15BF9F3E0088A8D1 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC437B915BF9F3E0088A8D1 /* OpenGLES.framework */; };
 		CEC437BC15BF9F3E0088A8D1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEC437BB15BF9F3E0088A8D1 /* OpenAL.framework */; };
@@ -143,9 +151,19 @@
 		CEC4396615BF9FDF0088A8D1 /* titlePack-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEC4395E15BF9FDF0088A8D1 /* titlePack-hd.plist */; };
 		CEC4396715BF9FDF0088A8D1 /* titlePack.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEC4395F15BF9FDF0088A8D1 /* titlePack.plist */; };
 		CEC4396815BF9FDF0088A8D1 /* tiled.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEC4396015BF9FDF0088A8D1 /* tiled.plist */; };
+		CEC4396B15BFC47B0088A8D1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC4396A15BFC47B0088A8D1 /* GameScene.m */; };
+		CEC4396E15BFC4B30088A8D1 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC4396D15BFC4B30088A8D1 /* GameLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CEB181F015BFCDCD00EC6ECC /* texturePack.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = texturePack.plist; sourceTree = "<group>"; };
+		CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "texturePack-hd.plist"; sourceTree = "<group>"; };
+		CEB181F215BFCDCD00EC6ECC /* texturePack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texturePack.png; sourceTree = "<group>"; };
+		CEB181F315BFCDCD00EC6ECC /* texturePack-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "texturePack-hd.png"; sourceTree = "<group>"; };
+		CEB181F415BFCDCD00EC6ECC /* layout-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "layout-hd.plist"; sourceTree = "<group>"; };
+		CEB181F515BFCDCD00EC6ECC /* layout.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = layout.plist; sourceTree = "<group>"; };
+		CEB181F615BFCDCD00EC6ECC /* layout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layout.png; sourceTree = "<group>"; };
+		CEB181F715BFCDCD00EC6ECC /* layout-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "layout-hd.png"; sourceTree = "<group>"; };
 		CEC437B315BF9F3E0088A8D1 /* TripleJP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TripleJP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEC437B715BF9F3E0088A8D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		CEC437B915BF9F3E0088A8D1 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -420,6 +438,10 @@
 		CEC4395E15BF9FDF0088A8D1 /* titlePack-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "titlePack-hd.plist"; sourceTree = "<group>"; };
 		CEC4395F15BF9FDF0088A8D1 /* titlePack.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = titlePack.plist; sourceTree = "<group>"; };
 		CEC4396015BF9FDF0088A8D1 /* tiled.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = tiled.plist; sourceTree = "<group>"; };
+		CEC4396915BFC47A0088A8D1 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		CEC4396A15BFC47B0088A8D1 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		CEC4396C15BFC4B20088A8D1 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
+		CEC4396D15BFC4B30088A8D1 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,16 +500,20 @@
 		CEC437C915BF9F3E0088A8D1 /* TripleJP */ = {
 			isa = PBXGroup;
 			children = (
-				CEC4395315BF9FCD0088A8D1 /* LoadScene.h */,
-				CEC4395415BF9FCD0088A8D1 /* LoadScene.m */,
-				CEC4395515BF9FCD0088A8D1 /* LoadLayer.h */,
-				CEC4395615BF9FCD0088A8D1 /* LoadLayer.m */,
 				CEC4394115BF9F410088A8D1 /* AppDelegate.h */,
 				CEC4394215BF9F410088A8D1 /* AppDelegate.m */,
 				CEC4394415BF9F410088A8D1 /* HelloWorldLayer.h */,
 				CEC4394515BF9F410088A8D1 /* HelloWorldLayer.m */,
 				CEC4394715BF9F410088A8D1 /* IntroLayer.h */,
 				CEC4394815BF9F410088A8D1 /* IntroLayer.m */,
+				CEC4395315BF9FCD0088A8D1 /* LoadScene.h */,
+				CEC4395415BF9FCD0088A8D1 /* LoadScene.m */,
+				CEC4395515BF9FCD0088A8D1 /* LoadLayer.h */,
+				CEC4395615BF9FCD0088A8D1 /* LoadLayer.m */,
+				CEC4396915BFC47A0088A8D1 /* GameScene.h */,
+				CEC4396A15BFC47B0088A8D1 /* GameScene.m */,
+				CEC4396C15BFC4B20088A8D1 /* GameLayer.h */,
+				CEC4396D15BFC4B30088A8D1 /* GameLayer.m */,
 				CEC437CA15BF9F3E0088A8D1 /* Resources */,
 				CEC437E415BF9F3E0088A8D1 /* libs */,
 				CEC4393D15BF9F410088A8D1 /* Supporting Files */,
@@ -498,6 +524,14 @@
 		CEC437CA15BF9F3E0088A8D1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CEB181F015BFCDCD00EC6ECC /* texturePack.plist */,
+				CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */,
+				CEB181F215BFCDCD00EC6ECC /* texturePack.png */,
+				CEB181F315BFCDCD00EC6ECC /* texturePack-hd.png */,
+				CEB181F415BFCDCD00EC6ECC /* layout-hd.plist */,
+				CEB181F515BFCDCD00EC6ECC /* layout.plist */,
+				CEB181F615BFCDCD00EC6ECC /* layout.png */,
+				CEB181F715BFCDCD00EC6ECC /* layout-hd.png */,
 				CEC4395915BF9FDF0088A8D1 /* tiled.png */,
 				CEC4395A15BF9FDF0088A8D1 /* tiled-hd.png */,
 				CEC4395B15BF9FDF0088A8D1 /* tiled-hd.plist */,
@@ -876,6 +910,7 @@
 				CEC437AF15BF9F3E0088A8D1 /* Sources */,
 				CEC437B015BF9F3E0088A8D1 /* Frameworks */,
 				CEC437B115BF9F3E0088A8D1 /* Resources */,
+				CEB1820215BFD77D00EC6ECC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -937,10 +972,34 @@
 				CEC4396615BF9FDF0088A8D1 /* titlePack-hd.plist in Resources */,
 				CEC4396715BF9FDF0088A8D1 /* titlePack.plist in Resources */,
 				CEC4396815BF9FDF0088A8D1 /* tiled.plist in Resources */,
+				CEB181F815BFCDCD00EC6ECC /* texturePack.plist in Resources */,
+				CEB181F915BFCDCD00EC6ECC /* texturePack-hd.plist in Resources */,
+				CEB181FA15BFCDCD00EC6ECC /* texturePack.png in Resources */,
+				CEB181FB15BFCDCD00EC6ECC /* texturePack-hd.png in Resources */,
+				CEB181FC15BFCDCD00EC6ECC /* layout-hd.plist in Resources */,
+				CEB181FD15BFCDCD00EC6ECC /* layout.plist in Resources */,
+				CEB181FE15BFCDCD00EC6ECC /* layout.png in Resources */,
+				CEB181FF15BFCDCD00EC6ECC /* layout-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CEB1820215BFD77D00EC6ECC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ] || [ \"${PLATFORM_NAME}\" == \"ipados\" ]; then\n/Applications/Xcode.app/Contents/Developer/iphoneentitlements/gen_entitlements.py \"my.company.${PROJECT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\ncodesign -f -s \"iPhone Developer\" --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CEC437AF15BF9F3E0088A8D1 /* Sources */ = {
@@ -1053,6 +1112,8 @@
 				CEC4394915BF9F410088A8D1 /* IntroLayer.m in Sources */,
 				CEC4395715BF9FCD0088A8D1 /* LoadScene.m in Sources */,
 				CEC4395815BF9FCD0088A8D1 /* LoadLayer.m in Sources */,
+				CEC4396B15BFC47B0088A8D1 /* GameScene.m in Sources */,
+				CEC4396E15BFC4B30088A8D1 /* GameLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1103,6 +1164,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1123,6 +1185,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TripleJP/Prefix.pch;
@@ -1158,6 +1221,7 @@
 				CEC4394E15BF9F410088A8D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

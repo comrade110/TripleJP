@@ -1,6 +1,6 @@
 //
-//  LoadLayer.h
-//  TripleJurassicPark
+//  GameLayer.h
+//  TripleJP
 //
 //  Created by user on 12-7-25.
 //  Copyright 2012年 __MyCompanyName__. All rights reserved.
@@ -9,14 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@interface LoadLayer : CCLayer {
+@interface GameLayer : CCLayer {
     
-    CCSprite *bg;
-    
-    CCMenu *loadMenu;
-    
-    CCMenuItemImage *sBtn;
-    
+    CCSprite *playBg;
 }
 
 @end

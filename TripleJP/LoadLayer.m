@@ -7,6 +7,7 @@
 //
 
 #import "LoadLayer.h"
+#import "GameScene.h"
 
 
 @implementation LoadLayer
@@ -18,10 +19,7 @@
     
     if (self != nil) {
         
-        
-        
-        
-        CCSpriteBatchNode *loadBatchNode = [CCSpriteBatchNode node];
+        CCSpriteBatchNode *loadBatchNode;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             
@@ -35,20 +33,39 @@
             
             loadBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"titlePack.png"];
         }
-    
-    bg = [CCSprite spriteWithSpriteFrameName:@"bg_title.png"];
+        CCSprite *btnSprite = [CCSprite spriteWithSpriteFrameName:@"button_start.png"];
         
-    [loadBatchNode addChild:bg];
+        sBtn = [CCMenuItemImage itemWithNormalSprite:btnSprite selectedSprite:nil target:self selector:@selector(makeTransition)];
         
-    [self addChild:loadBatchNode];
+        loadMenu = [CCMenu menuWithItems:sBtn, nil];
+        
+        loadMenu.position = CGPointZero;
+        
+        
+        bg = [CCSprite spriteWithSpriteFrameName:@"bg_title.png"];
+        
+        [loadBatchNode addChild:bg];
+        
+        
+        [self addChild:loadMenu z:1];
+        
+        [self addChild:loadBatchNode z:0];
     
         CGSize screenSize = [[CCDirector sharedDirector] winSize];    
         
-    [bg setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.5f)]; 
+        [bg setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.5f)]; 
+        
+        [sBtn setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.2f)]; 
     
     }
     return self;
 }
+
+-(void) makeTransition
+{
+	[[CCDirector sharedDirector] replaceScene:[GameScene node]];
+}
+
 
 -(void)dealloc{
     

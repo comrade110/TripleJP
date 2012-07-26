@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@interface LoadLayer : CCLayer {
+@interface LoadLayer : CCLayer<CCDirectorDelegate> {
     
     CCSprite *bg;
     
@@ -17,6 +17,9 @@
     
     CCMenuItemImage *sBtn;
     
+    CCDirectorIOS	*director_;	
 }
+
+@property (readonly) CCDirectorIOS *director;
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CEA3CE9F15C1793600A2E1B0 /* ObjClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */; };
 		CEB181F815BFCDCD00EC6ECC /* texturePack.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F015BFCDCD00EC6ECC /* texturePack.plist */; };
 		CEB181F915BFCDCD00EC6ECC /* texturePack-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */; };
 		CEB181FA15BFCDCD00EC6ECC /* texturePack.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F215BFCDCD00EC6ECC /* texturePack.png */; };
@@ -156,6 +157,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CEA3CE9D15C1793600A2E1B0 /* ObjClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjClass.h; sourceTree = "<group>"; };
+		CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjClass.m; sourceTree = "<group>"; };
 		CEB181F015BFCDCD00EC6ECC /* texturePack.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = texturePack.plist; sourceTree = "<group>"; };
 		CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "texturePack-hd.plist"; sourceTree = "<group>"; };
 		CEB181F215BFCDCD00EC6ECC /* texturePack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texturePack.png; sourceTree = "<group>"; };
@@ -514,6 +517,8 @@
 				CEC4396A15BFC47B0088A8D1 /* GameScene.m */,
 				CEC4396C15BFC4B20088A8D1 /* GameLayer.h */,
 				CEC4396D15BFC4B30088A8D1 /* GameLayer.m */,
+				CEA3CE9D15C1793600A2E1B0 /* ObjClass.h */,
+				CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */,
 				CEC437CA15BF9F3E0088A8D1 /* Resources */,
 				CEC437E415BF9F3E0088A8D1 /* libs */,
 				CEC4393D15BF9F410088A8D1 /* Supporting Files */,
@@ -1114,6 +1119,7 @@
 				CEC4395815BF9FCD0088A8D1 /* LoadLayer.m in Sources */,
 				CEC4396B15BFC47B0088A8D1 /* GameScene.m in Sources */,
 				CEC4396E15BFC4B30088A8D1 /* GameLayer.m in Sources */,
+				CEA3CE9F15C1793600A2E1B0 /* ObjClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

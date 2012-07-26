@@ -90,10 +90,10 @@
 	return YES;
 }
 
-// Supported orientations: Landscape. Customize it for your own needs
+// Supported orientations: Portrait. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 

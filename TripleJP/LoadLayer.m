@@ -12,6 +12,7 @@
 
 @implementation LoadLayer
 
+@synthesize director=director_;
 
 -(id)init{
 
@@ -56,7 +57,12 @@
         [bg setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.5f)]; 
         
         [sBtn setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.2f)]; 
-    
+        
+    	director_ = (CCDirectorIOS*) [CCDirector sharedDirector];
+        
+        director_.wantsFullScreenLayout = YES;
+        
+        [director_ setDelegate:self];
     }
     return self;
 }
@@ -70,6 +76,11 @@
 -(void)dealloc{
     
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 @end

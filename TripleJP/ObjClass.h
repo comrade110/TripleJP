@@ -9,8 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+struct coordinates{
+    
+    NSArray *xcoord;
+    
+    NSArray *ycoord;
+    
+};
+
 @interface ObjClass : CCNode {
     
+    struct coordinates *coo;
 }
 
 -(CCSprite *)buildUnit:(NSString *)UnitID;

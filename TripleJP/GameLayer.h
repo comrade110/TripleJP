@@ -12,6 +12,15 @@
 @interface GameLayer : CCLayer {
     
     CCSprite *playBg;
+    CCSprite *refreshUnit;
+    
+    NSArray *map;
+    NSArray *line1;
+    NSArray *line2;
+    NSArray *line3;
+    NSArray *line4;
+    NSArray *line5;
+    NSArray *line6;
 }
 
 @end

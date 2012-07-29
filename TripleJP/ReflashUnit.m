@@ -8,7 +8,6 @@
 
 #import "ReflashUnit.h"
 
-
 @implementation ReflashUnit
 
 - (id)init {
@@ -30,22 +29,53 @@
     
 }
 
--(CCSprite *)reflashUnit{
-
-    int randNum = arc4random()%8;
+-(id)getUnitID{
+    
+    int randNum = arc4random()%1000;
+    NSString *unitID;
+    NSLog(@"%d",randNum);
     
     NSString *tmpFilePath = [self dataPath];
-    if ( [[NSFileManager defaultManager] fileExistsAtPath:tmpFilePath ]) {
-        NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:tmpFilePath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:tmpFilePath ]) {
+        NSLog(@"asdasd");
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:tmpFilePath];
         
-        NSDictionary *tempDic = [array objectAtIndex:randNum];
-        CCLOG(tempDic);
-        [array release];
-        [tempDic release];
+        NSLog(@"%@",dic);
+        int perRange = 0;
+        
+        for (int i = 0; i < 8; i++) {
+            
+            NSDictionary *keyDic = [dic objectForKey:[NSString stringWithFormat:@"%d",i]];
+            
+            if (i == 0) {
+                
+                perRange = 0;
+                
+            }else {
+                NSDictionary *preKeyDic = [dic objectForKey:[NSString stringWithFormat:@"%d",i-1]];
+                
+                perRange = [[preKeyDic objectForKey:@"range"] intValue];
+            }
+            
+            
+            
+            int range = [[keyDic objectForKey:@"range"] intValue];
+            
+            
+            if (randNum >= perRange && randNum < range) {
+                
+                unitID = [keyDic objectForKey:@"ID"];
+                
+                NSLog(@"-----%@-------",unitID);
+                
+            }
+        }
+        
     }
-    CCSprite *dd = [CCSprite node];
-    return dd;
-
+    return unitID;
 }
+
+
+
 
 @end

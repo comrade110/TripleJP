@@ -13,6 +13,6 @@
     
 }
 
--(CCSprite *)reflashUnit;
+-(id)getUnitID;
 
 @end

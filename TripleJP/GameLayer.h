@@ -13,6 +13,11 @@
     
     CCSprite *playBg;
     CCSprite *refreshUnit;
+    CCSpriteBatchNode *bgTiledBatchNode;
+    CCSpriteBatchNode *refreshBatchNode;
+    CGRect unitRect;
+    CGSize screenSize;
+    CGRect mapRect;
     
     NSArray *map;
     NSArray *line1;

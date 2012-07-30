@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CEA1737115C41DE70075CF27 /* Items.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEA1737015C41DE70075CF27 /* Items.plist */; };
-		CEA1737515C41E080075CF27 /* ReflashUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA1737415C41E080075CF27 /* ReflashUnit.m */; };
-		CEA1737715C41E4D0075CF27 /* refreshUnit.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEA1737615C41E4D0075CF27 /* refreshUnit.plist */; };
-		CEA3CE9F15C1793600A2E1B0 /* ObjClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */; };
+		CE79258815C6576D00D3582B /* MapTileAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79258715C6576C00D3582B /* MapTileAttribute.m */; };
+		CE79258B15C6582E00D3582B /* MapClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79258A15C6582E00D3582B /* MapClass.m */; };
+		CE7944BC15C23B380002857F /* refreshUnit.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BA15C23B380002857F /* refreshUnit.plist */; };
+		CE7944BD15C23B380002857F /* Items.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BB15C23B380002857F /* Items.plist */; };
+		CE7944C515C23DE20002857F /* ObjClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7944C415C23DE20002857F /* ObjClass.m */; };
+		CE7944C915C247FB0002857F /* ReflashUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7944C815C247FB0002857F /* ReflashUnit.m */; };
 		CEB181F815BFCDCD00EC6ECC /* texturePack.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F015BFCDCD00EC6ECC /* texturePack.plist */; };
 		CEB181F915BFCDCD00EC6ECC /* texturePack-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */; };
 		CEB181FA15BFCDCD00EC6ECC /* texturePack.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F215BFCDCD00EC6ECC /* texturePack.png */; };
@@ -156,12 +158,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CEA1737015C41DE70075CF27 /* Items.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Items.plist; sourceTree = "<group>"; };
-		CEA1737315C41E080075CF27 /* ReflashUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflashUnit.h; sourceTree = "<group>"; };
-		CEA1737415C41E080075CF27 /* ReflashUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReflashUnit.m; sourceTree = "<group>"; };
-		CEA1737615C41E4D0075CF27 /* refreshUnit.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = refreshUnit.plist; sourceTree = "<group>"; };
-		CEA3CE9D15C1793600A2E1B0 /* ObjClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjClass.h; sourceTree = "<group>"; };
-		CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjClass.m; sourceTree = "<group>"; };
+		CE79258615C6576C00D3582B /* MapTileAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileAttribute.h; sourceTree = "<group>"; };
+		CE79258715C6576C00D3582B /* MapTileAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileAttribute.m; sourceTree = "<group>"; };
+		CE79258915C6582E00D3582B /* MapClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapClass.h; path = ../MapClass.h; sourceTree = "<group>"; };
+		CE79258A15C6582E00D3582B /* MapClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapClass.m; path = ../MapClass.m; sourceTree = "<group>"; };
+		CE7944BA15C23B380002857F /* refreshUnit.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = refreshUnit.plist; sourceTree = "<group>"; };
+		CE7944BB15C23B380002857F /* Items.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Items.plist; sourceTree = "<group>"; };
+		CE7944C315C23DE20002857F /* ObjClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjClass.h; sourceTree = "<group>"; };
+		CE7944C415C23DE20002857F /* ObjClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjClass.m; sourceTree = "<group>"; };
+		CE7944C715C247FB0002857F /* ReflashUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflashUnit.h; sourceTree = "<group>"; };
+		CE7944C815C247FB0002857F /* ReflashUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReflashUnit.m; sourceTree = "<group>"; };
 		CEB181F015BFCDCD00EC6ECC /* texturePack.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = texturePack.plist; sourceTree = "<group>"; };
 		CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "texturePack-hd.plist"; sourceTree = "<group>"; };
 		CEB181F215BFCDCD00EC6ECC /* texturePack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texturePack.png; sourceTree = "<group>"; };
@@ -516,10 +522,14 @@
 				CEC4396A15BFC47B0088A8D1 /* GameScene.m */,
 				CEC4396C15BFC4B20088A8D1 /* GameLayer.h */,
 				CEC4396D15BFC4B30088A8D1 /* GameLayer.m */,
-				CEA3CE9D15C1793600A2E1B0 /* ObjClass.h */,
-				CEA3CE9E15C1793600A2E1B0 /* ObjClass.m */,
-				CEA1737315C41E080075CF27 /* ReflashUnit.h */,
-				CEA1737415C41E080075CF27 /* ReflashUnit.m */,
+				CE7944C315C23DE20002857F /* ObjClass.h */,
+				CE7944C415C23DE20002857F /* ObjClass.m */,
+				CE7944C715C247FB0002857F /* ReflashUnit.h */,
+				CE7944C815C247FB0002857F /* ReflashUnit.m */,
+				CE79258915C6582E00D3582B /* MapClass.h */,
+				CE79258A15C6582E00D3582B /* MapClass.m */,
+				CE79258615C6576C00D3582B /* MapTileAttribute.h */,
+				CE79258715C6576C00D3582B /* MapTileAttribute.m */,
 				CEC437CA15BF9F3E0088A8D1 /* Resources */,
 				CEC437E415BF9F3E0088A8D1 /* libs */,
 				CEC4393D15BF9F410088A8D1 /* Supporting Files */,
@@ -530,8 +540,8 @@
 		CEC437CA15BF9F3E0088A8D1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CEA1737615C41E4D0075CF27 /* refreshUnit.plist */,
-				CEA1737015C41DE70075CF27 /* Items.plist */,
+				CE7944BA15C23B380002857F /* refreshUnit.plist */,
+				CE7944BB15C23B380002857F /* Items.plist */,
 				CEB181F015BFCDCD00EC6ECC /* texturePack.plist */,
 				CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */,
 				CEB181F215BFCDCD00EC6ECC /* texturePack.png */,
@@ -980,8 +990,8 @@
 				CEB181FD15BFCDCD00EC6ECC /* layout.plist in Resources */,
 				CEB181FE15BFCDCD00EC6ECC /* layout.png in Resources */,
 				CEB181FF15BFCDCD00EC6ECC /* layout-hd.png in Resources */,
-				CEA1737115C41DE70075CF27 /* Items.plist in Resources */,
-				CEA1737715C41E4D0075CF27 /* refreshUnit.plist in Resources */,
+				CE7944BC15C23B380002857F /* refreshUnit.plist in Resources */,
+				CE7944BD15C23B380002857F /* Items.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1116,8 +1126,10 @@
 				CEC4395815BF9FCD0088A8D1 /* LoadLayer.m in Sources */,
 				CEC4396B15BFC47B0088A8D1 /* GameScene.m in Sources */,
 				CEC4396E15BFC4B30088A8D1 /* GameLayer.m in Sources */,
-				CEA3CE9F15C1793600A2E1B0 /* ObjClass.m in Sources */,
-				CEA1737515C41E080075CF27 /* ReflashUnit.m in Sources */,
+				CE7944C515C23DE20002857F /* ObjClass.m in Sources */,
+				CE7944C915C247FB0002857F /* ReflashUnit.m in Sources */,
+				CE79258815C6576D00D3582B /* MapTileAttribute.m in Sources */,
+				CE79258B15C6582E00D3582B /* MapClass.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

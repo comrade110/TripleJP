@@ -19,12 +19,7 @@
     
     if (self != nil) {
         
-        CCSpriteBatchNode *bgTiledBatchNode;
-        CCSpriteBatchNode *refreshBatchNode;
-        
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
-        
-        NSLog(@"~~~~~%@~~~~~",nowUnitID);
      
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
@@ -67,7 +62,7 @@
         [self addChild:bgTiledBatchNode];
         [self addChild:refreshBatchNode];
         
-        CGSize screenSize = [[CCDirector sharedDirector] winSize];    
+        screenSize = [[CCDirector sharedDirector] winSize];    
         
         [playBg setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.5f)]; 
         [tile3 setPosition:CGPointMake(tile3.anchorPointInPoints.x + 10, 320)]; 
@@ -79,7 +74,19 @@
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
         map = [NSArray arrayWithObjects:line1,line2,line3,line4,line5,line6, nil];
+        
+//*******  启动响应触摸
+        
         self.isTouchEnabled = YES;
+        
+        CCDirector *director = [CCDirector sharedDirector];
+        [[director touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+        
+//******* 初始化地图矩阵
+        
+        mapRect = CGRectMake((screenSize.width - 300)*0.5, (screenSize.height - 300)*0.5, 300, 300);
+        
+        
         
     }
     return self;
@@ -89,7 +96,7 @@
 {
     NSArray *storeFilePath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *doucumentsDirectiory = [storeFilePath objectAtIndex:0];
-    NSLog(@"%@",doucumentsDirectiory);
+//    NSLog(@"%@",doucumentsDirectiory);
     
     return [doucumentsDirectiory stringByAppendingPathComponent:@"refreshUnit.plist"];
     
@@ -102,11 +109,8 @@
     return dd;
     
 }
--(void)onEnter{
-        self.isTouchEnabled = YES;
 
-}
-
+//  精灵的CGRect
 
 -(CGRect)AtlasRect:(CCSprite *)atlSpr
 {
@@ -114,23 +118,47 @@
     return CGRectMake( - rc.size.width / 2, -rc.size.height / 2, rc.size.width, rc.size.height); 
 }
 
+// map CGRect
+
+
+
+//-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+//{
+//    NSLog(@"你没啊00");
+//    
+//    CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
+//    
+//    NSLog(@"%f,%f",touchPoint.x,touchPoint.y);
+//    
+//    unitRect = [self AtlasRect:refreshUnit];
+//    
+//    return CGRectContainsPoint(unitRect, touchPoint);
+//}
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     NSLog(@"你没啊00");
-    CGPoint pt =[touch locationInView: [touch view]];    
+    
     CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
     
-    CGRect rect = [self AtlasRect:refreshUnit];
-    NSLog(@"~~~%@~~~~~",pt);
+    NSLog(@"%f,%f",touchPoint.x,touchPoint.y);
     
+    unitRect = [self AtlasRect:refreshUnit];
     
-    return CGRectContainsPoint(rect, [refreshUnit convertTouchToNodeSpaceAR:touch]);
+    return CGRectContainsPoint(unitRect, touchPoint);
 }
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    NSLog(@"草啊");
+    CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
+    
+    if (CGRectContainsPoint(unitRect, touchPoint)) {
+        [refreshUnit removeFromParentAndCleanup:YES];
+        NSString *nowUnitID = [[ReflashUnit node] getUnitID];
+        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];         
+        [refreshBatchNode addChild:refreshUnit z:2];
+        [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
+    }
 }
 
 

@@ -10,14 +10,6 @@
 
 @implementation ReflashUnit
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        
-        
-    }
-    return self;
-}
 
 /********创建路径**********/
 - (NSString *) dataPath
@@ -36,6 +28,7 @@
     NSLog(@"%d",randNum);
     
     NSString *tmpFilePath = [self dataPath];
+    NSLog(@"%@",tmpFilePath);
     if ([[NSFileManager defaultManager] fileExistsAtPath:tmpFilePath ]) {
         NSLog(@"asdasd");
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:tmpFilePath];

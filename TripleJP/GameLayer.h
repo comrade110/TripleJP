@@ -18,8 +18,9 @@
     CGRect unitRect;
     CGSize screenSize;
     CGRect mapRect;
+    CGRect tileRect;                            // 1/36每个 rect
     
-    NSArray *map;
+    NSMutableArray *map[6][6];
     NSArray *line1;
     NSArray *line2;
     NSArray *line3;

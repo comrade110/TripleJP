@@ -73,7 +73,6 @@
         [unitStorage setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
-        map = [NSArray arrayWithObjects:line1,line2,line3,line4,line5,line6, nil];
         
 //*******  启动响应触摸
         
@@ -84,7 +83,8 @@
         
 //******* 初始化地图矩阵
         
-        mapRect = CGRectMake((screenSize.width - 300)*0.5, (screenSize.height - 300)*0.5, 300, 300);
+        mapRect = CGRectMake((screenSize.width - 300)*0.5, 45, 300, 300);
+        
         
         
         
@@ -137,25 +137,48 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    NSLog(@"你没啊00");
-    
-    CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
+
+    CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
     NSLog(@"%f,%f",touchPoint.x,touchPoint.y);
     
-    unitRect = [self AtlasRect:refreshUnit];
     
-    return CGRectContainsPoint(unitRect, touchPoint);
+    if (CGRectContainsPoint(mapRect, touchPoint)) {
+        
+        int mapTileX = (int)(touchPoint.x - 10)*0.02;
+        int mapTileY = (int)(touchPoint.y - 45)*0.02;
+        
+        
+//        NSLog(@"----%d,----%d",mapTileX,mapTileY);
+        
+        int orX = 50*mapTileX + 10;
+        int orY = 50*mapTileY + 45;
+        
+        
+        [map[mapTileX][mapTileY] addObject:refreshUnit];
+                
+        
+        tileRect = CGRectMake(orX, orY, 50, 50);
+        
+        return YES;
+    }else {
+        
+        return NO;
+    }
+     
+    
 }
 
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
+    CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
-    if (CGRectContainsPoint(unitRect, touchPoint)) {
-        [refreshUnit removeFromParentAndCleanup:YES];
+    if (CGRectContainsPoint(tileRect, touchPoint)) {
+        
+        [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+        [refreshUnit release];
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
-        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];         
+        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];
         [refreshBatchNode addChild:refreshUnit z:2];
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
     }

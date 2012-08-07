@@ -9,7 +9,6 @@
 #import "GameLayer.h"
 #import "ReflashUnit.h"
 
-
 @implementation GameLayer
 
 
@@ -45,7 +44,8 @@
         CCSprite *tile9 = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
         CCSprite *unitStorage = [CCSprite spriteWithSpriteFrameName:@"main_bar.png"];
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]]; 
-
+        
+        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile2.png"]; 
         
         
         playBg = [CCSprite spriteWithSpriteFrameName:@"bg_main.png"];
@@ -58,6 +58,7 @@
         [refreshBatchNode addChild:tile9 z:1];
         [bgTiledBatchNode addChild:unitStorage z:1];
         [refreshBatchNode addChild:refreshUnit z:2];
+        [refreshBatchNode addChild:mapbg z:1];
         
         [self addChild:bgTiledBatchNode];
         [self addChild:refreshBatchNode];
@@ -84,10 +85,7 @@
 //******* 初始化地图矩阵
         
         mapRect = CGRectMake((screenSize.width - 300)*0.5, 45, 300, 300);
-        
-        
-        
-        
+
     }
     return self;
 }
@@ -102,13 +100,7 @@
     
 }
 
--(CCSprite *)setUnitPositon{
-    
-    
-    CCSprite *dd = [CCSprite node];
-    return dd;
-    
-}
+
 
 //  精灵的CGRect
 
@@ -137,6 +129,7 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    
 
     CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
@@ -145,8 +138,8 @@
     
     if (CGRectContainsPoint(mapRect, touchPoint)) {
         
-        int mapTileX = (int)(touchPoint.x - 10)*0.02;
-        int mapTileY = (int)(touchPoint.y - 45)*0.02;
+        mapTileX = (int)(touchPoint.x - 10)*0.02;
+        mapTileY = (int)(touchPoint.y - 45)*0.02;
         
         
 //        NSLog(@"----%d,----%d",mapTileX,mapTileY);
@@ -154,10 +147,9 @@
         int orX = 50*mapTileX + 10;
         int orY = 50*mapTileY + 45;
         
+        mapUnitType[mapTileX][mapTileY] = 1;
         
-        [map[mapTileX][mapTileY] addObject:refreshUnit];
                 
-        
         tileRect = CGRectMake(orX, orY, 50, 50);
         
         return YES;
@@ -173,15 +165,48 @@
 {
     CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
+    NSString *nowUnitID = [[ReflashUnit node] getUnitID];
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
-        [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+
+        [mapbg setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y +25)];
+        
+        NSLog(@"%d",mapUnitType[mapTileX - 1][mapTileY]);
+
+        if (mapUnitType[mapTileX - 1][mapTileY] == 1) {
+            
+            int newUnitID = [nowUnitID intValue] + 2;
+            NSLog(@"%d",newUnitID);
+            [refreshUnit removeFromParentAndCleanup:YES];
+            
+            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",newUnitID]];
+            [refreshBatchNode addChild:refreshUnit z:2];
+            [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+            
+        }else{
+        
+            [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+            
+        }
+        
+        
         [refreshUnit release];
-        NSString *nowUnitID = [[ReflashUnit node] getUnitID];
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];
+        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile2.png"];
         [refreshBatchNode addChild:refreshUnit z:2];
+        [refreshBatchNode addChild:mapbg z:1];
+        
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
+        
+
     }
+}
+
+-(void)dealloc{
+
+    [super dealloc];
+    
+    [mapbg release];
 }
 
 

@@ -11,12 +11,15 @@
 
 @implementation ObjClass
 
+@synthesize mapUnitSprite,mapBGSprite,unitType,isChecked;
+
 - (id)init {
     self = [super init];
     if (self) {
-        
-        coo->xcoord = [CCArray array];
-        
+        mapUnitSprite = nil;
+        mapUnitSprite = nil;
+        unitType = 0;
+        isChecked = NO;
     }
     return self;
 }

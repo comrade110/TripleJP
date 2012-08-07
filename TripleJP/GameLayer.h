@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "ObjClass.h"
 
 @interface GameLayer : CCLayer {
     
@@ -19,14 +20,18 @@
     CGSize screenSize;
     CGRect mapRect;
     CGRect tileRect;                            // 1/36每个 rect
+
     
-    NSMutableArray *map[6][6];
-    NSArray *line1;
-    NSArray *line2;
-    NSArray *line3;
-    NSArray *line4;
-    NSArray *line5;
-    NSArray *line6;
+    int mapTileX;
+    int mapTileY;
+    
+    int mapUnitType[6][6];
+    
+    
+    NSMutableArray *rowItems;
+    
+    CCSprite *mapbg;
 }
+
 
 @end

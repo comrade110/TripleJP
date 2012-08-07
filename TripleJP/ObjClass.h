@@ -9,20 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-struct coordinates{
-    
-    NSArray *xcoord;
-    
-    NSArray *ycoord;
-    
-};
 
 @interface ObjClass : CCNode {
     
-    struct coordinates *coo;
+    CCSprite *mapUnitSprite;
+    
+    CCSprite *mapBGSprite;
+    
+    int unitType;
+    
+    BOOL isChecked;
+    
 }
-
--(CCSprite *)buildUnit:(NSString *)UnitID;
+@property(nonatomic,retain) CCSprite *mapUnitSprite;
+@property(nonatomic,retain) CCSprite *mapBGSprite;
+@property(nonatomic,assign) int unitType;
+@property(nonatomic,assign) BOOL isChecked;
 
 
 @end

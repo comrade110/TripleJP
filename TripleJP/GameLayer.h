@@ -20,12 +20,20 @@
     CGSize screenSize;
     CGRect mapRect;
     CGRect tileRect;                            // 1/36每个 rect
-
+    
+    int intGroupType;                                //  初始化的精灵的groupType
+    int intType;                                //  初始化的精灵的type
     
     int mapTileX;
     int mapTileY;
     
+    int mapUnitGroupType[6][6];
+    
     int mapUnitType[6][6];
+    
+    int mapSpriteTag[6][6];
+    
+    int mapUnitGroupStorage[6][6];
     
     
     NSMutableArray *rowItems;

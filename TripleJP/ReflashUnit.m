@@ -25,15 +25,15 @@
     
     int randNum = arc4random()%1000;
     NSString *unitID;
-    NSLog(@"%d",randNum);
+
     
     NSString *tmpFilePath = [self dataPath];
-    NSLog(@"%@",tmpFilePath);
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:tmpFilePath ]) {
-        NSLog(@"asdasd");
+
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithContentsOfFile:tmpFilePath];
         
-        NSLog(@"%@",dic);
+
         int perRange = 0;
         
         for (int i = 0; i < 8; i++) {

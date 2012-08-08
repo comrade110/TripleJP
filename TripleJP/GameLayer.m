@@ -8,6 +8,7 @@
 
 #import "GameLayer.h"
 #import "ReflashUnit.h"
+#import "UnitAttributes.h"
 
 @implementation GameLayer
 
@@ -19,6 +20,9 @@
     if (self != nil) {
         
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
+        
+        intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
+        intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
      
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 
@@ -57,7 +61,7 @@
         [refreshBatchNode addChild:tile8 z:1];
         [refreshBatchNode addChild:tile9 z:1];
         [bgTiledBatchNode addChild:unitStorage z:1];
-        [refreshBatchNode addChild:refreshUnit z:2];
+        [refreshBatchNode addChild:refreshUnit z:2 tag:0];
         [refreshBatchNode addChild:mapbg z:1];
         
         [self addChild:bgTiledBatchNode];
@@ -78,7 +82,6 @@
 //*******  启动响应触摸
         
         self.isTouchEnabled = YES;
-        
         CCDirector *director = [CCDirector sharedDirector];
         [[director touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
         
@@ -147,8 +150,8 @@
         int orX = 50*mapTileX + 10;
         int orY = 50*mapTileY + 45;
         
-        mapUnitType[mapTileX][mapTileY] = 1;
-        
+        mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
+        mapUnitType[mapTileX][mapTileY] = intType;
                 
         tileRect = CGRectMake(orX, orY, 50, 50);
         
@@ -171,26 +174,38 @@
 
         [mapbg setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y +25)];
         
-        NSLog(@"%d",mapUnitType[mapTileX - 1][mapTileY]);
+        NSLog(@"%d",mapUnitGroupType[mapTileX - 1][mapTileY]);
 
-        if (mapUnitType[mapTileX - 1][mapTileY] == 1) {
+        if (mapUnitGroupType[mapTileX - 1][mapTileY] == intGroupType && intType < 4) {
+             
             
-            int newUnitID = [nowUnitID intValue] + 2;
-            NSLog(@"%d",newUnitID);
-            [refreshUnit removeFromParentAndCleanup:YES];
+            int newUnitID = mapUnitGroupType[mapTileX][mapTileY];      //    获取groupType数值
+            NSString *newUnitIDStr = [NSString stringWithFormat:@"%d",newUnitID];
+            NSLog(@"%d~~~~~~~~~~~~\n",newUnitID);
+            [refreshUnit removeFromParentAndCleanup:YES];         //   移除原来的精灵
+            
             
             refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",newUnitID]];
+            
+            //  给新精灵type数组赋值 以同步精灵属性
+            
+            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:newUnitIDStr withSubKey:@"groupto"];
+            
+            mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
+            
             [refreshBatchNode addChild:refreshUnit z:2];
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+            refreshUnit.tag = mapTileX*10+mapTileY;
             
         }else{
         
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+            refreshUnit.tag = mapTileX*10+mapTileY;
             
         }
         
+//       刷新单位
         
-        [refreshUnit release];
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];
         mapbg = [CCSprite spriteWithSpriteFrameName:@"tile2.png"];
         [refreshBatchNode addChild:refreshUnit z:2];
@@ -198,7 +213,13 @@
         
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
-
+        intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
+        if (intType < 4) {
+            
+            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
+        }else {
+            intGroupType = 0;
+        }
     }
 }
 

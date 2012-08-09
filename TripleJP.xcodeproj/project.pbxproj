@@ -14,6 +14,7 @@
 		CE7944C915C247FB0002857F /* ReflashUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7944C815C247FB0002857F /* ReflashUnit.m */; };
 		CE80B47315D2120800EB92E1 /* MapUnitController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE80B47215D2120800EB92E1 /* MapUnitController.m */; };
 		CE80B47615D23E6300EB92E1 /* UnitAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = CE80B47515D23E6300EB92E1 /* UnitAttributes.m */; };
+		CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = CE86D0CA15D35FD20057A67A /* StorageGroup.m */; };
 		CEB181F815BFCDCD00EC6ECC /* texturePack.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F015BFCDCD00EC6ECC /* texturePack.plist */; };
 		CEB181F915BFCDCD00EC6ECC /* texturePack-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */; };
 		CEB181FA15BFCDCD00EC6ECC /* texturePack.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB181F215BFCDCD00EC6ECC /* texturePack.png */; };
@@ -171,6 +172,8 @@
 		CE80B47215D2120800EB92E1 /* MapUnitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUnitController.m; sourceTree = "<group>"; };
 		CE80B47415D23E6300EB92E1 /* UnitAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitAttributes.h; sourceTree = "<group>"; };
 		CE80B47515D23E6300EB92E1 /* UnitAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitAttributes.m; sourceTree = "<group>"; };
+		CE86D0C915D35FD20057A67A /* StorageGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageGroup.h; sourceTree = "<group>"; };
+		CE86D0CA15D35FD20057A67A /* StorageGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StorageGroup.m; sourceTree = "<group>"; };
 		CEB181F015BFCDCD00EC6ECC /* texturePack.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = texturePack.plist; sourceTree = "<group>"; };
 		CEB181F115BFCDCD00EC6ECC /* texturePack-hd.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "texturePack-hd.plist"; sourceTree = "<group>"; };
 		CEB181F215BFCDCD00EC6ECC /* texturePack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = texturePack.png; sourceTree = "<group>"; };
@@ -535,6 +538,8 @@
 				CE79258715C6576C00D3582B /* MapTileAttribute.m */,
 				CE80B47115D2120800EB92E1 /* MapUnitController.h */,
 				CE80B47215D2120800EB92E1 /* MapUnitController.m */,
+				CE86D0C915D35FD20057A67A /* StorageGroup.h */,
+				CE86D0CA15D35FD20057A67A /* StorageGroup.m */,
 				CEC437CA15BF9F3E0088A8D1 /* Resources */,
 				CEC437E415BF9F3E0088A8D1 /* libs */,
 				CEC4393D15BF9F410088A8D1 /* Supporting Files */,
@@ -1136,6 +1141,7 @@
 				CE79258815C6576D00D3582B /* MapTileAttribute.m in Sources */,
 				CE80B47315D2120800EB92E1 /* MapUnitController.m in Sources */,
 				CE80B47615D23E6300EB92E1 /* UnitAttributes.m in Sources */,
+				CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

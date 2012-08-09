@@ -9,6 +9,7 @@
 #import "GameLayer.h"
 #import "ReflashUnit.h"
 #import "UnitAttributes.h"
+#import "MapTileAttribute.h"
 
 @implementation GameLayer
 
@@ -48,9 +49,7 @@
         CCSprite *tile9 = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
         CCSprite *unitStorage = [CCSprite spriteWithSpriteFrameName:@"main_bar.png"];
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]]; 
-        
-        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile2.png"]; 
-        
+                
         
         playBg = [CCSprite spriteWithSpriteFrameName:@"bg_main.png"];
         
@@ -62,7 +61,6 @@
         [refreshBatchNode addChild:tile9 z:1];
         [bgTiledBatchNode addChild:unitStorage z:1];
         [refreshBatchNode addChild:refreshUnit z:2 tag:0];
-        [refreshBatchNode addChild:mapbg z:1];
         
         [self addChild:bgTiledBatchNode];
         [self addChild:refreshBatchNode];
@@ -88,6 +86,14 @@
 //******* 初始化地图矩阵
         
         mapRect = CGRectMake((screenSize.width - 300)*0.5, 45, 300, 300);
+        
+        
+        clearArr = [[CCArray array] retain];
+        storageArr = [[CCArray array] retain];
+        aroundSpriteTag = [[CCArray array] retain];
+//******* 合并
+        isNeedGroup = NO;
+        
 
     }
     return self;
@@ -116,19 +122,44 @@
 // map CGRect
 
 
+//  该精灵周围精灵的周围
 
-//-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
-//{
-//    NSLog(@"你没啊00");
-//    
-//    CGPoint touchPoint = [refreshUnit convertTouchToNodeSpaceAR:touch];
-//    
-//    NSLog(@"%f,%f",touchPoint.x,touchPoint.y);
-//    
-//    unitRect = [self AtlasRect:refreshUnit];
-//    
-//    return CGRectContainsPoint(unitRect, touchPoint);
-//}
+-(BOOL)checkIsInStorage:(int)tag{
+    
+    int tagx = tag/10;
+    
+    int tagy;
+    
+    if (tag <10) {
+        
+        tagy = tag;
+        
+    }else {
+        
+        tagy = tag%10;
+        
+    }
+    
+    if ([storageArr count] == 0) {
+        
+        return NO;
+        
+    }
+    NSLog(@"ca!!!!!!!");
+    for (int i= 0; i<[storageArr count]; i++) {
+        MapTileAttribute *tempMTA = [storageArr objectAtIndex:i];
+        
+        NSLog(@"tempMTA.x1:%d",tempMTA.x1);
+        
+        if ((tagx == tempMTA.x1 ||tagx == tempMTA.x2|| tagy == tempMTA.y1 || tagy == tempMTA.y2)&&(tempMTA.x2 !=mapTileX && tempMTA.y2 != mapTileY)) {
+            
+            return YES;
+            
+        }
+        
+    }    
+    return NO;
+}
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
@@ -149,9 +180,6 @@
         
         int orX = 50*mapTileX + 10;
         int orY = 50*mapTileY + 45;
-        
-        mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
-        mapUnitType[mapTileX][mapTileY] = intType;
                 
         tileRect = CGRectMake(orX, orY, 50, 50);
         
@@ -164,28 +192,205 @@
     
 }
 
+-(void)findItemsInStorageArr:(int)x withY:(int)y{
+    
+    NSLog(@"x=%d,y=%d",x,y);
+    
+    for (int i= 0; i<[storageArr count]; i++) {
+        MapTileAttribute *tempMTA = [storageArr objectAtIndex:i];
+        
+        NSLog(@"~~x1=%d y1=%d x2=%d y2=%d~~",tempMTA.x1,tempMTA.y1,tempMTA.x2,tempMTA.y2);
+        
+        if ((x == tempMTA.x1 && y==tempMTA.y1)||(x== tempMTA.x2 && y==tempMTA.y2)) {
+            
+            int clearTag1 = tempMTA.x1 *10 + tempMTA.y1; 
+            
+            int clearTag2 = tempMTA.x2 *10 + tempMTA.y2; 
+            
+            NSLog(@"clearTag1:%d",clearTag1);
+            
+            NSNumber *cnum1 = [[NSNumber alloc] initWithInt:clearTag1];
+            NSNumber *cnum2 = [[NSNumber alloc] initWithInt:clearTag2];
+            
+            [clearArr addObject:cnum1];
+            [clearArr addObject:cnum2];
+            [storageArr removeObjectAtIndex:i];
+            
+        }
+    }
+
+}
+
+
+
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
     NSString *nowUnitID = [[ReflashUnit node] getUnitID];
     if (CGRectContainsPoint(tileRect, touchPoint)) {
-        
 
-        [mapbg setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y +25)];
+//    把精灵属性存入各自数组中
         
-        NSLog(@"%d",mapUnitGroupType[mapTileX - 1][mapTileY]);
+        mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
+        mapUnitType[mapTileX][mapTileY] = intType;
+        mapSpriteTag[mapTileX][mapTileY] = mapTileX*10 + mapTileY;
+        
+        
+        NSLog(@"mapUnitGroupType[mapTileX - 1][mapTileY]:%d",mapUnitGroupType[mapTileX - 1][mapTileY]);
 
-        if (mapUnitGroupType[mapTileX - 1][mapTileY] == intGroupType && intType < 4) {
-             
+        if (mapUnitGroupType[mapTileX - 1][mapTileY] == intGroupType && intType < 4 ) {
             
+            NSLog(@"NO.1");
+            
+            if ([self checkIsInStorage:mapSpriteTag[mapTileX-1][mapTileY]] == YES) {
+                
+                isNeedGroup = YES; 
+                [self findItemsInStorageArr:mapTileX-1 withY:mapTileY];
+                
+
+                
+            }else {
+                
+                NSLog(@"aroundSpriteTag~~~1");
+                [aroundSpriteTag addObject:[NSString stringWithFormat:@"%d",mapSpriteTag[mapTileX-1][mapTileY]]];
+                NSLog(@"aroundSpriteTag count:%d",[aroundSpriteTag count]);
+                //         把自己和临近的精灵坐标存起
+                
+                MapTileAttribute *mapAttr = [MapTileAttribute node];
+                
+                mapAttr.x1 = mapTileX - 1;
+                mapAttr.y1 = mapTileY;
+                mapAttr.x2 = mapTileX;
+                mapAttr.y2 = mapTileY;
+                
+ //               NSLog(@"%d %d %d %d",mapAttr.x1,mapAttr.y1,mapAttr.x2,mapAttr.y2);
+                
+                [storageArr addObject:mapAttr];
+                
+                NSLog(@"storageArr:%d",[storageArr count]);
+                
+            }
+            
+        }
+        if (mapUnitGroupType[mapTileX + 1][mapTileY] == intGroupType && intType < 4 ) {
+            
+            NSLog(@"NO.2");
+
+            
+            if ([self checkIsInStorage:mapSpriteTag[mapTileX+1][mapTileY]] == YES) {
+                
+                isNeedGroup = YES; 
+                [self findItemsInStorageArr:mapTileX+1 withY:mapTileY];   
+                
+                NSLog(@"noaroundSpriteTag~~~2");
+            }else {
+                NSLog(@"aroundSpriteTag~~~2");
+                [aroundSpriteTag addObject:[NSString stringWithFormat:@"%d",mapSpriteTag[mapTileX+1][mapTileY]]];
+                NSLog(@"aroundSpriteTag count:%d",[aroundSpriteTag count]);
+                MapTileAttribute *mapAttr = [MapTileAttribute node];
+                
+                mapAttr.x1 = mapTileX + 1;
+                mapAttr.y1 = mapTileY;
+                mapAttr.x2 = mapTileX;
+                mapAttr.y2 = mapTileY;
+                
+
+                
+                [storageArr addObject:mapAttr];
+                
+            }
+            
+        }
+        if (mapUnitGroupType[mapTileX][mapTileY-1] == intGroupType && intType < 4 ) {
+            
+            NSLog(@"NO.3");
+
+            
+            if ([self checkIsInStorage:mapSpriteTag[mapTileX][mapTileY-1]] == YES) {
+                
+                isNeedGroup = YES;
+                [self findItemsInStorageArr:mapTileX withY:mapTileY-1];    
+                
+                NSLog(@"noaroundSpriteTag~~~3");
+            }else {
+                
+                NSLog(@"aroundSpriteTag~~~3");
+                [aroundSpriteTag addObject:[NSString stringWithFormat:@"%d",mapSpriteTag[mapTileX][mapTileY-1]]];
+                NSLog(@"aroundSpriteTag count:%d",[aroundSpriteTag count]);
+                MapTileAttribute *mapAttr = [MapTileAttribute node];
+                
+                mapAttr.x1 = mapTileX ;
+                mapAttr.y1 = mapTileY - 1;
+                mapAttr.x2 = mapTileX;
+                mapAttr.y2 = mapTileY;
+                
+                //               NSLog(@"%d %d %d %d",mapAttr.x1,mapAttr.y1,mapAttr.x2,mapAttr.y2);
+                
+                [storageArr addObject:mapAttr];
+                
+            }
+            
+        }
+        if (mapUnitGroupType[mapTileX][mapTileY + 1] == intGroupType && intType < 4 ) {
+            
+            NSLog(@"NO.4");
+            
+            
+            if ([self checkIsInStorage:mapSpriteTag[mapTileX][mapTileY+1]] == YES) {
+                
+                isNeedGroup = YES;
+                
+                [self findItemsInStorageArr:mapTileX withY:mapTileY+1];
+                
+                NSLog(@"noaroundSpriteTag~~~4");
+                
+            }else {
+                
+                NSLog(@"aroundSpriteTag~~~4");
+                [aroundSpriteTag addObject:[NSString stringWithFormat:@"%d",mapSpriteTag[mapTileX][mapTileY + 1]]];
+                NSLog(@"aroundSpriteTag count:%d",[aroundSpriteTag count]);
+                MapTileAttribute *mapAttr = [MapTileAttribute node];
+                
+                mapAttr.x1 = mapTileX;
+                mapAttr.y1 = mapTileY + 1;
+                mapAttr.x2 = mapTileX;
+                mapAttr.y2 = mapTileY;
+                
+                //               NSLog(@"%d %d %d %d",mapAttr.x1,mapAttr.y1,mapAttr.x2,mapAttr.y2);
+                
+                [storageArr addObject:mapAttr];
+                
+            }
+            
+        }
+        if (isNeedGroup || [aroundSpriteTag count] > 1) {
             int newUnitID = mapUnitGroupType[mapTileX][mapTileY];      //    获取groupType数值
             NSString *newUnitIDStr = [NSString stringWithFormat:@"%d",newUnitID];
-            NSLog(@"%d~~~~~~~~~~~~\n",newUnitID);
-            [refreshUnit removeFromParentAndCleanup:YES];         //   移除原来的精灵
+            
+            
+            for (int i =0; i<[aroundSpriteTag count]; i++) {
+                    [refreshBatchNode removeChildByTag:[[aroundSpriteTag objectAtIndex:i] intValue] cleanup:YES];
+            }
+            
+            
+            for (int i=0; i<[clearArr count]; i++) {
+                int ctag = [[clearArr objectAtIndex:i] intValue];
+                
+                NSLog(@"%d~~~~~~~~~~~~\n",ctag);
+                
+                [refreshBatchNode removeChildByTag:ctag cleanup:YES];
+            }
+            
+            [refreshBatchNode removeChildByTag:mapSpriteTag[mapTileX][mapTileY] cleanup:YES];       //   移除原来的精灵
             
             
             refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",newUnitID]];
+            
+            [aroundSpriteTag release];    
+            [clearArr release];            
+            aroundSpriteTag = [[CCArray array] retain];
+            clearArr = [[CCArray array] retain];
             
             //  给新精灵type数组赋值 以同步精灵属性
             
@@ -193,12 +398,12 @@
             
             mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
             
-            [refreshBatchNode addChild:refreshUnit z:2];
+            [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[mapTileX][mapTileY]];
+            
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
             refreshUnit.tag = mapTileX*10+mapTileY;
-            
+
         }else{
-        
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
             refreshUnit.tag = mapTileX*10+mapTileY;
             
@@ -207,9 +412,7 @@
 //       刷新单位
         
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];
-        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile2.png"];
         [refreshBatchNode addChild:refreshUnit z:2];
-        [refreshBatchNode addChild:mapbg z:1];
         
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
@@ -220,15 +423,18 @@
         }else {
             intGroupType = 0;
         }
+    isNeedGroup = NO;
     }
 }
 
 -(void)dealloc{
 
     [super dealloc];
-    
-    [mapbg release];
+    [storageArr release];
 }
+
+
+
 
 
 @end

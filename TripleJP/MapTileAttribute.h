@@ -9,13 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@interface MapTileAttribute : CCNode {
-    
-    CGRect rect;
-    CCSprite *tileBg;
-    
-}
-@property (nonatomic, assign) CGRect rect;
-@property (nonatomic, retain) CCSprite *tileBg;
+@interface MapTileAttribute : CCNode 
+
+@property (nonatomic, assign) int x1;
+@property (nonatomic, assign) int y1;
+@property (nonatomic, assign) int x2;
+@property (nonatomic, assign) int y2;
 
 @end

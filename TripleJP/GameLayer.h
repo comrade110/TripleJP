@@ -10,6 +10,15 @@
 #import "cocos2d.h"
 #import "ObjClass.h"
 
+struct StoCoor {
+    int x1;
+    int y1;
+    int x2;
+    int y2;
+};
+typedef struct StoCoor StoCoor;
+
+
 @interface GameLayer : CCLayer {
     
     CCSprite *playBg;
@@ -33,10 +42,19 @@
     
     int mapSpriteTag[6][6];
     
-    int mapUnitGroupStorage[6][6];
+    CCArray *storageArr;
+    
+    CCArray *clearArr;                         // 判断需要合并后待删除的单位
+    
+    CCArray *aroundSpriteTag;                  // 判断周围未存为组的
+    
     
     
     NSMutableArray *rowItems;
+    
+    NSValue *miValue;
+    
+    BOOL isNeedGroup;                          // 是否合并
     
     CCSprite *mapbg;
 }

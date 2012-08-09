@@ -235,7 +235,7 @@
         mapUnitGroupType[mapTileX][mapTileY] = intGroupType;
         mapUnitType[mapTileX][mapTileY] = intType;
         mapSpriteTag[mapTileX][mapTileY] = mapTileX*10 + mapTileY;
-        
+        refreshUnit.tag = mapTileX*10+mapTileY;
         
         NSLog(@"mapUnitGroupType[mapTileX - 1][mapTileY]:%d",mapUnitGroupType[mapTileX - 1][mapTileY]);
 

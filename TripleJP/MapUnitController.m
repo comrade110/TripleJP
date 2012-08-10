@@ -18,4 +18,43 @@
 
 }
 
+
+-(void)check:(int)x sety:(int)y
+{
+ //   mapUnitType[x][y].isCanClear=YES;
+    //   mapUnitType[x][y].isCheck = YES;
+    
+    if (x-1<0) {
+        x=0;
+    }
+    if (y-1<0) {
+        y=0;
+    }
+    if (x+1>0) {
+        x=5;
+    }
+    if (y+1<0) {
+        y=5;
+    }
+    if(mapUnitGroupType[x-1][y]==mapUnitGroupType[x][y] && !mapSpriteIschecked[x-1][y]==1)
+    {
+        //...各种判断
+        [self check:x-1 sety:y];
+    }
+    if(mapUnitGroupType[x+1][y] == mapUnitGroupType[x][y] && !mapSpriteIschecked[x-1][y]==1)
+    {
+        [self check:x sety:y-1];
+    }
+    if(mapUnitGroupType[x][y-1] == mapUnitGroupType[x][y] && !mapSpriteIschecked[x-1][y]==1)
+    {
+        [self check:x+1 sety:y];
+    }
+    if(mapUnitGroupType[x][y+1] == mapUnitGroupType[x][y] && !mapSpriteIschecked[x-1][y]==1)
+    {
+        [self check:x sety:y+1];
+    }
+    
+}
+
+
 @end

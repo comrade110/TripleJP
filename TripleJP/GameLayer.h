@@ -33,6 +33,9 @@ typedef struct StoCoor StoCoor;
     int intGroupType;                                //  初始化的精灵的groupType
     int intType;                                //  初始化的精灵的type
     
+//    BOOL singleGroup;                             //  周围单个的精灵 是否需要与当前精灵一起存为数组  当当前精灵被合并后  不存数组  
+    
+    
     int mapTileX;
     int mapTileY;
     
@@ -46,7 +49,7 @@ typedef struct StoCoor StoCoor;
     
     CCArray *clearArr;                         // 判断需要合并后待删除的单位
     
-    CCArray *aroundSpriteTag;                  // 判断周围未存为组的
+    CCArray *aroundSpriteTag;                  // 判断周围未存为组数组
     
     
     

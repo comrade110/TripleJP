@@ -11,13 +11,15 @@
 #import "ReflashUnit.h"
 
 @interface MapUnitController : CCNode {
+
     
-    int mapTileX;
-    int mapTileY;
+    int mapUnitGroupType[6][6];
     
     int mapUnitType[6][6];
-    int mapBGType[6][6];
-    int mapIsChecked[6][6];
+    
+    int mapSpriteTag[6][6];
+    
+    int mapSpriteIschecked[6][6];
     
 }
 

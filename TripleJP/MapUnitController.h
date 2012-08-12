@@ -21,6 +21,8 @@
     
     int mapSpriteIschecked[6][6];
     
+    CCArray *delArr;
+    
 }
 
 @end

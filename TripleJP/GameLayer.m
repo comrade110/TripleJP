@@ -240,7 +240,8 @@
             mapUnitGroupType[tempMTA.x2][tempMTA.y2] = -1;
             mapUnitType[tempMTA.x1][tempMTA.y1] = -1;
             mapUnitType[tempMTA.x2][tempMTA.y2] = -1;
-            
+            mapSpriteTag[tempMTA.x1][tempMTA.y1] = -1;
+            mapSpriteTag[tempMTA.x2][tempMTA.y2] = -1;
             [storageArr fastRemoveObjectAtIndex:i];
             
         }
@@ -417,7 +418,7 @@
                     
                     mapUnitGroupType[temptag/10][temptag%10] = -1;
                     mapUnitType[temptag/10][temptag%10] = -1;
-                    
+                    mapSpriteTag[mapTileX][mapTileY] = -1;
                 }
                     
             }

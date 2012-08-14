@@ -39,7 +39,11 @@ typedef struct StoCoor StoCoor;
     int mapTileX;
     int mapTileY;
     
-    int mapUnitGroupType[6][6];
+    int mapUGT[6][6];                           // mapUnitGroupType
+    
+    int delGroup[6][6];                         // 存储待删除单位
+    
+    int delCount;                               // 删除计数
     
     int mapUnitType[6][6];
     

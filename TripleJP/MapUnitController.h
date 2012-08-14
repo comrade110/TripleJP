@@ -13,7 +13,9 @@
 @interface MapUnitController : CCNode {
 
     
-    int mapUnitGroupType[6][6];
+    int mapUGT[6][6];
+    
+    int delGroup[6][6];
     
     int mapUnitType[6][6];
     

@@ -39,6 +39,9 @@ typedef struct StoCoor StoCoor;
     int mapTileX;
     int mapTileY;
     
+    int myx;
+    int myy;
+    
     int mapUGT[6][6];                           // mapUnitGroupType
     
     int delGroup[6][6];                         // 存储待删除单位
@@ -62,6 +65,8 @@ typedef struct StoCoor StoCoor;
     NSValue *miValue;
     
     BOOL isNeedGroup;                          // 是否合并
+    
+    BOOL isIncrease;                            // 计数是否增加
     
     CCSprite *mapbg;
 }

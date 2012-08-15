@@ -100,7 +100,7 @@
         }
 
 
-
+    isIncrease = NO;
     }
     return self;
 }
@@ -130,7 +130,7 @@
 
 //  判断
 
--(BOOL)checkForUpdate{
+-(int)checkForUpdate: (int)x setY:(int)y withGroupType:(int)groupType{
     
     //  判断横向的情况    
     
@@ -140,8 +140,9 @@
             //           判断这     X   |   X |  XX | XX
             //           种情况     XX  |  XX |  X  |  X    纵向和横向一样 不用再次判断
             
-            if (mapUGT[i][j] == mapUGT[i][j+1] && mapUGT[i][j]!=mapUGT[i][j+2] && mapUGT[i][j] !=-1) {
+            if (mapUGT[i][j] == mapUGT[i][j+1]  && mapUGT[i][j] !=-1) {
                 
+                NSLog(@"%d-%d-%d\n",mapUGT[i][j],mapUGT[i][j+1],mapUGT[i][j+2]);  
                 NSLog(@"jia的一般");
                 if (i-1>=0) {
                     if (mapUGT[i-1][j] == mapUGT[i][j]) {
@@ -175,6 +176,8 @@
                 
                 NSLog(@"举哀的一般");
                 
+                
+                NSLog(@"hah%d-%d-%d\n",mapUGT[i][j],mapUGT[i][j+1],mapUGT[i][j+2]);  
                 delGroup[i][j] = i*10+j;
                 delGroup[i][j+1] = i*10+j+1;
                 delGroup[i][j+2] = i*10+j+2;
@@ -203,8 +206,10 @@
         for (int j = 0 ; j<6-2; j++) {
             
             
+            
             if (mapUGT[j][i] == mapUGT[j+1][i] && mapUGT[j][i]==mapUGT[j+2][i] && mapUGT[j][i] !=-1) {
                 
+                NSLog(@"派头的一般");
                 delGroup[j][i] = j*10+i;
                 delGroup[j+1][i] = (j+1)*10+i;
                 delGroup[j+2][i] = (j+2)*10+i;
@@ -229,15 +234,33 @@
 
     for (int i =0; i<6; i++) {
         for (int j = 0 ; j<6; j++) {
-            if(delGroup[i][j] !=-1){
-                delCount++;
-                return YES;
+            if(delGroup[i][j] !=-1 && mapUGT[i][j]==groupType){
                 
+                delCount++;
+                isIncrease = YES;
+                
+            }else {
+                isIncrease = NO;
             }
+        }
     }
-}
     
-    return NO;
+    NSString *xystr = [NSString stringWithFormat:@"%d",mapUGT[x][y]];
+    if (delCount == 3 && isIncrease ) {
+        NSLog(@"kengdie");
+        groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupto"];
+        [self checkForUpdate:myx setY:myy withGroupType:groupType];
+        
+    }else if (delCount > 3 && isIncrease ) {
+        
+        groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupsuper"];
+        [self checkForUpdate:myx setY:myy withGroupType:groupType];
+    }else {
+        return 0;
+    }
+
+        
+    return groupType;
 }
 
 
@@ -281,26 +304,33 @@
     
     NSString *nowUnitID = [[ReflashUnit node] getUnitID];
     
-    int myx = 5- mapTileX;
+    myx = 5- mapTileY;
+    
+    myy = mapTileX;
     
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
-        if (mapUGT[myx][mapTileY]>0) {
+        if (mapUGT[myx][myy]>0) {
             return;
         }
 
 //    把精灵属性存入各自数组中
         
-        mapUGT[myx][mapTileY] = intGroupType;
-        mapUnitType[myx][mapTileY] = intType;
-        mapSpriteTag[myx][mapTileY] = myx*10 + mapTileY;
-        refreshUnit.tag = myx*10+mapTileY;
+        mapUGT[myx][myy] = intGroupType;
+        mapUnitType[myx][myy] = intType;
+        mapSpriteTag[myx][myy] = myx*10 + myy;
+        refreshUnit.tag = myx*10+myy;
         
-        if ([self checkForUpdate]) {
+        
+              //    获取groupType数值
+        int gt = [self checkForUpdate:myx setY:myy withGroupType:mapUGT[myx][myy]];
+        
+        if (gt >mapUGT[myx][myy] && mapUnitType[myx][myy]<4) {
             
-            int newUnitID = mapUGT[myx][mapTileY];      //    获取groupType数值
+            NSLog(@"%dHOHOHO",gt);
             
-            NSString *newUnitIDStr = [NSString stringWithFormat:@"%d",newUnitID];
+//            int newUnitID = mapUGT[myx][myy];
+//            NSString *newUnitIDStr = [NSString stringWithFormat:@"%d",newUnitID];
             
             for (int i =0; i<6; i++) {
                 for (int j = 0 ; j<6; j++) {
@@ -308,41 +338,43 @@
                         NSLog(@"%d",delGroup[i][j]);
                         [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
                         mapUGT[i][j] = -1;
+                        
+                        delGroup[i][j] =-1;
                     }
                 }
             }
             
 //            
                   //   移除原来的精灵
+            delCount = 0;          
             
             
-            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:newUnitIDStr withSubKey:@"groupto"];
+//            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",gt] withSubKey:@"groupto"];
             
-            mapUGT[myx][mapTileY] = intGroupType;          //  新精灵grouptype为原来的groupto
+            mapUGT[myx][myy] = gt;          //  新精灵grouptype为原来的groupto
             
-            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",newUnitID]];
+            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",gt]];
             
             
             //  给新精灵type数组赋值 以同步精灵属性
             
 
-            mapUnitType[myx][mapTileY] =[[UnitAttributes node] getUnitAttrWithKey:newUnitIDStr withSubKey:@"type"];
+            mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",gt] withSubKey:@"type"];
             
-            [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][mapTileY]];
+            [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][myy]];
             
             
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
             
-            for (int i =0; i<6; i++) {
-                for (int j = 0 ; j<6; j++) {
-                    delGroup[i][j] =-1;
-                }
-            }
 
 
-        }else{
+
+        }else if(gt == mapUGT[myx][myy]){
+            
+             NSLog(@"beijua");
+            
             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
-            refreshUnit.tag = myx*10+mapTileY;
+            refreshUnit.tag = myx*10+myy;
             
             
         }

@@ -22,6 +22,7 @@
         
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
         
+        intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
         intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
         intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
      
@@ -90,6 +91,11 @@
         
         for (int i =0; i<6; i++) {
             for (int j = 0 ; j<6; j++) {
+                mapUID[i][j] = -1;
+            }
+        }        
+        for (int i =0; i<6; i++) {
+            for (int j = 0 ; j<6; j++) {
                 mapUGT[i][j] = -1;
             }
         }
@@ -100,7 +106,6 @@
         }
 
 
-    isIncrease = NO;
     }
     return self;
 }
@@ -128,11 +133,14 @@
 // map CGRect
 
 
-//  判断
+//  判断单位合并
 
--(int)checkForUpdate: (int)x setY:(int)y withGroupType:(int)groupType{
+-(int)checkForUpdate: (int)x setY:(int)y withID:(int)uid{
     
     //  判断横向的情况    
+    
+    NSString *xystr = [NSString stringWithFormat:@"%d",mapUID[x][y]]; 
+    int groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupto"];
     
     for (int i =0; i<6; i++) {
         for (int j = 0 ; j<6-2; j++) {
@@ -142,8 +150,7 @@
             
             if (mapUGT[i][j] == mapUGT[i][j+1]  && mapUGT[i][j] !=-1) {
                 
-                NSLog(@"%d-%d-%d\n",mapUGT[i][j],mapUGT[i][j+1],mapUGT[i][j+2]);  
-                NSLog(@"jia的一般");
+
                 if (i-1>=0) {
                     if (mapUGT[i-1][j] == mapUGT[i][j]) {
                         delGroup[i-1][j] = (i-1)*10+j;
@@ -174,10 +181,7 @@
             
             if (mapUGT[i][j] == mapUGT[i][j+1] && mapUGT[i][j]==mapUGT[i][j+2] && mapUGT[i][j] !=-1) {
                 
-                NSLog(@"举哀的一般");
-                
-                
-                NSLog(@"hah%d-%d-%d\n",mapUGT[i][j],mapUGT[i][j+1],mapUGT[i][j+2]);  
+
                 delGroup[i][j] = i*10+j;
                 delGroup[i][j+1] = i*10+j+1;
                 delGroup[i][j+2] = i*10+j+2;
@@ -209,7 +213,7 @@
             
             if (mapUGT[j][i] == mapUGT[j+1][i] && mapUGT[j][i]==mapUGT[j+2][i] && mapUGT[j][i] !=-1) {
                 
-                NSLog(@"派头的一般");
+
                 delGroup[j][i] = j*10+i;
                 delGroup[j+1][i] = (j+1)*10+i;
                 delGroup[j+2][i] = (j+2)*10+i;
@@ -234,35 +238,96 @@
 
     for (int i =0; i<6; i++) {
         for (int j = 0 ; j<6; j++) {
+            
             if(delGroup[i][j] !=-1 && mapUGT[i][j]==groupType){
                 
                 delCount++;
-                isIncrease = YES;
                 
-            }else {
-                isIncrease = NO;
             }
         }
     }
     
-    NSString *xystr = [NSString stringWithFormat:@"%d",mapUGT[x][y]];
-    if (delCount == 3 && isIncrease ) {
-        NSLog(@"kengdie");
-        groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupto"];
-        [self checkForUpdate:myx setY:myy withGroupType:groupType];
+    
+    NSLog(@"aaaa%d\n",delCount);
+    if (delCount == 3) {
         
-    }else if (delCount > 3 && isIncrease ) {
+//  初级合并后判断更高级 删除计数归0 重设单位ID和组合ID
+        delCount = 0;
+        mapUID[x][y] = groupType;
+        mapUGT[x][y] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",groupType] withSubKey:@"groupto"];
+         NSLog(@"dddd%d\n",mapUID[x][y]);
+        [self checkForUpdate:x setY:y withID:mapUID[myx][myy]];
         
-        groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupsuper"];
-        [self checkForUpdate:myx setY:myy withGroupType:groupType];
-    }else {
-        return 0;
+    }else if (delCount > 3 ) {
+        
+        int groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupsuper"];
+        delCount = 0;
+        
+        mapUID[x][y] = groupType;
+        mapUGT[x][y] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",groupType]  withSubKey:@"groupto"];
+        [self checkForUpdate:x setY:y withID:groupType];
     }
-
-        
-    return groupType;
+    
+    return mapUID[x][y];
 }
 
+
+//   刷新背景
+
+-(void)pavingHanlder{
+
+    for (int i =0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            if (mapUnitType[i][j] != 1) {
+                if (j-1>0) {                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }                    
+                }else{
+                    isLCorner = YES;
+                    isCorner = YES;
+                    
+                }
+                if (j+1<6) {
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    
+                }else {
+                    isRCorner = YES;
+                    isCorner = YES;        
+                }
+                if (i-1>0) {
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                        isCorner = YES;
+                    }
+                    
+                }else {
+                    isTCorner = YES;
+                }   
+                if (i+1<6) {
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                
+                }else {
+                    isBCorner = YES;
+                    isCorner = YES;
+                }
+                
+                if (isCorner) {
+                    if (isLCorner && isTCorner) {
+                        
+
+                    }
+                }
+                    
+            }
+        }
+    }
+    
+}
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
@@ -316,6 +381,7 @@
 
 //    把精灵属性存入各自数组中
         
+        mapUID[myx][myy] = intID;
         mapUGT[myx][myy] = intGroupType;
         mapUnitType[myx][myy] = intType;
         mapSpriteTag[myx][myy] = myx*10 + myy;
@@ -323,20 +389,17 @@
         
         
               //    获取groupType数值
-        int gt = [self checkForUpdate:myx setY:myy withGroupType:mapUGT[myx][myy]];
+        int nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
         
-        if (gt >mapUGT[myx][myy] && mapUnitType[myx][myy]<4) {
-            
-            NSLog(@"%dHOHOHO",gt);
-            
-//            int newUnitID = mapUGT[myx][myy];
-//            NSString *newUnitIDStr = [NSString stringWithFormat:@"%d",newUnitID];
+        if (nowID > intID && mapUnitType[myx][myy]<4) {
+            delCount = 0; 
             
             for (int i =0; i<6; i++) {
                 for (int j = 0 ; j<6; j++) {
                     if(delGroup[i][j] !=-1){
                         NSLog(@"%d",delGroup[i][j]);
                         [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                        mapUID[i][j] = -1;
                         mapUGT[i][j] = -1;
                         
                         delGroup[i][j] =-1;
@@ -344,22 +407,17 @@
                 }
             }
             
-//            
-                  //   移除原来的精灵
-            delCount = 0;          
+            mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
+            mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+
             
-            
-//            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",gt] withSubKey:@"groupto"];
-            
-            mapUGT[myx][myy] = gt;          //  新精灵grouptype为原来的groupto
-            
-            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",gt]];
+            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",nowID]];
             
             
             //  给新精灵type数组赋值 以同步精灵属性
             
 
-            mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",gt] withSubKey:@"type"];
+            mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
             
             [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][myy]];
             
@@ -369,7 +427,7 @@
 
 
 
-        }else if(gt == mapUGT[myx][myy]){
+        }else if(nowID == intID){
             
              NSLog(@"beijua");
             
@@ -387,6 +445,7 @@
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
         intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
+        intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
         if (intType < 4) {
             
             intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];

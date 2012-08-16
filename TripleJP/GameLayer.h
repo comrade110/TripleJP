@@ -30,6 +30,7 @@ typedef struct StoCoor StoCoor;
     CGRect mapRect;
     CGRect tileRect;                            // 1/36每个 rect
     
+    int intID;                                   //  精灵的ID
     int intGroupType;                                //  初始化的精灵的groupType
     int intType;                                //  初始化的精灵的type
     
@@ -41,6 +42,8 @@ typedef struct StoCoor StoCoor;
     
     int myx;
     int myy;
+    
+    int mapUID[6][6];                           // mapUnitID
     
     int mapUGT[6][6];                           // mapUnitGroupType
     
@@ -66,7 +69,23 @@ typedef struct StoCoor StoCoor;
     
     BOOL isNeedGroup;                          // 是否合并
     
-    BOOL isIncrease;                            // 计数是否增加
+    BOOL isLeftEmpty;
+    
+    BOOL isRightEmpty;
+    
+    BOOL isTopEmpty;
+    
+    BOOL isBottomEmpty;
+    
+    BOOL isCorner;
+    
+    BOOL isLCorner;
+    
+    BOOL isRCorner;
+    
+    BOOL isTCorner;
+    
+    BOOL isBCorner;
     
     CCSprite *mapbg;
 }

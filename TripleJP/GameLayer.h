@@ -77,6 +77,14 @@ typedef struct StoCoor StoCoor;
     
     BOOL isBottomEmpty;
     
+    BOOL isLTEmpty;
+    
+    BOOL isRTEmpty;
+    
+    BOOL isLBEmpty;
+    
+    BOOL isRBEmpty;
+    
     BOOL isCorner;
     
     BOOL isLCorner;
@@ -88,6 +96,16 @@ typedef struct StoCoor StoCoor;
     BOOL isBCorner;
     
     CCSprite *mapbg;
+    CCSprite *mapLTbg;
+    CCSprite *mapRTbg;
+    CCSprite *mapLBbg;
+    CCSprite *mapRBbg;
+    
+    int mapbgTag[6][6];
+    int mapLTbgTag[6][6];
+    int mapRTbgTag[6][6];
+    int mapLBbgTag[6][6];
+    int mapRBbgTag[6][6];
 }
 
 

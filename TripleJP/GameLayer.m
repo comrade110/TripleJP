@@ -43,11 +43,7 @@
             refreshBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"texturePack.png"];
         }
         
-        CCSprite *tile3 = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
-        CCSprite *tile4 = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
-        CCSprite *tile5 = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
-        CCSprite *tile8 = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
-        CCSprite *tile9 = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
+
         CCSprite *unitStorage = [CCSprite spriteWithSpriteFrameName:@"main_bar.png"];
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]]; 
                 
@@ -55,11 +51,7 @@
         playBg = [CCSprite spriteWithSpriteFrameName:@"bg_main.png"];
         
         [bgTiledBatchNode addChild:playBg z:0];
-        [refreshBatchNode addChild:tile3 z:1];
-        [refreshBatchNode addChild:tile4 z:1];
-        [refreshBatchNode addChild:tile5 z:1];
-        [refreshBatchNode addChild:tile8 z:1];
-        [refreshBatchNode addChild:tile9 z:1];
+
         [bgTiledBatchNode addChild:unitStorage z:1];
         [refreshBatchNode addChild:refreshUnit z:2 tag:0];
         
@@ -69,11 +61,7 @@
         screenSize = [[CCDirector sharedDirector] winSize];    
         
         [playBg setPosition:CGPointMake(screenSize.width*0.5f, screenSize.height*0.5f)]; 
-        [tile3 setPosition:CGPointMake(tile3.anchorPointInPoints.x + 10, 320)]; 
-        [tile4 setPosition:CGPointMake(75 + 10, 320)]; 
-        [tile5 setPosition:CGPointMake(125 + 10, 320)]; 
-        [tile8 setPosition:CGPointMake(75 + 10, 270)];  
-        [tile9 setPosition:CGPointMake(125 + 10, 270)]; 
+ 
         [unitStorage setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
         
@@ -275,58 +263,505 @@
 //   刷新背景
 
 -(void)pavingHanlder{
+    
 
     for (int i =0; i<6; i++) {
         for (int j=0; j<6; j++) {
             if (mapUnitType[i][j] != 1) {
-                if (j-1>0) {                    
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }                    
-                }else{
+                
+                //  左上角
+                if (i==0 && j==0) {
                     isLCorner = YES;
-                    isCorner = YES;
+                    isTCorner = YES;
                     
-                }
-                if (j+1<6) {
                     if (mapUnitType[i][j+1] == 1) {
                         isRightEmpty = NO;
                     }
-                    
-                }else {
-                    isRCorner = YES;
-                    isCorner = YES;        
-                }
-                if (i-1>0) {
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                        isCorner = YES;
-                    }
-                    
-                }else {
-                    isTCorner = YES;
-                }   
-                if (i+1<6) {
                     if (mapUnitType[i+1][j] == 1) {
                         isBottomEmpty = NO;
                     }
-                
-                }else {
-                    isBCorner = YES;
-                    isCorner = YES;
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
                 }
                 
-                if (isCorner) {
-                    if (isLCorner && isTCorner) {
-                        
-
+                //  右上角
+                if (i==0 && j==5) {
+                    isRCorner = YES;
+                    isTCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
                     }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                }
+                //  右下角
+                if (i==5 && j==5) {
+                    isRCorner = YES;
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                }
+                //  左下角
+                if (i==5 && j==0) {
+                    isLCorner = YES;
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                }
+                
+                // 上边
+                if (i==0 && j> 0 && j<5) {
+                    
+                    isTCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    
+                }
+                
+                // 左边
+                if (i >0 && i<5 && j==0) {
+                    
+                    
+                    isLCorner = YES;
+                    
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    
+                }  
+                // 右边
+                if (i >0 && i<5 && j==5) {
+                    
+                    
+                    isRCorner = YES;
+                    
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    
+                }    
+                // 下边
+                if (i == 5 && j>0 && j<5) {
+                    
+                    
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    
+                }
+                
+                //中间
+                if (i>0 && i<5 && j>0 && j<5) {
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                }
+
+                
+                //  口
+                if (!isLeftEmpty && !isTopEmpty && !isRightEmpty && !isBottomEmpty) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    
+                }
+                //  二|
+                if (isLeftEmpty && !isTopEmpty && !isRightEmpty && !isBottomEmpty) {
+                    
+                    if (isLCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }
+                }   
+                //  C
+                if (!isLeftEmpty && !isTopEmpty && isRightEmpty && !isBottomEmpty) {
+                    
+                    if (isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }
+                }
+                //  门
+                if (!isLeftEmpty && !isTopEmpty && !isRightEmpty && isBottomEmpty) {
+                    
+                    if (isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                    }
+                }
+                //  |_|
+                if (!isLeftEmpty && isTopEmpty && !isRightEmpty && !isBottomEmpty) {
+                    
+                    if (isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }
+                }
+                //  二
+                if (isLeftEmpty && !isTopEmpty && isRightEmpty && !isBottomEmpty) {
+                    
+                    if (isLCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }else if(isRCorner){
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile10.png"];
+                    }
+                }
+                //  | |
+                if (!isLeftEmpty && isTopEmpty && !isRightEmpty && isBottomEmpty) {
+                    
+                    if (isTCorner) {
+                         mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                    }else if (isBCorner) {
+                         mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }else {                        
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
+                        
+                    }
+                }
+                //  |￣
+                if (!isLeftEmpty && !isTopEmpty && isRightEmpty && isBottomEmpty) {
+                    if(isRCorner && !isBCorner){
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                    }else if (!isRCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }else if (isRCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile11.png"];
+                        if (!isRBEmpty) {
+                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRBbg.rotation = 180;
+                        }
+                    }
+                }
+                // ￣|
+                
+                if (isLeftEmpty && !isTopEmpty && !isRightEmpty && isBottomEmpty) {
+                    if (isLCorner && !isBottomEmpty) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                    }if (isLCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }if (!isLCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile12.png"];
+                        if (!isLBEmpty) {
+                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLBbg.rotation = -90;
+                        }
+                    }
+                }
+                //  __|
+                
+                if (isLeftEmpty && isTopEmpty && !isRightEmpty && !isBottomEmpty) {
+                    if (isLCorner && !isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }else if ( isLCorner && isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else if (!isLCorner && isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile13.png"];
+                        if (!isLTEmpty) {
+                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            
+                        }
+                    }
+                }
+                //  |__
+                if (!isLeftEmpty && isTopEmpty && isRightEmpty && !isBottomEmpty) {
+                    if (isTCorner && !isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }else if (isTCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile3.png"];
+                    }else if (!isTCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile13.png"];
+                        if (!isRTEmpty) {
+                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRTbg.rotation = 90;
+                        }
+                    }
+                }
+                
+                //  左|
+                if (!isLeftEmpty && isTopEmpty && isRightEmpty && isBottomEmpty) {
+                    if (isTCorner&& !isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile11.png"];
+                        if (!isRBEmpty) {
+                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRBbg.rotation = 180;
+                        }
+                        
+                    }else if (isTCorner && isRCorner) {
+                        
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                        
+                    }else if (!isTCorner && !isBCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
+                        
+                    }else if (isRCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }
+                    else if (!isRCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile13.png"];
+                        if (!isRTEmpty) {
+                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRTbg.rotation = 90;
+                        }
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile15.png"];
+                        if (!isRTEmpty) {
+                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                        }
+                        if (!isRBEmpty) {
+                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRBbg.rotation = 180;
+                        }
+                    }
+                }
+                //  右|
+                if (isLeftEmpty && isTopEmpty && !isRightEmpty && isBottomEmpty) {
+                    if (isTCorner && isLCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile8.png"];
+                    }else if (isTCorner && !isLCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile12.png"];
+                        if (!isLBEmpty) {
+                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLBbg.rotation = -90;
+                        }
+                    }else if (isLCorner && !isTCorner && !isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile9.png"];
+                    }else if (isLCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile7.png"];
+                    }else if (!isLCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile14.png"];
+                        if (!isLTEmpty) {
+                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                        }
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile16.png"];
+                        if (!isLBEmpty) {
+                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLBbg.rotation = -90;
+                        }
+                        if (!isLTEmpty) {
+                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                        }
+                    }
+                }
+                //上 ￣
+                if (isLeftEmpty && !isTopEmpty && isRightEmpty && isBottomEmpty) {
+                    if (isLCorner && !isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile11.png"];
+                        if (!isRBEmpty) {
+                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRBbg.rotation = 180;
+                        }
+                    }else if (isLCorner && isBCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }else if (!isLCorner && isBCorner && !isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile10.png"];
+                    }else if (isBCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }else if (!isBCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile12.png"];
+                        if (!isLBEmpty) {
+                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLBbg.rotation = -90;
+                        }
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile17.png"];
+                        if (!isRBEmpty) {
+                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRBbg.rotation = 180;
+                        }
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile12.png"];
+                        if (!isLBEmpty) {
+                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLBbg.rotation = -90;
+                        }
+                    }
+                }
+                //下 __
+                if (isLeftEmpty && isTopEmpty && isRightEmpty && !isBottomEmpty) {
+                    if (isLCorner && !isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile13.png"];
+                        if (!isRTEmpty) {
+                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRTbg.rotation = 90;
+                        }
+                    }else if (isLCorner && isTCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile5.png"];
+                    }else if (!isLCorner && isTCorner && !isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile10.png"];
+                    }else if (isTCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile6.png"];
+                    }else if (!isTCorner && isRCorner) {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile14.png"];
+                        if (!isLTEmpty) {
+                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                        }
+                    }else {
+                        mapbg = [CCSprite spriteWithSpriteFrameName:@"tile18.png"];
+                        if (!isLTEmpty) {
+                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                        }
+                        if (!isRTEmpty) {
+                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                            mapRTbg.rotation = 90;
+                        }
+                    }
+                }
+                
+            if (isLeftEmpty && isTopEmpty && isRightEmpty && isBottomEmpty) {
+                if (!isLTEmpty) {
+                    mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                }
+                if (!isRTEmpty) {
+                    mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                    mapRTbg.rotation = 90;
+                }
+                if (!isLBEmpty) {
+                    mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                    mapLBbg.rotation = -90;
+                }
+                if (!isRBEmpty) {
+                    mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
+                    mapRBbg.rotation = 180;
+                }
+                if (isLTEmpty && isRTEmpty && isLBEmpty && isRBEmpty) {
+                    mapbg = [CCSprite spriteWithSpriteFrameName:@"tile1.png"];
+                }
+            }
+        
+            [refreshBatchNode addChild:mapbg z:1 tag:mapbgTag[i][j]];
+            [mapLTbg setPosition:CGPointMake(50*(5-i)+10+25, 50*j+45+25)];
+                if (mapLTbg != nil) {
+                    
+                    [mapLTbg setPosition:CGPointMake(50*(5-i)+10, 50*j+45+50)];
+                    [refreshBatchNode addChild:mapLTbg z:1 tag:mapLTbgTag[i][j]];
+                }
+                if (mapRTbg != nil) {
+                    
+                    [mapRTbg setPosition:CGPointMake(50*(5-i)+10+50, 50*j+45+50)];
+                    [refreshBatchNode addChild:mapRTbg z:1 tag:mapRTbgTag[i][j]];
+                }
+                if (mapLBbg != nil) {
+                    
+                    [mapLBbg setPosition:CGPointMake(50*(5-i)+10, 50*j+45)];
+                    [refreshBatchNode addChild:mapLBbg z:1 tag:mapLBbgTag[i][j]];
+                }
+                if (mapRBbg != nil) {
+                    
+                    [mapRBbg setPosition:CGPointMake(50*(5-i)+10, 50*j+45+50)];
+                    [refreshBatchNode addChild:mapRBbg z:1 tag:mapRBbgTag[i][j]];
                 }
                     
             }
         }
     }
-    
+    	
 }
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
@@ -391,7 +826,7 @@
               //    获取groupType数值
         int nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
         
-        if (nowID > intID && mapUnitType[myx][myy]<4) {
+        if (nowID > intID && mapUnitType[myx][myy] == 1) {
             delCount = 0; 
             
             for (int i =0; i<6; i++) {
@@ -399,8 +834,10 @@
                     if(delGroup[i][j] !=-1){
                         NSLog(@"%d",delGroup[i][j]);
                         [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                        
                         mapUID[i][j] = -1;
                         mapUGT[i][j] = -1;
+                        mapUnitType[i][j] = -1;
                         
                         delGroup[i][j] =-1;
                     }
@@ -436,6 +873,9 @@
             
             
         }
+//      刷新地图 
+        
+        [self pavingHanlder];
         
 //       刷新单位
         
@@ -454,6 +894,13 @@
         }
     }
 }
+
+
+-(void)initMapBoolValue{
+
+
+}
+
 
 -(void)realloc{
 

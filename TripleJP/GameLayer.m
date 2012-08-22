@@ -27,9 +27,18 @@
                 mapUGT[i][j] = -1;
                 mapUnitType[i][j] = -1;
                 delGroup[i][j] =-1;
+                mapLTbgArr[i][j] = -1;
+                mapRTbgArr[i][j] = -1;
+                mapLBbgArr[i][j] = -1;
+                mapRBbgArr[i][j] = -1;
+                mapLTbgInitArr[i][j] = -1;
+                mapRTbgInitArr[i][j] = -1;
+                mapLBbgInitArr[i][j] = -1;
+                mapRBbgInitArr[i][j] = -1;
 
             }
         }
+        
         
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
         
@@ -99,7 +108,6 @@
             for (int j=0; j<6; j++) {
                 mapbgInitArr[i][j] = mapbgArr[i][j];
                 
-                NSLog(@"%d",mapbgInitArr[i][j]);
             }
         }
         
@@ -170,7 +178,7 @@
     int groupType = [[UnitAttributes node] getUnitAttrWithKey:xystr withSubKey:@"groupto"];
     
     for (int i =0; i<6; i++) {
-        for (int j = 0 ; j<6-2; j++) {
+        for (int j = 0 ; j<6-1; j++) {
             
             //           判断这     X   |   X |  XX | XX
             //           种情况     XX  |  XX |  X  |  X    纵向和横向一样 不用再次判断
@@ -206,7 +214,7 @@
             }
             
             
-            if (mapUGT[i][j] == mapUGT[i][j+1] && mapUGT[i][j]==mapUGT[i][j+2] && mapUGT[i][j] !=-1) {
+            if (j<4 && mapUGT[i][j] == mapUGT[i][j+1] && mapUGT[i][j]==mapUGT[i][j+2] && mapUGT[i][j] !=-1) {
                 
 
                 delGroup[i][j] = i*10+j;
@@ -310,7 +318,10 @@
             
             [self mapBgInit];
             mapSpriteTag[i][j]=i*10+j;
-            
+            mapLTbgArr[i][j] = -1;
+            mapRTbgArr[i][j] = -1;
+            mapLBbgArr[i][j] = -1;
+            mapRBbgArr[i][j] = -1;
             if (mapUnitType[i][j] != 1) {
                 if (i==0 && j==0) {
                     isLCorner = YES;
@@ -572,31 +583,27 @@
                     }else {
                         mapbgArr[i][j] = 11;
                         if (!isRBEmpty) {
-                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                            mapRBbg.rotation = 180;
+                            mapRBbgArr[i][j] = 20;
                         }
                     }
                 }
                 // ￣|
                 
                 if (isLeftEmpty && !isTopEmpty && !isRightEmpty && isBottomEmpty) {
-                    NSLog(@"%d+%d",i,j);
                     if (isLCorner && !isBottomEmpty) {
                         mapbgArr[i][j] = 8;
                     }else if (isLCorner && isBCorner) {
-                        NSLog(@"cena");
                         mapbgArr[i][j] = 3;
                     }else if (!isLCorner && isBCorner) {
                         mapbgArr[i][j] = 6;
                     }else {
                         mapbgArr[i][j] = 12;
                         if (!isLBEmpty) {
-                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                            mapLBbg.rotation = -90;
+                            mapLBbgArr[i][j] = 19;
                         }
                     }
                     
-                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+100 cleanup:YES];
+              //      [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+100 cleanup:YES];
                     
                 }
                 //  __|
@@ -611,7 +618,7 @@
                     }else {
                         mapbgArr[i][j] = 14;
                         if (!isLTEmpty) {
-                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
+                            mapLTbgArr[i][j] = 19;
                             
                         }
                     }
@@ -627,8 +634,7 @@
                     }else {
                         mapbgArr[i][j] = 13;
                         if (!isRTEmpty) {
-                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                            mapRTbg.rotation = 90;
+                            mapRTbgArr[i][j] = 20;
                         }
                     }
                 }
@@ -650,13 +656,13 @@
                         mapbgArr[i][j] = 9;
                     }else {
                         mapbgArr[i][j] = 15;
-                        if (!isRTEmpty) {
-                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                        }
-                        if (!isRBEmpty) {
-                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                            mapRBbg.rotation = 180;
-                        }
+
+                    }
+                    if (!isRTEmpty) {
+                        mapRTbgArr[i][j] = 20;
+                    }
+                    if (!isRBEmpty) {
+                        mapRBbgArr[i][j] = 20;
                     }
                 }
                 //  右|
@@ -678,13 +684,12 @@
                     }
                     else {
                         mapbgArr[i][j] = 16;
-                        if (!isLBEmpty) {
-                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                            mapLBbg.rotation = -90;
-                        }
-                        if (!isLTEmpty) {
-                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                        }
+                    }
+                    if (!isLBEmpty) {
+                        mapLBbgArr[i][j] = 19;
+                    }
+                    if (!isLTEmpty) {
+                        mapLTbgArr[i][j] = 19;
                     }
                 }
                 //上 ￣
@@ -704,15 +709,12 @@
                     }
                     else {
                         mapbgArr[i][j] = 17;
-                        NSLog(@"hello");
-                        if (!isRBEmpty) {
-                            mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                            mapRBbg.rotation = 180;
-                        }
-                        if (!isLBEmpty) {
-                            mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                            mapLBbg.rotation = -90;
-                        }
+                    }
+                    if (!isRBEmpty) {
+                        mapRBbgArr[i][j] = 20;
+                    }
+                    if (!isLBEmpty) {
+                        mapLBbgArr[i][j] = 19;
                     }
                 }
                 //下 __
@@ -734,43 +736,30 @@
 
                     else {
                         mapbgArr[i][j] = 18;
-                        if (!isLTEmpty) {
-                            mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                        }
-                        if (!isRTEmpty) {
-                            mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                            mapRTbg.rotation = 90;
-                        }
                     }
-                    
+                    if (!isLTEmpty) {
+                        mapLTbgArr[i][j] = 19;
+                    }
+                    if (!isRTEmpty) {
+                        mapRTbgArr[i][j] = 20;
+                    }
 
                 }
                 
             if (isLeftEmpty && isTopEmpty && isRightEmpty && isBottomEmpty) {
-                mapbgArr[i][j] = 1;
+                
                 if (!isLTEmpty) {
                     
-                    mapLTbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    [mapLTbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
-                    [refreshBatchNode addChild:mapLTbg z:3 tag:mapSpriteTag[i][j]+200];
+                    mapLTbgArr[i][j] = 19;
                 }
                 if (!isRTEmpty) {
-                    mapRTbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                    mapRTbg.rotation = 90;
-                    [mapRTbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
-                    [refreshBatchNode addChild:mapRTbg z:3 tag:mapSpriteTag[i][j]+300];
+                    mapRTbgArr[i][j] = 20;
                 }
                 if (!isLBEmpty) {
-                    mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    mapLBbg.rotation = -90;
-                    [mapLBbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
-                    [refreshBatchNode addChild:mapLBbg z:3 tag:mapSpriteTag[i][j]+400];
+                    mapLBbgArr[i][j] = 19;
                 }
                 if (!isRBEmpty) {
-                    mapRBbg = [CCSprite spriteWithSpriteFrameName:@"tile20.png"];
-                    mapRBbg.rotation = 180;
-                    [mapRBbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
-                    [refreshBatchNode addChild:mapRBbg z:3 tag:mapRBbgTag[i][j]+500];
+                    mapRBbgArr[i][j] = 20;
                 }
                 
                 if (isLCorner) {
@@ -784,6 +773,7 @@
                 }
                 if (isBCorner) {
                     mapbgArr[i][j] = 18;
+
                 }
                 if (isLCorner && isTCorner) {
                     mapbgArr[i][j] = 11;
@@ -797,38 +787,75 @@
                 if (isRCorner && isBCorner) {
                     mapbgArr[i][j] = 14;
                 }
+                if (!isLCorner && !isTCorner && !isRCorner && !isBCorner) {
+                    mapbgArr[i][j] = 1;
 
-
+                }
+                
                 
             }
                 if (mapbgArr[i][j] != mapbgInitArr[i][j]) {
+                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+100 cleanup:YES];
+                    
                     mapbg = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"tile%d.png",mapbgArr[i][j]]];
                     [mapbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
                     [refreshBatchNode addChild:mapbg z:1 tag:mapSpriteTag[i][j]+100];
-                    
-                    if (![refreshBatchNode getChildByTag:mapSpriteTag[i][j]+200]) {
-                        
-                        
-                        mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    }
-                    if (![refreshBatchNode getChildByTag:mapSpriteTag[i][j]+300]) {
-                        
-                        
-                        mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    }
-                    if (![refreshBatchNode getChildByTag:mapSpriteTag[i][j]+400]) {
-                        
-                        
-                        mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    }
-                    if (![refreshBatchNode getChildByTag:mapSpriteTag[i][j]+500]) {
-                        
-                        
-                        mapLBbg = [CCSprite spriteWithSpriteFrameName:@"tile19.png"];
-                    }
+
                     mapbgInitArr[i][j] = mapbgArr[i][j];
                 }
                 
+                
+                if (mapLTbgArr[i][j] != mapLTbgInitArr[i][j]) {
+                    if (mapLTbgInitArr[i][j] == -1) {
+                        mapLTbg = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"tile%d.png",mapLTbgArr[i][j]]];
+                        
+                        [mapLTbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
+                        [refreshBatchNode addChild:mapLTbg z:2 tag:mapSpriteTag[i][j]+200];
+                        
+                    }else {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+200 cleanup:YES];
+                    }
+                    mapLTbgInitArr[i][j] = mapLTbgArr[i][j];
+                }
+                if (mapRTbgArr[i][j] != mapRTbgInitArr[i][j]) {
+                    if (mapRTbgInitArr[i][j] == -1) {
+                        
+                        mapRTbg = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"tile%d.png",mapRTbgArr[i][j]]];
+                        [mapRTbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
+                        mapRTbg.rotation = 90;
+                        [refreshBatchNode addChild:mapRTbg z:2 tag:mapSpriteTag[i][j]+300];
+                        
+                    }else {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+300 cleanup:YES];
+                    }
+                    mapRTbgInitArr[i][j] = mapRTbgArr[i][j];
+                }
+                if (mapLBbgArr[i][j] != mapLBbgInitArr[i][j]) {
+                    if (mapLBbgInitArr[i][j] == -1) {
+                        mapLBbg = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"tile%d.png",mapLBbgArr[i][j]]];
+                        [mapLBbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
+                        mapLBbg.rotation = -90;
+                        [refreshBatchNode addChild:mapLBbg z:2 tag:mapSpriteTag[i][j]+400];
+                    }else {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+400 cleanup:YES];
+                    }
+                    mapLBbgInitArr[i][j] = mapLBbgArr[i][j];
+                }
+
+                if (mapRBbgArr[i][j] != mapRBbgInitArr[i][j]) {
+                    if (mapRBbgInitArr[i][j] == -1) {
+                        mapRBbg = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"tile%d.png",mapRBbgArr[i][j]]];
+                        [mapRBbg setPosition:CGPointMake(50*j+10+25, 50*(5-i)+45+25)];
+                        
+                        mapRBbg.rotation = 180;
+                        [refreshBatchNode addChild:mapRBbg z:2 tag:mapSpriteTag[i][j]+500];
+                        
+                    }else {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+500 cleanup:YES];
+                    }
+                    mapRBbgInitArr[i][j] = mapRBbgArr[i][j];
+                }
+
                 
                     
             }
@@ -839,12 +866,213 @@
                 if (![refreshBatchNode getChildByTag:mapSpriteTag[i][j]+600]) {
                     
                     [refreshBatchNode addChild:mapbg z:1 tag:mapSpriteTag[i][j]+600];
+
+                    if (mapLTbgInitArr[i][j] != -1) {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+200 cleanup:YES];
+                        mapLTbgInitArr[i][j] = -1;
+                    }
+                    if (mapRTbgInitArr[i][j] != -1) {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+300 cleanup:YES];
+                        mapRTbgInitArr[i][j] = -1;
+                    }
+                    if (mapLBbgInitArr[i][j] != -1) {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+400 cleanup:YES];
+                        mapLBbgInitArr[i][j] = -1;
+                    }
+                    if (mapRBbgInitArr[i][j] != -1) {
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+500 cleanup:YES];
+                        mapRBbgInitArr[i][j] = -1;
+                    }
                 }  
             }
         }
     }
     
     	
+}
+
+
+
+// move function
+-(void)dragonMoveHandler{
+    
+    int moveXArr[36] = {0,1,0,2,1,0,3,2,1,0,4,3,2,1,0,5,4,3,2,1,0,5,4,3,2,1,5,4,3,2,5,4,3,5,4,5};
+    
+    int moveYArr[36] = {0,0,1,0,1,2,0,1,2,3,0,1,2,3,4,0,1,2,3,4,5,1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
+
+    for (int k=0; k<36; k++) {
+        int i=moveXArr[i];
+        int j=moveYArr[i];
+            [self mapBgInit];
+            if (mapUID[i][j] == 4001) {
+                
+                //  右上角
+                if (moveXArr[i]==0 && moveYArr[i]==5) {
+                    isRCorner = YES;
+                    isTCorner = YES;
+                    
+                    if (mapUnitType[i][moveYArr[i]-1] != -1 ) {
+                        isLeftEmpty = NO;
+                    }
+
+                    if (mapUnitType[i+1][j] != -1) {
+                        isBottomEmpty = NO;
+                    }
+                }
+                //  右下角
+                if (i==5 && j==5) {
+                    isRCorner = YES;
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                }
+                //  左下角
+                if (i==5 && j==0) {
+                    isLCorner = YES;
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                }
+                
+                // 上边
+                if (i==0 && j> 0 && j<5) {
+                    
+                    isTCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    
+                }
+                
+                // 左边
+                if (i >0 && i<5 && j==0) {
+                    
+                    
+                    isLCorner = YES;
+                    
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    
+                }  
+                // 右边
+                if (i >0 && i<5 && j==5) {
+                    
+                    
+                    isRCorner = YES;
+                    
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    
+                }    
+                // 下边
+                if (i == 5 && j>0 && j<5) {
+                    
+                    
+                    isBCorner = YES;
+                    
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    
+                }
+                
+                //中间
+                if (i>0 && i<5 && j>0 && j<5) {
+                    
+                    if (mapUnitType[i-1][j-1] == 1) {
+                        isLTEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j] == 1) {
+                        isTopEmpty = NO;
+                    }
+                    if (mapUnitType[i-1][j+1] == 1) {
+                        isRTEmpty = NO;
+                    }
+                    if (mapUnitType[i][j+1] == 1) {
+                        isRightEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j+1] == 1) {
+                        isRBEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j] == 1) {
+                        isBottomEmpty = NO;
+                    }
+                    if (mapUnitType[i+1][j-1] == 1) {
+                        isLBEmpty = NO;
+                    }
+                    if (mapUnitType[i][j-1] == 1) {
+                        isLeftEmpty = NO;
+                    }
+                }
+
+            }
+        
+    }
+
 }
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
@@ -906,65 +1134,68 @@
         refreshUnit.tag = myx*10+myy;
         
         
-              //    获取groupType数值
+        //    获取groupType数值
         
         int nowID = intID;
         
         
-        if (mapUnitType[myx][myy] == 1) {
-            nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
-        }
-                
-        
-        if (nowID > intID) {
-            delCount = 0; 
-
-            for (int i =0; i<6; i++) {
-                for (int j = 0 ; j<6; j++) {
-                    if(delGroup[i][j] !=-1){
-                        NSLog(@"%d",delGroup[i][j]);
-                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
-                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+100 cleanup:YES]; 
-                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES]; 
-                        
-                        mapUID[i][j] = -1;
-                        mapUGT[i][j] = -1;
-                        mapUnitType[i][j] = -1;
-                        
-                        delGroup[i][j] =-1;
+        switch (mapUnitType[myx][myy]) {
+            case 1:
+                nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
+                if (nowID > intID) {
+                    delCount = 0; 
+                    
+                    for (int i =0; i<6; i++) {
+                        for (int j = 0 ; j<6; j++) {
+                            if(delGroup[i][j] !=-1){
+                                [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                                [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
+                                
+                                mapUID[i][j] = -1;
+                                mapUGT[i][j] = -1;
+                                mapUnitType[i][j] = -1;
+                                
+                                delGroup[i][j] =-1;
+                            }
+                        }
                     }
+                    
+                    mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
+                    mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                    
+                    
+                    refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",nowID]];
+                    
+                    
+                    //  给新精灵type数组赋值 以同步精灵属性
+                    
+                    
+                    mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
+                    
+                    [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][myy]];
+                    
+                    
+                    [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                    
+                    
+                    
+                    
+                }else if(nowID == intID){
+                    
+                    NSLog(@"beijua");
+                    
+                    [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                    refreshUnit.tag = myx*10+myy;
+                    
+                    
                 }
-            }
-            
-            mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
-            mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-
-            
-            refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",nowID]];
-            
-            
-            //  给新精灵type数组赋值 以同步精灵属性
-            
-
-            mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
-            
-            [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][myy]];
-            
-            
-            [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
-            
-
-
-
-        }else if(nowID == intID){
-            
-             NSLog(@"beijua");
-            
-            [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
-            refreshUnit.tag = myx*10+myy;
-            
-            
-        }
+                break;
+                
+            case 4:
+                break;
+        }        
+        
+        
 
 //       reflash mapbg
         [self pavingHanlder];

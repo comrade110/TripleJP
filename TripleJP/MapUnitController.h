@@ -12,19 +12,10 @@
 
 @interface MapUnitController : CCNode {
 
-    
-    int mapUGT[6][6];
-    
-    int delGroup[6][6];
-    
-    int mapUnitType[6][6];
-    
-    int mapSpriteTag[6][6];
-    
-    int mapSpriteIschecked[6][6];
-    
-    CCArray *delArr;
-    
+
 }
+-(int)checkDirectionWithL:(int)leftNum withT:(int)topNum withR:(int)rightNum withB:(int)bottomNum;
+
+
 
 @end

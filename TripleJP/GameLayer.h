@@ -9,14 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "ObjClass.h"
+#import "MapUnitController.h"
 
-struct StoCoor {
-    int x1;
-    int y1;
-    int x2;
-    int y2;
-};
-typedef struct StoCoor StoCoor;
+
 
 
 @interface GameLayer : CCLayer {
@@ -25,6 +20,9 @@ typedef struct StoCoor StoCoor;
     CCSprite *refreshUnit;
     CCSpriteBatchNode *bgTiledBatchNode;
     CCSpriteBatchNode *refreshBatchNode;
+    
+    MapUnitController *unitController;
+    
     CGRect unitRect;
     CGSize screenSize;
     CGRect mapRect;
@@ -69,7 +67,7 @@ typedef struct StoCoor StoCoor;
     
     BOOL isNeedGroup;                          // 是否合并
     
-    BOOL isLeftEmpty;
+    BOOL isLeftEmpty;                          // 判断某个点左边是否有单位存在，没有则YES，反之NO;
     
     BOOL isRightEmpty;
     
@@ -77,9 +75,15 @@ typedef struct StoCoor StoCoor;
     
     BOOL isBottomEmpty;
     
-    BOOL isCorner;
+    BOOL isLTEmpty;
     
-    BOOL isLCorner;
+    BOOL isRTEmpty;
+    
+    BOOL isLBEmpty;
+    
+    BOOL isRBEmpty;
+    
+    BOOL isLCorner;                            // 判断改点是否属于边界上的点 属于则YES 反之NO;
     
     BOOL isRCorner;
     
@@ -87,7 +91,35 @@ typedef struct StoCoor StoCoor;
     
     BOOL isBCorner;
     
-    CCSprite *mapbg;
+    CCSprite *mapbg;                               //  背景精灵
+    CCSprite *mapLTbg;                              
+    CCSprite *mapRTbg;
+    CCSprite *mapLBbg;
+    CCSprite *mapRBbg;
+    
+    int mapbgArr[6][6];
+    int mapbgInitArr[6][6];
+    int mapLTbgArr[6][6];
+    int mapRTbgArr[6][6];
+    int mapLBbgArr[6][6];
+    int mapRBbgArr[6][6];
+    int mapLTbgInitArr[6][6];
+    int mapRTbgInitArr[6][6];
+    int mapLBbgInitArr[6][6];
+    int mapRBbgInitArr[6][6];
+    
+    int ischecked[6][6];                            // 是否检测过移动
+    
+    int isDchecked[6][6];                            // 是否检测过移动
+    
+    BOOL isNeedDel;                            //  周围布满时是否需要挂掉
+    
+    
+    int le;
+    int te;
+    int re;
+    int be;
+    
 }
 
 

@@ -9,14 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "ObjClass.h"
+#import "MapUnitController.h"
 
-struct StoCoor {
-    int x1;
-    int y1;
-    int x2;
-    int y2;
-};
-typedef struct StoCoor StoCoor;
+
 
 
 @interface GameLayer : CCLayer {
@@ -25,6 +20,9 @@ typedef struct StoCoor StoCoor;
     CCSprite *refreshUnit;
     CCSpriteBatchNode *bgTiledBatchNode;
     CCSpriteBatchNode *refreshBatchNode;
+    
+    MapUnitController *unitController;
+    
     CGRect unitRect;
     CGSize screenSize;
     CGRect mapRect;
@@ -109,6 +107,8 @@ typedef struct StoCoor StoCoor;
     int mapRTbgInitArr[6][6];
     int mapLBbgInitArr[6][6];
     int mapRBbgInitArr[6][6];
+    
+    int ischecked[6][6];                            // 是否检测过移动
     
 }
 

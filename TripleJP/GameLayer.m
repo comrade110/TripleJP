@@ -35,6 +35,7 @@
                 mapRTbgInitArr[i][j] = -1;
                 mapLBbgInitArr[i][j] = -1;
                 mapRBbgInitArr[i][j] = -1;
+                ischecked[i][j] = 0;
 
             }
         }
@@ -96,7 +97,7 @@
         
         mapRect = CGRectMake((screenSize.width - 300)*0.5, 45, 300, 300);
         
-        
+
 
         
 // 初始化背景
@@ -110,7 +111,6 @@
                 
             }
         }
-        
         
     }
     return self;
@@ -283,14 +283,13 @@
     }
     
     
-    NSLog(@"aaaa%d\n",delCount);
     if (delCount == 3) {
         
 //  初级合并后判断更高级 删除计数归0 重设单位ID和组合ID
         delCount = 0;
         mapUID[x][y] = groupType;
         mapUGT[x][y] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",groupType] withSubKey:@"groupto"];
-         NSLog(@"dddd%d\n",mapUID[x][y]);
+        
         [self checkForUpdate:x setY:y withID:mapUID[myx][myy]];
         
     }else if (delCount > 3 ) {
@@ -310,7 +309,6 @@
 //   刷新背景
 
 -(void)pavingHanlder{
-    NSLog(@"pavinghandler");
     
 
     for (int i =0; i<6; i++) {
@@ -590,10 +588,11 @@
                 // ￣|
                 
                 if (isLeftEmpty && !isTopEmpty && !isRightEmpty && isBottomEmpty) {
-                    if (isLCorner && !isBottomEmpty) {
-                        mapbgArr[i][j] = 8;
-                    }else if (isLCorner && isBCorner) {
+                    
+                    if (isLCorner && isBCorner) {
                         mapbgArr[i][j] = 3;
+                    }else if (isLCorner && !isBCorner) {
+                        mapbgArr[i][j] = 8;
                     }else if (!isLCorner && isBCorner) {
                         mapbgArr[i][j] = 6;
                     }else {
@@ -895,181 +894,244 @@
 
 // move function
 -(void)dragonMoveHandler{
-    
+    for (int i=0; i<6; i++) {
+        for (int j=0; j<6; j++) {
+            ischecked[i][j] =0;
+        }
+    }
     int moveXArr[36] = {0,1,0,2,1,0,3,2,1,0,4,3,2,1,0,5,4,3,2,1,0,5,4,3,2,1,5,4,3,2,5,4,3,5,4,5};
-    
     int moveYArr[36] = {0,0,1,0,1,2,0,1,2,3,0,1,2,3,4,0,1,2,3,4,5,1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
 
     for (int k=0; k<36; k++) {
-        int i=moveXArr[i];
-        int j=moveYArr[i];
-            [self mapBgInit];
-            if (mapUID[i][j] == 4001) {
+        int i=moveXArr[k];
+        int j=moveYArr[k];
+        int le = 1;
+        int te = 2;
+        int re = 3;
+        int be = 4;
+        if (mapUnitType[i][j] == 4 && ischecked[i][j] == 0) {
+            
+            //  左上角
+            if (i==0 && j==0) {
                 
-                //  右上角
-                if (moveXArr[i]==0 && moveYArr[i]==5) {
-                    isRCorner = YES;
-                    isTCorner = YES;
-                    
-                    if (mapUnitType[i][moveYArr[i]-1] != -1 ) {
-                        isLeftEmpty = NO;
-                    }
-
-                    if (mapUnitType[i+1][j] != -1) {
-                        isBottomEmpty = NO;
-                    }
-                }
-                //  右下角
-                if (i==5 && j==5) {
-                    isRCorner = YES;
-                    isBCorner = YES;
-                    
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }
-
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-                }
-                //  左下角
-                if (i==5 && j==0) {
-                    isLCorner = YES;
-                    isBCorner = YES;
-                    
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-
-                    if (mapUnitType[i][j+1] == 1) {
-                        isRightEmpty = NO;
-                    }
+                le = 0;
+                te = 0;
+                
+                if (mapUnitType[i][j+1] != -1 ) {
+                    re = 0;
                 }
                 
-                // 上边
-                if (i==0 && j> 0 && j<5) {
-                    
-                    isTCorner = YES;
-                    
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }
-                    if (mapUnitType[i][j+1] == 1) {
-                        isRightEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j-1] == 1) {
-                        isLBEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j] == 1) {
-                        isBottomEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j+1] == 1) {
-                        isRBEmpty = NO;
-                    }
-                    
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
+                }
+            }//  右上角
+            if (i==0 && j==5) {
+                
+                te = 0;
+                re = 0;
+                
+                if (mapUnitType[i][j-1] != -1 ) {
+                    le = 0;
                 }
                 
-                // 左边
-                if (i >0 && i<5 && j==0) {
-                    
-                    
-                    isLCorner = YES;
-                    
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j+1] == 1) {
-                        isRTEmpty = NO;
-                    }
-                    if (mapUnitType[i][j+1] == 1) {
-                        isRightEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j] == 1) {
-                        isBottomEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j+1] == 1) {
-                        isRBEmpty = NO;
-                    }
-                    
-                }  
-                // 右边
-                if (i >0 && i<5 && j==5) {
-                    
-                    
-                    isRCorner = YES;
-                    
-                    if (mapUnitType[i-1][j-1] == 1) {
-                        isLTEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-                    
-                    if (mapUnitType[i+1][j] == 1) {
-                        isBottomEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j-1] == 1) {
-                        isLBEmpty = NO;
-                    }
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }
-                    
-                }    
-                // 下边
-                if (i == 5 && j>0 && j<5) {
-                    
-                    
-                    isBCorner = YES;
-                    
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j-1] == 1) {
-                        isLTEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j+1] == 1) {
-                        isRTEmpty = NO;
-                    }
-                    if (mapUnitType[i][j+1] == 1) {
-                        isRightEmpty = NO;
-                    }
-                    
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
                 }
-                
-                //中间
-                if (i>0 && i<5 && j>0 && j<5) {
-                    
-                    if (mapUnitType[i-1][j-1] == 1) {
-                        isLTEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j] == 1) {
-                        isTopEmpty = NO;
-                    }
-                    if (mapUnitType[i-1][j+1] == 1) {
-                        isRTEmpty = NO;
-                    }
-                    if (mapUnitType[i][j+1] == 1) {
-                        isRightEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j+1] == 1) {
-                        isRBEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j] == 1) {
-                        isBottomEmpty = NO;
-                    }
-                    if (mapUnitType[i+1][j-1] == 1) {
-                        isLBEmpty = NO;
-                    }
-                    if (mapUnitType[i][j-1] == 1) {
-                        isLeftEmpty = NO;
-                    }
-                }
-
             }
+            //  右下角
+            if (i==5 && j==5) {
+                
+                re = 0;
+                be = 0;
+                
+                if (mapUnitType[i][j-1] != -1) {
+                    le = 0;
+                }
+                
+                if (mapUnitType[i-1][j] != -1) {
+                    te = 0;
+                }
+            }
+            //  左下角
+            if (i==5 && j==0) {
+                
+                le = 0;
+                be = 0;
+                
+                if (mapUnitType[i-1][j] != -1) {
+                    te = 0;
+                }
+                
+                if (mapUnitType[i][j+1] != -1) {
+                    re = 0;
+                }
+            }
+            
+            // 上边
+            if (i==0 && j> 0 && j<5) {
+                
+                te = 0;
+                
+                if (mapUnitType[i][j-1] != -1) {
+                    le = 0;
+                }
+                if (mapUnitType[i][j+1] != -1) {
+                    re = 0;
+                }
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
+                }
+                
+            }
+            
+            // 左边
+            if (i >0 && i<5 && j==0) {
+                
+                le = 0;
+                
+                if (mapUnitType[i-1][j]!= -1) {
+                    te = 0;
+                }
+                if (mapUnitType[i][j+1] != -1) {
+                    re = 0;
+                }
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
+                }
+                
+            }  
+            // 右边
+            if (i >0 && i<5 && j==5) {
+                
+                re = 0;
+                
+                if (mapUnitType[i-1][j] != -1) {
+                    te = 0;
+                }
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
+                }
+                if (mapUnitType[i][j-1] != -1) {
+                    le = 0;
+                }
+                
+            }    
+            // 下边
+            if (i == 5 && j>0 && j<5) {
+                
+                be = 0;
+                
+                if (mapUnitType[i][j-1] != -1) {
+                    le = 0;
+                }
+                if (mapUnitType[i-1][j] != -1) {
+                    te = 0;
+                }
+                if (mapUnitType[i][j+1] != -1) {
+                    re = 0;
+                }
+                
+            }
+            
+            //中间
+            if (i>0 && i<5 && j>0 && j<5) {
+                
+                if (mapUnitType[i-1][j] != -1) {
+                    te = 0;
+                }
+                if (mapUnitType[i][j+1] != -1) {
+                    re = 0;
+                }
+                if (mapUnitType[i+1][j] != -1) {
+                    be = 0;
+                }
+                if (mapUnitType[i][j-1] != -1) {
+                    
+                    le = 0;
+                }
+            }
+           
+//  返回数值：  ##0.挂掉  ##1.go left  ##2.go top ##3.go right  ##4.go bottom
+            //****** 创建实例
+        unitController = [MapUnitController node];
+        int num = [unitController checkDirectionWithL:le withT:te withR:re withB:be];
+            NSLog(@"mapUnitType[%d][%d-1]:%d",i,j,mapUnitType[i][j-1]);
+            NSLog(@"the numis %d",num);
+        
+        switch (num) {
+            case 0:
+                [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES];
+                mapUGT[i][j] = 2002;
+                mapUID[i][j] = 2001;
+                mapUnitType[i][j] = 2;
+                [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] setPosition:CGPointMake(50*(5-i)+25, 50*j+45)];
+                [refreshBatchNode addChild:[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",mapUID[i][j]]] z:2 tag:mapSpriteTag[i][j]];
+                
+                break;
+            case 1:
+            {
+                CCAction *dACT = [CCMoveBy actionWithDuration:1 position:CGPointMake(- 50, 0)];
+                [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT];
+                
+                [refreshBatchNode getChildByTag:i*10+j].tag = i*10+j-1;
+                mapUGT[i][j-1] = 2001;
+                mapUID[i][j-1] = 4001;
+                mapUGT[i][j] = -1;
+                mapUID[i][j] = -1;
+                mapUnitType[i][j] = -1;
+                mapUnitType[i][j-1] = 4;
+                ischecked[i][j-1] = 1;
+            }
+                break;
+            case 2:
+            {
+                CCAction *dACT2 = [CCMoveBy actionWithDuration:1 position:CGPointMake(0,50)];
+                [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT2];
+                
+                [refreshBatchNode getChildByTag:i*10+j].tag = (i-1)*10+j;
+                mapUGT[i-1][j] = 2001;
+                mapUID[i-1][j] = 4001;
+                mapUGT[i][j] = -1;
+                mapUID[i][j] = -1;
+                mapUnitType[i][j] = -1;
+                mapUnitType[i-1][j] = 4;
+                ischecked[i-1][j] = 1;
+            }
+                break;
+            case 3:
+             {   
+                CCAction *dACT3 = [CCMoveBy actionWithDuration:1 position:CGPointMake(50, 0)];
+                [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT3];
+                
+                [refreshBatchNode getChildByTag:i*10+j].tag = i*10+j+1;
+                mapUGT[i][j+1] = 2001;
+                mapUID[i][j+1] = 4001;
+                mapUGT[i][j] = -1;
+                mapUID[i][j] = -1;
+                mapUnitType[i][j] = -1;
+                mapUnitType[i][j+1] = 4;
+                ischecked[i][j+1] = 1;
+            }
+                break;
+            case 4:
+              {  
+                CCAction *dACT4 = [CCMoveBy actionWithDuration:1 position:CGPointMake(0, -50)];
+                [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT4];
+                
+                [refreshBatchNode getChildByTag:i*10+j].tag = (i+1)*10+j;
+                mapUGT[i+1][j] = 2001;
+                mapUID[i+1][j] = 4001;
+                mapUGT[i][j] = -1;
+                mapUID[i][j] = -1;
+                mapUnitType[i][j] = -1;
+                mapUnitType[i+1][j] = 4;
+                ischecked[i+1][j] = 1;
+            }
+                break;
+            default:
+                break;
+        }
+        }
         
     }
 
@@ -1182,19 +1244,23 @@
                     
                 }else if(nowID == intID){
                     
-                    NSLog(@"beijua");
                     
                     [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
                     refreshUnit.tag = myx*10+myy;
                     
                     
                 }
+                
+                mapUnitType[myx][myy] =1;
+                [self dragonMoveHandler];
                 break;
                 
             case 4:
+                [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                
+                [self dragonMoveHandler];
                 break;
         }        
-        
         
 
 //       reflash mapbg

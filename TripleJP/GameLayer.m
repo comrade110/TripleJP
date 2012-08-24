@@ -74,6 +74,7 @@
 
 -(void)initCheckArr{
     
+    isNeedMove = YES;
     for (int i =0; i<6; i++) {
         for (int j = 0 ; j<6; j++) {
             ischecked[i][j] = 0;
@@ -857,7 +858,7 @@
         
         
         CCSprite *unitStorage = [CCSprite spriteWithSpriteFrameName:@"main_bar.png"];
-        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]]; 
+        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]]; 
         
         
         playBg = [CCSprite spriteWithSpriteFrameName:@"bg_main.png"];
@@ -908,11 +909,17 @@
     }
     return self;
 }
+
 -(void)dragonMoveWithX:(int)i withY:(int)j{
     isNeedDel = NO;
     
     isDchecked[i][j] = 1;
-    int all = le+te+re+be;
+    
+    le = 1;
+    te = 2;
+    re = 3;
+    be = 4;
+    
     //  左上角
     if (i==0 && j==0) {
         
@@ -929,7 +936,9 @@
             be = 0;
 
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            
+            isNeedMove = NO;
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
             }
@@ -944,16 +953,17 @@
         te = 0;
         re = 0;
         
-        if (mapUnitType[i][j-1] != -1 && isDchecked[i][j-1] == 0) {
+        if (mapUnitType[i][j-1] != -1 ) {
             le = 0;
 
         }
         
-        if (mapUnitType[i+1][j] != -1 && isDchecked[i+1][j] == 0) {
+        if (mapUnitType[i+1][j] != -1 ) {
             be = 0;
 
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
             }
@@ -976,7 +986,8 @@
         if (mapUnitType[i-1][j] != -1) {
             te = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
             }
@@ -998,7 +1009,8 @@
         if (mapUnitType[i][j+1] != -1) {
             re = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
             }
@@ -1022,7 +1034,8 @@
         if (mapUnitType[i+1][j] != -1) {
             be = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
             }
@@ -1050,7 +1063,8 @@
         if (mapUnitType[i+1][j] != -1) {
             be = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
             }
@@ -1077,7 +1091,8 @@
         if (mapUnitType[i][j-1] != -1) {
             le = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
+            isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
             }
@@ -1103,7 +1118,7 @@
         if (mapUnitType[i][j+1] != -1) {
             re = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
 
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
@@ -1135,8 +1150,9 @@
         if (mapUnitType[i][j-1] != -1) {
             le = 0;
         }
-        if (all == 0) {
+        if (le+te+re+be == 0) {
             
+            isNeedMove = NO;
             
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
@@ -1152,29 +1168,26 @@
             }
         }
     }
-    if (all == 0) {
+    if (le+te+re+be == 0) {
         isNeedDel = YES;
+        NSLog(@"isNeedDel = YES");
+    }else {
+        NSLog(@"isNeedDel = NO （le+te+re+be: %d %d %d %d）",le,te,re,be);
     }
 }
 
 
 // move function
 -(void)dragonMoveHandler{
-    for (int i=0; i<6; i++) {
-        for (int j=0; j<6; j++) {
-            ischecked[i][j] =0;
-        }
-    }
+    
+    [self initCheckArr];
+
     int moveXArr[36] = {0,1,0,2,1,0,3,2,1,0,4,3,2,1,0,5,4,3,2,1,0,5,4,3,2,1,5,4,3,2,5,4,3,5,4,5};
     int moveYArr[36] = {0,0,1,0,1,2,0,1,2,3,0,1,2,3,4,0,1,2,3,4,5,1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
 
     for (int k=0; k<36; k++) {
         int i=moveXArr[k];
         int j=moveYArr[k];
-        le = 1;
-        te = 2;
-        re = 3;
-        be = 4;
         if (mapUnitType[i][j] == 4 && ischecked[i][j] == 0) {
             
             [self dragonMoveWithX:i withY:j];
@@ -1184,21 +1197,37 @@
             //****** 创建实例
         unitController = [MapUnitController node];
         int num = [unitController checkDirectionWithL:le withT:te withR:re withB:be];
+            
+            if (num !=0 && !isNeedMove) {
+                num = 0;
+            }
+            isNeedMove = YES;    // 重设
+            
             NSLog(@"mapUnitType[%d][%d-1]:%d",i,j,mapUnitType[i][j-1]);
             NSLog(@"the numis %d",num);
         
         switch (num) {
             case 0:
                 if (isNeedDel) {
-                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES];
-                    mapUGT[i][j] = 2002;
-                    mapUID[i][j] = 2001;
-                    mapUnitType[i][j] = 2;
-                    [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] setPosition:CGPointMake(50*(5-i)+25, 50*j+45)];
-                    [refreshBatchNode addChild:[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",mapUID[i][j]]] z:2 tag:mapSpriteTag[i][j]];
+                    for (int p=0; p<6; p++) {
+                        for (int q=0; q<6; q++) {
+                            if (isDchecked[p][q] == 1) {
+                                [refreshBatchNode removeChildByTag:mapSpriteTag[p][q] cleanup:YES];
+                                NSLog(@"ganga~~~");
+                                mapUGT[p][q] = 2002;
+                                mapUID[p][q] = 2001;
+                                mapUnitType[p][q] = 2;
+                                CCSprite *mubei = [CCSprite spriteWithSpriteFrameName:@"2001.png"];
+                                [mubei setPosition:CGPointMake(50*q+25+10, 50*(5-p)+95)];
+                                [refreshBatchNode addChild:mubei z:p+2 tag:mapSpriteTag[p][q]];
+                                NSLog(@"~~~~~~~~~%d",mapSpriteTag[p][q]);
+                            }
+                        }
+                    }
+
                 }else{
                 
-                    mapUGT[i][j] = 2001;
+                    mapUGT[i][j] = -1;
                     mapUID[i][j] = 4001;
                     mapUnitType[i][j] = 4;
                 }
@@ -1206,11 +1235,11 @@
                 break;
             case 1:
             {
-                CCAction *dACT = [CCMoveBy actionWithDuration:1 position:CGPointMake(- 50, 0)];
+                CCAction *dACT = [CCMoveBy actionWithDuration:1 position:CGPointMake(-50, 0)];
                 [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT];
                 
                 [refreshBatchNode getChildByTag:i*10+j].tag = i*10+j-1;
-                mapUGT[i][j-1] = 2001;
+                mapUGT[i][j-1] = -1;
                 mapUID[i][j-1] = 4001;
                 mapUGT[i][j] = -1;
                 mapUID[i][j] = -1;
@@ -1222,10 +1251,11 @@
             case 2:
             {
                 CCAction *dACT2 = [CCMoveBy actionWithDuration:1 position:CGPointMake(0,50)];
+                [refreshBatchNode getChildByTag:i*10+j].zOrder = (i-1)+2;
                 [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT2];
-                
                 [refreshBatchNode getChildByTag:i*10+j].tag = (i-1)*10+j;
-                mapUGT[i-1][j] = 2001;
+                
+                mapUGT[i-1][j] = -1;
                 mapUID[i-1][j] = 4001;
                 mapUGT[i][j] = -1;
                 mapUID[i][j] = -1;
@@ -1240,7 +1270,7 @@
                 [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT3];
                 
                 [refreshBatchNode getChildByTag:i*10+j].tag = i*10+j+1;
-                mapUGT[i][j+1] = 2001;
+                mapUGT[i][j+1] = -1;
                 mapUID[i][j+1] = 4001;
                 mapUGT[i][j] = -1;
                 mapUID[i][j] = -1;
@@ -1251,11 +1281,12 @@
                 break;
             case 4:
               {  
-                CCAction *dACT4 = [CCMoveBy actionWithDuration:1 position:CGPointMake(0, -50)];
-                [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT4];
+                  CCAction *dACT4 = [CCMoveBy actionWithDuration:1 position:CGPointMake(0, -50)];
+                  [refreshBatchNode getChildByTag:i*10+j].zOrder = (i+1)+2;
+                  [[refreshBatchNode getChildByTag:i*10+j] runAction:dACT4];
+                  [refreshBatchNode getChildByTag:i*10+j].tag = (i+1)*10+j;
                 
-                [refreshBatchNode getChildByTag:i*10+j].tag = (i+1)*10+j;
-                mapUGT[i+1][j] = 2001;
+                mapUGT[i+1][j] = -1;
                 mapUID[i+1][j] = 4001;
                 mapUGT[i][j] = -1;
                 mapUID[i][j] = -1;
@@ -1319,7 +1350,7 @@
     
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
-        if (mapUGT[myx][myy]>0) {
+        if (mapUnitType[myx][myy]>0) {
             return;
         }
 
@@ -1361,7 +1392,7 @@
                     mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
                     
                     
-                    refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d_s.png",nowID]];
+                    refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
                     
                     
                     //  给新精灵type数组赋值 以同步精灵属性
@@ -1369,7 +1400,7 @@
                     
                     mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
                     
-                    [refreshBatchNode addChild:refreshUnit z:2 tag:mapSpriteTag[myx][myy]];
+                    [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
                     
                     
                     [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
@@ -1382,6 +1413,7 @@
                     
                     [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
                     refreshUnit.tag = myx*10+myy;
+                    refreshUnit.zOrder = myx+2;
                     
                     
                 }
@@ -1392,6 +1424,7 @@
                 
             case 4:
                 [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                refreshUnit.zOrder = myx+2;
                 
                 [self dragonMoveHandler];
                 break;
@@ -1403,7 +1436,7 @@
         
 //       刷新单位
         
-        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_s.png",nowUnitID]];
+        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]];
         [refreshBatchNode addChild:refreshUnit z:2];
         
         [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
@@ -1414,9 +1447,8 @@
             
             intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
         }else {
-            intGroupType = 0;
+            intGroupType = -1;
         }
-        [self initCheckArr];
     }
 }
 

@@ -114,6 +114,7 @@
     
     BOOL isNeedDel;                            //  周围布满时是否需要挂掉
     
+    BOOL isNeedMove;                           //  由于周围布满递归后不一定返回0 所以第一步返回0等于NO后直接让返回0
     
     int le;
     int te;

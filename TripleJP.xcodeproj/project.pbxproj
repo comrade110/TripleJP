@@ -498,10 +498,10 @@
 		CEC437B615BF9F3E0088A8D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CEC437BD15BF9F3E0088A8D1 /* AudioToolbox.framework */,
 				CEC437B715BF9F3E0088A8D1 /* QuartzCore.framework */,
 				CEC437B915BF9F3E0088A8D1 /* OpenGLES.framework */,
 				CEC437BB15BF9F3E0088A8D1 /* OpenAL.framework */,
-				CEC437BD15BF9F3E0088A8D1 /* AudioToolbox.framework */,
 				CEC437BF15BF9F3E0088A8D1 /* AVFoundation.framework */,
 				CEC437C115BF9F3E0088A8D1 /* UIKit.framework */,
 				CEC437C315BF9F3E0088A8D1 /* Foundation.framework */,

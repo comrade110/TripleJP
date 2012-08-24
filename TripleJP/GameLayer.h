@@ -110,6 +110,16 @@
     
     int ischecked[6][6];                            // 是否检测过移动
     
+    int isDchecked[6][6];                            // 是否检测过移动
+    
+    BOOL isNeedDel;                            //  周围布满时是否需要挂掉
+    
+    
+    int le;
+    int te;
+    int re;
+    int be;
+    
 }
 
 

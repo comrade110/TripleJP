@@ -121,6 +121,11 @@
     int re;
     int be;
     
+    
+    int mergeX;
+    
+    int mergeY;
+    
 }
 
 

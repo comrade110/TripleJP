@@ -237,18 +237,18 @@
             mapRTbgArr[i][j] = -1;
             mapLBbgArr[i][j] = -1;
             mapRBbgArr[i][j] = -1;
-            if (mapUnitType[i][j] != 1) {
+            if (mapUnitType[i][j] == -1 || mapUnitType[i][j] == 4) {
                 if (i==0 && j==0) {
                     isLCorner = YES;
                     isTCorner = YES;
                     
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4 ) {
                         isBottomEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j+1] == 1) {
+                    if (mapUnitType[i+1][j+1] != -1 && mapUnitType[i+1][j+1] != 4) {
                         isRBEmpty = NO;
                     }
                 }
@@ -258,13 +258,13 @@
                     isRCorner = YES;
                     isTCorner = YES;
                     
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j-1] == 1) {
+                    if (mapUnitType[i+1][j-1] != -1 && mapUnitType[i+1][j-1] != 4) {
                         isLBEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4) {
                         isBottomEmpty = NO;
                     }
                 }
@@ -273,13 +273,13 @@
                     isRCorner = YES;
                     isBCorner = YES;
                     
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j-1] == 1) {
+                    if (mapUnitType[i-1][j-1] != -1 && mapUnitType[i-1][j-1] != 4) {
                         isLTEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
                 }
@@ -288,13 +288,13 @@
                     isLCorner = YES;
                     isBCorner = YES;
                     
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j+1] == 1) {
+                    if (mapUnitType[i-1][j+1] != -1 && mapUnitType[i-1][j+1] != 4) {
                         isRTEmpty = NO;
                     }
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
                 }
@@ -304,19 +304,19 @@
                     
                     isTCorner = YES;
                     
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j-1] == 1) {
+                    if (mapUnitType[i+1][j-1] != -1 && mapUnitType[i+1][j-1] != 4) {
                         isLBEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4) {
                         isBottomEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j+1] == 1) {
+                    if (mapUnitType[i+1][j+1] != -1 && mapUnitType[i+1][j+1] != 4) {
                         isRBEmpty = NO;
                     }
                     
@@ -328,19 +328,19 @@
                     
                     isLCorner = YES;
                     
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j+1] == 1) {
+                    if (mapUnitType[i-1][j+1] != -1 && mapUnitType[i-1][j+1] != 4) {
                         isRTEmpty = NO;
                     }
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4) {
                         isBottomEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j+1] == 1) {
+                    if (mapUnitType[i+1][j+1] != -1 && mapUnitType[i+1][j+1] != 4) {
                         isRBEmpty = NO;
                     }
                     
@@ -351,20 +351,20 @@
                     
                     isRCorner = YES;
                     
-                    if (mapUnitType[i-1][j-1] == 1) {
+                    if (mapUnitType[i-1][j-1] != -1 && mapUnitType[i-1][j-1] != 4) {
                         isLTEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
 
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4) {
                         isBottomEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j-1] == 1) {
+                    if (mapUnitType[i+1][j-1] != -1 && mapUnitType[i+1][j-1] != 4) {
                         isLBEmpty = NO;
                     }
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
                     
@@ -375,19 +375,19 @@
                     
                     isBCorner = YES;
                     
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j-1] == 1) {
+                    if (mapUnitType[i-1][j-1] != -1 && mapUnitType[i-1][j-1] != 4) {
                         isLTEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j+1] == 1) {
+                    if (mapUnitType[i-1][j+1] != -1 && mapUnitType[i-1][j+1] != 4) {
                         isRTEmpty = NO;
                     }
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
                     
@@ -396,28 +396,28 @@
                 //中间
                 if (i>0 && i<5 && j>0 && j<5) {
                     
-                    if (mapUnitType[i-1][j-1] == 1) {
+                    if (mapUnitType[i-1][j-1] != -1 && mapUnitType[i-1][j-1] != 4) {
                         isLTEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j] == 1) {
+                    if (mapUnitType[i-1][j] != -1 && mapUnitType[i-1][j] != 4) {
                         isTopEmpty = NO;
                     }
-                    if (mapUnitType[i-1][j+1] == 1) {
+                    if (mapUnitType[i-1][j+1] != -1&& mapUnitType[i-1][j+1] != 4) {
                         isRTEmpty = NO;
                     }
-                    if (mapUnitType[i][j+1] == 1) {
+                    if (mapUnitType[i][j+1] != -1 && mapUnitType[i][j+1] != 4) {
                         isRightEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j+1] == 1) {
+                    if (mapUnitType[i+1][j+1] != -1 && mapUnitType[i+1][j+1] != 4) {
                         isRBEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j] == 1) {
+                    if (mapUnitType[i+1][j] != -1 && mapUnitType[i+1][j] != 4) {
                         isBottomEmpty = NO;
                     }
-                    if (mapUnitType[i+1][j-1] == 1) {
+                    if (mapUnitType[i+1][j-1] != -1 && mapUnitType[i+1][j-1] != 4) {
                         isLBEmpty = NO;
                     }
-                    if (mapUnitType[i][j-1] == 1) {
+                    if (mapUnitType[i][j-1] != -1 && mapUnitType[i][j-1] != 4) {
                         isLeftEmpty = NO;
                     }
                 }
@@ -832,6 +832,8 @@
             }
         }
         
+        mergeX = -1;
+        mergeY = -1;
         
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
         
@@ -941,9 +943,13 @@
             isNeedMove = NO;
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
         }
         
@@ -966,9 +972,13 @@
             isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
         }
 
@@ -990,9 +1000,13 @@
             isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
         }
     }
@@ -1013,9 +1027,13 @@
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
         }
     }
@@ -1038,12 +1056,18 @@
             isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
         }
         
@@ -1067,12 +1091,18 @@
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
         }
         
@@ -1095,12 +1125,18 @@
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
         }
     }    
@@ -1122,12 +1158,18 @@
 
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
         }
     }
@@ -1136,9 +1178,6 @@
     if (i>0 && i<5 && j>0 && j<5) {
         
         if (mapUnitType[i-1][j] != -1) {
-            if (mapUnitType[i-1][j] == 4) {
-                
-            }
             te = 0;
         }
         if (mapUnitType[i][j+1] != -1) {
@@ -1156,15 +1195,23 @@
             
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
+            }else if(ischecked[i-1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }else if(ischecked[i][j+1] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
+            }else if(ischecked[i+1][j] == 1){
+                isNeedDel = NO;
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
+            }else if(ischecked[i][j-1] == 1){
+                isNeedDel = NO;
             }
         }
     }
@@ -1173,6 +1220,7 @@
         NSLog(@"isNeedDel = YES");
     }else {
         NSLog(@"isNeedDel = NO （le+te+re+be: %d %d %d %d）",le,te,re,be);
+        isDchecked[i][j] = 0;   //  If there are export is 0  避免判断时被归为消除成员中的一员
     }
 }
 
@@ -1220,17 +1268,28 @@
                                 CCSprite *mubei = [CCSprite spriteWithSpriteFrameName:@"2001.png"];
                                 [mubei setPosition:CGPointMake(50*q+25+10, 50*(5-p)+95)];
                                 [refreshBatchNode addChild:mubei z:p+2 tag:mapSpriteTag[p][q]];
+                                
+                                if (q>mergeY) {
+                                    mergeY = q;
+                                    mergeX = p;                             //
+                                }                                           //   合成位置坐标
+                                if (q == mergeY) {                          //
+                                    if ( p >mergeX ) {                      //
+                                        mergeX = p;
+                                    }
+                                }
                                 NSLog(@"~~~~~~~~~%d",mapSpriteTag[p][q]);
                             }
                         }
                     }
 
-                }else{
-                
-                    mapUGT[i][j] = -1;
-                    mapUID[i][j] = 4001;
-                    mapUnitType[i][j] = 4;
                 }
+//                else{
+//                
+//                    mapUGT[i][j] = -1;
+//                    mapUID[i][j] = 4001;
+//                    mapUnitType[i][j] = 4;
+//                }
                 
                 break;
             case 1:
@@ -1420,6 +1479,54 @@
                 
                 mapUnitType[myx][myy] =1;
                 [self dragonMoveHandler];
+                
+                NSLog(@"cece  mergex:%d, mergeY:%d",mergeX,mergeY);
+                if (mergeX != -1) {
+                    
+                    nowID = [self checkForUpdate:mergeX setY:mergeY withID:mapUID[mergeX][mergeY]];
+                    
+                    
+                    NSLog(@"cece 1nowID:%d, mapUID:%d",nowID,mapUID[mergeX][mergeY]);
+                    if (nowID == mapUID[mergeX][mergeY] && nowID != -1) {
+                        delCount = 0; 
+                        
+                        for (int i =0; i<6; i++) {
+                            for (int j = 0 ; j<6; j++) {
+                                if(delGroup[i][j] !=-1){
+                                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
+                                    
+                                    mapUID[i][j] = -1;
+                                    mapUGT[i][j] = -1;
+                                    mapUnitType[i][j] = -1;
+                                    
+                                    delGroup[i][j] =-1;
+                                }
+                            }
+                        }
+                        
+                        mapUID[mergeX][mergeY] = nowID;          //  新精灵grouptype为原来的groupto
+                        mapUGT[mergeX][mergeY] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                        
+                        [refreshBatchNode removeChildByTag:mapSpriteTag[mergeX][mergeY] cleanup:YES];
+                        CCSprite *newUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
+                        
+                        
+                        //  给新精灵type数组赋值 以同步精灵属性
+                        
+                        
+                        mapUnitType[mergeX][mergeY] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
+                        
+                        [refreshBatchNode addChild:newUnit z:myx+2 tag:mapSpriteTag[mergeX][mergeY]];
+                        
+                        
+                        [newUnit setPosition:CGPointMake(50*mergeY + 25 +10, 50*(5-mergeX)+45+50)];
+                        
+                        mergeX = -1;
+                        mergeY = -1;
+                        
+                    }
+                }
                 break;
                 
             case 4:
@@ -1427,6 +1534,51 @@
                 refreshUnit.zOrder = myx+2;
                 
                 [self dragonMoveHandler];
+                
+                
+                NSLog(@"mapUID:%d",mapUID[myx][myy]);
+                nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
+                
+                NSLog(@"nowID:%d mapUID:%d",nowID,mapUID[myx][myy]);
+                if (nowID == mapUID[myx][myy] && mapUnitType[myx][myy] != 4 && nowID != -1) {
+                    delCount = 0; 
+                    
+                    for (int i =0; i<6; i++) {
+                        for (int j = 0 ; j<6; j++) {
+                            if(delGroup[i][j] !=-1){
+                                [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                                [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
+                                
+                                mapUID[i][j] = -1;
+                                mapUGT[i][j] = -1;
+                                mapUnitType[i][j] = -1;
+                                
+                                delGroup[i][j] =-1;
+                            }
+                        }
+                    }
+                    
+                    mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
+                    mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                    
+                    
+                    refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
+                    
+                    
+                    //  给新精灵type数组赋值 以同步精灵属性
+                    
+                    
+                    mapUnitType[myx][myy] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
+                    
+                    [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
+                    
+                    
+                    [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                    
+                    
+                    
+                    
+                }
                 break;
         }        
         

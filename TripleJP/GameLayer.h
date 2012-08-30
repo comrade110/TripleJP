@@ -116,15 +116,17 @@
     
     BOOL isNeedMove;                           //  由于周围布满递归后不一定返回0 所以第一步返回0等于NO后直接让返回0
     
+    
     int le;
     int te;
-    int re;
-    int be;
+    int re;                                     //                  X   X
+    int be;                                     //                  X O X
+                                                //                  X   X
+    int delGroupCount;                          //            用于放置O时 以上情况的计数  X为挂逼的单位
     
+    int mergeX[4];
     
-    int mergeX;
-    
-    int mergeY;
+    int mergeY[4];
     
 }
 

@@ -75,6 +75,7 @@
 -(void)initCheckArr{
     
     isNeedMove = YES;
+    delGroupCount = 0;
     for (int i =0; i<6; i++) {
         for (int j = 0 ; j<6; j++) {
             ischecked[i][j] = 0;
@@ -815,6 +816,12 @@
         
         
         for (int i =0; i<6; i++) {
+            
+            if (i<4) {
+                mergeX[i] = -1;
+                mergeY[i] = -1;
+            }
+            
             for (int j = 0 ; j<6; j++) {
                 mapUID[i][j] = -1;
                 mapUGT[i][j] = -1;
@@ -832,8 +839,6 @@
             }
         }
         
-        mergeX = -1;
-        mergeY = -1;
         
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
         
@@ -913,7 +918,6 @@
 }
 
 -(void)dragonMoveWithX:(int)i withY:(int)j{
-    isNeedDel = NO;
     
     isDchecked[i][j] = 1;
     
@@ -939,18 +943,19 @@
 
         }
         if (le+te+re+be == 0) {
-            
+            if (ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
         
     }//  右上角
@@ -968,18 +973,23 @@
             be = 0;
 
         }
+        
         if (le+te+re+be == 0) {
+            if (ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
+
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
+            
+        }else {
+            isNeedDel = NO;
         }
 
     }
@@ -997,17 +1007,19 @@
             te = 0;
         }
         if (le+te+re+be == 0) {
+            if (ischecked[i-1][j] == 1|| ischecked[i][j-1] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
     }
     //  左下角
@@ -1024,17 +1036,19 @@
             re = 0;
         }
         if (le+te+re+be == 0) {
+            if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
     }
     
@@ -1053,22 +1067,22 @@
             be = 0;
         }
         if (le+te+re+be == 0) {
+            if (ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
         
     }
@@ -1088,22 +1102,22 @@
             be = 0;
         }
         if (le+te+re+be == 0) {
+            if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
         
     }  
@@ -1122,22 +1136,22 @@
             le = 0;
         }
         if (le+te+re+be == 0) {
+            if (ischecked[i-1][j] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
     }    
     // 下边
@@ -1155,22 +1169,22 @@
             re = 0;
         }
         if (le+te+re+be == 0) {
-
+            if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
+            isNeedMove = NO;
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
     }
     
@@ -1191,35 +1205,34 @@
         }
         if (le+te+re+be == 0) {
             
+            if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
+            }
             isNeedMove = NO;
             
             if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
                 [self dragonMoveWithX:i-1 withY:j];
-            }else if(ischecked[i-1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }else if(ischecked[i][j+1] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
-            }else if(ischecked[i+1][j] == 1){
-                isNeedDel = NO;
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
-            }else if(ischecked[i][j-1] == 1){
-                isNeedDel = NO;
             }
+        }else {
+            isNeedDel = NO;
         }
     }
-    if (le+te+re+be == 0) {
-        isNeedDel = YES;
+    if (le+te+re+be == 0 && (ischecked[i-1][j] == 0 || ischecked[i][j+1] == 0 || ischecked[i][j-1] == 0 || ischecked[i+1][j] == 0)) {
         NSLog(@"isNeedDel = YES");
     }else {
         NSLog(@"isNeedDel = NO （le+te+re+be: %d %d %d %d）",le,te,re,be);
+        
+        isNeedDel = NO;
         isDchecked[i][j] = 0;   //  If there are export is 0  避免判断时被归为消除成员中的一员
     }
 }
@@ -1238,6 +1251,15 @@
         int j=moveYArr[k];
         if (mapUnitType[i][j] == 4 && ischecked[i][j] == 0) {
             
+            NSLog(@"~~check I = %d J = %d    ischecked[i][j] = %d~~",i,j,ischecked[i][j]);
+            for (int i =0; i<6; i++) {
+                for (int j = 0 ; j<6; j++) {
+                    isDchecked[i][j] =0;
+                    
+                }
+            }
+            isNeedMove = YES;    // 重设
+            isNeedDel = YES;
             [self dragonMoveWithX:i withY:j];
 
            
@@ -1249,19 +1271,20 @@
             if (num !=0 && !isNeedMove) {
                 num = 0;
             }
-            isNeedMove = YES;    // 重设
+
             
-            NSLog(@"mapUnitType[%d][%d-1]:%d",i,j,mapUnitType[i][j-1]);
-            NSLog(@"the numis %d",num);
         
         switch (num) {
             case 0:
+                
                 if (isNeedDel) {
+                    delGroupCount ++;
+                    
+                    NSLog(@"me me ~%d~~",delGroupCount);
                     for (int p=0; p<6; p++) {
                         for (int q=0; q<6; q++) {
                             if (isDchecked[p][q] == 1) {
                                 [refreshBatchNode removeChildByTag:mapSpriteTag[p][q] cleanup:YES];
-                                NSLog(@"ganga~~~");
                                 mapUGT[p][q] = 2002;
                                 mapUID[p][q] = 2001;
                                 mapUnitType[p][q] = 2;
@@ -1269,16 +1292,15 @@
                                 [mubei setPosition:CGPointMake(50*q+25+10, 50*(5-p)+95)];
                                 [refreshBatchNode addChild:mubei z:p+2 tag:mapSpriteTag[p][q]];
                                 
-                                if (q>mergeY) {
-                                    mergeY = q;
-                                    mergeX = p;                             //
+                                if (q>mergeY[delGroupCount-1]) {
+                                    mergeY[delGroupCount-1] = q;
+                                    mergeX[delGroupCount-1] = p;                             //
                                 }                                           //   合成位置坐标
-                                if (q == mergeY) {                          //
-                                    if ( p >mergeX ) {                      //
-                                        mergeX = p;
+                                if (q == mergeY[delGroupCount-1]) {                          //
+                                    if ( p >mergeX[delGroupCount-1] ) {                      //
+                                        mergeX[delGroupCount-1] = p;
                                     }
                                 }
-                                NSLog(@"~~~~~~~~~%d",mapSpriteTag[p][q]);
                             }
                         }
                     }
@@ -1479,53 +1501,64 @@
                 
                 mapUnitType[myx][myy] =1;
                 [self dragonMoveHandler];
-                
-                NSLog(@"cece  mergex:%d, mergeY:%d",mergeX,mergeY);
-                if (mergeX != -1) {
+
+                for (int i = 0; i<4; i++) {
                     
-                    nowID = [self checkForUpdate:mergeX setY:mergeY withID:mapUID[mergeX][mergeY]];
-                    
-                    
-                    NSLog(@"cece 1nowID:%d, mapUID:%d",nowID,mapUID[mergeX][mergeY]);
-                    if (nowID == mapUID[mergeX][mergeY] && nowID != -1) {
-                        delCount = 0; 
+                    if (mergeX[i] != -1) {
+                        NSLog(@"do do %d %d",mergeX[i],mergeY[i]);
+                        nowID = [self checkForUpdate:mergeX[i] setY:mergeY[i] withID:mapUID[mergeX[i]][mergeY[i]]];
                         
-                        for (int i =0; i<6; i++) {
-                            for (int j = 0 ; j<6; j++) {
-                                if(delGroup[i][j] !=-1){
-                                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
-                                    [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
-                                    
-                                    mapUID[i][j] = -1;
-                                    mapUGT[i][j] = -1;
-                                    mapUnitType[i][j] = -1;
-                                    
-                                    delGroup[i][j] =-1;
+                        
+                        if (nowID == mapUID[mergeX[i]][mergeY[i]] && nowID != -1) {
+                            delCount = 0; 
+                            
+                            for (int i =0; i<6; i++) {
+                                for (int j = 0 ; j<6; j++) {
+                                    if(delGroup[i][j] !=-1){
+                                        
+                                        if (mergeX[i+1] != -1) {
+                                            
+                                            
+                                        }else {
+                                            [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                                            [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
+                                            
+                                            mapUID[i][j] = -1;
+                                            mapUGT[i][j] = -1;
+                                            mapUnitType[i][j] = -1;
+                                            
+                                            delGroup[i][j] =-1;
+                                        }
+                                        
+                                    }
                                 }
                             }
+                            
+                            mapUID[mergeX[i]][mergeY[i]] = nowID;          //  新精灵grouptype为原来的groupto
+                            mapUGT[mergeX[i]][mergeY[i]] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                            
+                            [refreshBatchNode removeChildByTag:mapSpriteTag[mergeX[i]][mergeY[i]] cleanup:YES];
+
+                            CCSprite *newUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
+                            
+                            
+                            //  给新精灵type数组赋值 以同步精灵属性
+                            
+                            
+                            mapUnitType[mergeX[i]][mergeY[i]] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
+                            
+                            [refreshBatchNode addChild:newUnit z:myx+2 tag:mapSpriteTag[mergeX[i]][mergeY[i]]];
+                            
+                            
+                            [newUnit setPosition:CGPointMake(50*mergeY[i] + 25 +10, 50*(5-mergeX[i])+45+50)];
+                            
+                            mergeX[i] = -1;
+                            mergeY[i] = -1;
+                            
                         }
-                        
-                        mapUID[mergeX][mergeY] = nowID;          //  新精灵grouptype为原来的groupto
-                        mapUGT[mergeX][mergeY] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-                        
-                        [refreshBatchNode removeChildByTag:mapSpriteTag[mergeX][mergeY] cleanup:YES];
-                        CCSprite *newUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
-                        
-                        
-                        //  给新精灵type数组赋值 以同步精灵属性
-                        
-                        
-                        mapUnitType[mergeX][mergeY] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
-                        
-                        [refreshBatchNode addChild:newUnit z:myx+2 tag:mapSpriteTag[mergeX][mergeY]];
-                        
-                        
-                        [newUnit setPosition:CGPointMake(50*mergeY + 25 +10, 50*(5-mergeX)+45+50)];
-                        
-                        mergeX = -1;
-                        mergeY = -1;
-                        
+
                     }
+                    
                 }
                 break;
                 
@@ -1536,10 +1569,9 @@
                 [self dragonMoveHandler];
                 
                 
-                NSLog(@"mapUID:%d",mapUID[myx][myy]);
+           //     NSLog(@"mapUID:%d",mapUID[myx][myy]);
                 nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
                 
-                NSLog(@"nowID:%d mapUID:%d",nowID,mapUID[myx][myy]);
                 if (nowID == mapUID[myx][myy] && mapUnitType[myx][myy] != 4 && nowID != -1) {
                     delCount = 0; 
                     
@@ -1605,10 +1637,7 @@
 }
 
 
--(void)initMapBoolValue{
 
-
-}
 
 
 -(void)realloc{

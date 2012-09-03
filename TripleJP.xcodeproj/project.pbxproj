@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE75F1F915F066E500835AB7 /* AnimateSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = CE75F1F815F066E500835AB7 /* AnimateSprite.m */; };
 		CE79258815C6576D00D3582B /* MapTileAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79258715C6576C00D3582B /* MapTileAttribute.m */; };
 		CE7944BC15C23B380002857F /* refreshUnit.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BA15C23B380002857F /* refreshUnit.plist */; };
 		CE7944BD15C23B380002857F /* Items.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BB15C23B380002857F /* Items.plist */; };
@@ -160,6 +161,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE75F1F515F05FFC00835AB7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		CE75F1F715F066E500835AB7 /* AnimateSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateSprite.h; sourceTree = "<group>"; };
+		CE75F1F815F066E500835AB7 /* AnimateSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateSprite.m; sourceTree = "<group>"; };
 		CE79258615C6576C00D3582B /* MapTileAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileAttribute.h; sourceTree = "<group>"; };
 		CE79258715C6576C00D3582B /* MapTileAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileAttribute.m; sourceTree = "<group>"; };
 		CE7944BA15C23B380002857F /* refreshUnit.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = refreshUnit.plist; sourceTree = "<group>"; };
@@ -518,6 +522,9 @@
 				CEC4394215BF9F410088A8D1 /* AppDelegate.m */,
 				CEC4394415BF9F410088A8D1 /* HelloWorldLayer.h */,
 				CEC4394515BF9F410088A8D1 /* HelloWorldLayer.m */,
+				CE75F1F515F05FFC00835AB7 /* Config.h */,
+				CE75F1F715F066E500835AB7 /* AnimateSprite.h */,
+				CE75F1F815F066E500835AB7 /* AnimateSprite.m */,
 				CEC4394715BF9F410088A8D1 /* IntroLayer.h */,
 				CEC4394815BF9F410088A8D1 /* IntroLayer.m */,
 				CEC4395315BF9FCD0088A8D1 /* LoadScene.h */,
@@ -1142,6 +1149,7 @@
 				CE80B47315D2120800EB92E1 /* MapUnitController.m in Sources */,
 				CE80B47615D23E6300EB92E1 /* UnitAttributes.m in Sources */,
 				CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */,
+				CE75F1F915F066E500835AB7 /* AnimateSprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

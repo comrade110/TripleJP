@@ -10,7 +10,8 @@
 #import "cocos2d.h"
 #import "ObjClass.h"
 #import "MapUnitController.h"
-
+#import "Config.h"
+#import "AnimateSprite.h"
 
 
 
@@ -31,6 +32,7 @@
     int intID;                                   //  精灵的ID
     int intGroupType;                                //  初始化的精灵的groupType
     int intType;                                //  初始化的精灵的type
+    int intScore;                                //  初始化的精灵的分数
     
 //    BOOL singleGroup;                             //  周围单个的精灵 是否需要与当前精灵一起存为数组  当当前精灵被合并后  不存数组  
     
@@ -53,13 +55,17 @@
     
     int mapSpriteTag[6][6];
     
+    int mapUnitScore[6][6];                     // 分数
+    
+    int nowID;
+    
     CCArray *storageArr;
     
     CCArray *clearArr;                         // 判断需要合并后待删除的单位
     
     CCArray *aroundSpriteTag;                  // 判断周围未存为组数组
     
-    
+    AnimateSprite *asp;                        //  动画效果
     
     NSMutableArray *rowItems;
     

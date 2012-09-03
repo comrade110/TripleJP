@@ -36,7 +36,7 @@
 
         int perRange = 0;
         
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 7; i++) {
             
             NSDictionary *keyDic = [dic objectForKey:[NSString stringWithFormat:@"%d",i]];
             

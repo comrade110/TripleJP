@@ -1255,7 +1255,7 @@
     for (int k=0; k<36; k++) {
         int i=moveXArr[k];
         int j=moveYArr[k];
-        if (mapUnitType[i][j] == 4 && ischecked[i][j] == 0) {
+        if (mapUID[i][j] == 4001 && ischecked[i][j] == 0) {
             
             NSLog(@"~~check I = %d J = %d    ischecked[i][j] = %d~~",i,j,ischecked[i][j]);
             for (int i =0; i<6; i++) {
@@ -1386,6 +1386,60 @@
                 break;
         }
         }
+        if (mapUID[i][j] == 4002 && ischecked[i][j] == 0) {
+            
+            NSLog(@"caodan!!!");
+            randomArr = [CCArray array];
+            
+            for (int i=0; i<6; i++) {
+                for (int j=0; j<6; j++) {
+                    if (mapUnitType[i][j] == -1) {
+                        
+                        EmptyArea *ea = [EmptyArea node];
+                        ea.xnum = i;
+                        ea.ynum = j;
+                        [randomArr addObject:ea];
+                    }
+                }
+            }
+            
+        if ([randomArr count] == 0) {
+            
+        }else {
+            
+            mapUGT[i][j] = -1;
+            mapUID[i][j] = -1;
+            mapUnitType[i][j] = -1;
+            EmptyArea *eat = [EmptyArea node];
+            
+            int rdc = arc4random()%[randomArr count];
+            
+            NSLog(@"()()%d()",rdc);
+            
+            eat = [randomArr objectAtIndex:rdc];
+            
+            mapUID[eat.xnum][eat.ynum] = 4002;
+            mapUnitType[eat.xnum][eat.ynum] = 4;
+            ischecked[eat.xnum][eat.ynum] = 1;
+            ccBezierConfig cfig;
+            if (eat.ynum>j) {
+                
+                cfig.controlPoint_1 = ccp(50*j+25+abs(j-eat.ynum)*10, 50*(5-i)+95+150);
+                cfig.controlPoint_2 = ccp(50*eat.ynum+25-abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
+            }else {
+                cfig.controlPoint_1 = ccp(50*j+25-abs(j-eat.ynum)*10, 50*(5-i)+95+150);
+                cfig.controlPoint_2 = ccp(50*eat.ynum+25+abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
+            }
+            [refreshBatchNode getChildByTag:i*10+j].zOrder = 10;
+            cfig.endPosition = ccp(50*eat.ynum+25+10, 50*(5-eat.xnum)+95);
+            CCBezierTo *bezier = [CCBezierTo actionWithDuration:0.75f bezier:cfig];
+            [[refreshBatchNode getChildByTag:i*10+j] runAction:bezier];
+            [refreshBatchNode getChildByTag:i*10+j].tag = eat.xnum*10+eat.ynum;
+            
+            [refreshBatchNode getChildByTag:i*10+j].zOrder = eat.xnum+2;
+        }
+            
+        }
         
     }
 
@@ -1441,7 +1495,7 @@
         
         if (mapUnitType[myx][myy]>0 && intType != 5) {
             return;
-        }else if(intType != 5){
+        }else if(intType != 5 && intType != 6){
             //    把精灵属性存入各自数组中
             
             [refreshUnit removeFromParentAndCleanup:YES];
@@ -1585,6 +1639,7 @@
                 
                 [self dragonMoveHandler];
                 
+                nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
                 [self delUnits];
                 
                 break;
@@ -1610,6 +1665,8 @@
                     refreshUnit =[CCSprite spriteWithSpriteFrameName:@"2001.png"];
                     
                     [self dragonMoveHandler];
+                    
+                    nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
                     [self delUnits];
 
                     
@@ -1637,6 +1694,14 @@
                     return;
                     
                 }else {
+                    
+                    [refreshUnit removeFromParentAndCleanup:YES];
+                    
+                    int aroundUGT[4];
+                    aroundUGT[0] = mapUGT[myx-1][myy];
+                    aroundUGT[1] = mapUGT[myx][myy+1];
+                    aroundUGT[2] = mapUGT[myx+1][myy];
+                    aroundUGT[3] = mapUGT[myx][myy-1];
                     int aroundUID[4];
                     aroundUID[0] = mapUID[myx-1][myy];
                     aroundUID[1] = mapUID[myx][myy+1];
@@ -1644,20 +1709,43 @@
                     aroundUID[3] = mapUID[myx][myy-1];
                     if (myx == 0) {
                         aroundUID[0] = -1;
+                        aroundUGT[0] = -1;
                     }
                     if (myx == 5) {
                         aroundUID[2]= -1;
+                        aroundUGT[2]= -1;
                     }
                     if (myy == 0) {
                         aroundUID[3] = -1;
+                        aroundUGT[3] = -1;
                     }
                     if (myy == 5) {
                         aroundUID[1] = -1;
+                        aroundUGT[1] = -1;
                     }
                     int max[4];
+                    int maxUID[4];
+                    int getID[4];
                     int temp;
+                    int tempUID;
+                    
                     for (int i =0; i<4; i++) {
-                        max[i]=aroundUID[i];
+                        mapUID[myx][myy] = aroundUID[i];
+                        mapUGT[myx][myy] = aroundUGT[i];
+                        getID[i]=[self checkForUpdate:myx setY:myy withID:aroundUID[i]];
+                        
+                        max[i] = getID[i];
+                        maxUID[i]=aroundUID[i];
+                        
+                        if (getID[i]==aroundUID[i]) {
+                            getID[i]=-1;
+                            max[i]=-1;
+                            maxUID[i]=-1;
+                        }
+                        
+                        delCount = 0;
+                        
+                        NSLog(@"getID[%d]=%d",i,getID[i]);
                     }
                     for (int i =0; i<3; i++) {
                         for (int j=0; j<3; j++) {
@@ -1666,77 +1754,65 @@
                                 max[j+1] =max[j];
                                 max[j] = temp;
                             }
+                            if (maxUID[j] < maxUID[j+1]) {
+                                tempUID = maxUID[j+1];
+                                maxUID[j+1] =maxUID[j];
+                                maxUID[j] = tempUID;
+                            }
+                        
                         }
                     }
-                    
-                    int getID = 0;
-                    int getID2 = 0;
-                    int getID3 = 0;
-                    int getID4 = 0;
-                    
-                    getID = [self checkForUpdate:myx setY:myy withID:max[0]];
-                    getID2 = [self checkForUpdate:myx setY:myy withID:max[1]];
-                    getID3 = [self checkForUpdate:myx setY:myy withID:max[2]];
-                    getID4 = [self checkForUpdate:myx setY:myy withID:max[3]];
-                    if (getID == max[0]) {
-                        if (getID2 == max[1]) {
-                            if (getID3 == max[2]) {
-                                if (getID4 == max[3]) {
-                                    refreshUnit =[CCSprite spriteWithSpriteFrameName:@"7001.png"];
-                                    [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
-                                    [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
-                                }else {
-                                    getID = max[3];
-                                }
-                            }else {
-                                getID = max[2];
-                            }
-                        }else {
-                            nowID = getID2;
-                            if (getID3 == max[2]) {       // 第三级不能合
-                                if (getID4 == max[3]) {      // 第四级不能合
-                                    nowID = getID;              // 下3级都不行 所以等于最大
-                                }else if (getID - getID4 <= 2) {    // 第四级能合 且是最大的下级
-                                    nowID = getID4;                 // 则为第四级
-                                }
-                            }else if (getID - getID3<= 2) {         // 第三级能合 且为最大下级
-                                if (getID3-getID4<=2) {             // 则判断第四级
-                                    nowID = getID4;                 // 能合 且为第三级下级
-                                }else {
-                                    nowID = getID3;                 // 不能合则为第三级
+                    NSLog(@"max[0]=%d",max[0]);
+                    NSLog(@"max[1]=%d",max[1]);
+                    NSLog(@"maxUID[0]=%d",maxUID[0]);
+                    NSLog(@"maxUID[3]=%d",maxUID[3]);
+                    if (max[0] == -1) {
+                        mapUID[myx][myy] = 3001;
+                        mapUGT[myx][myy] = 3002;
+                        mapUnitType[myx][myy]= 3;
+                        refreshUnit =[CCSprite spriteWithSpriteFrameName:@"3001.png"];
+                        [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
+                        [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
+                    }else {
+                        
+                        nowID = maxUID[0];
+                        NSLog(@"1");
+                        if (max[0]== max[1]) {
+                            
+                            NSLog(@"2");
+                            nowID = maxUID[1];
+                            if (max[0]==max[2]) {
+                                
+                                NSLog(@"3");
+                                nowID = maxUID[2];
+                                if (max[0]==max[3]) {
+                                    
+                                    NSLog(@"4");
+                                    nowID = maxUID[3];
                                 }
                             }
-
                         }
-                    }else {                        
-                        nowID = getID;                  //  当最大的可以合成
-                        if (getID2 == max[1]) {         // 第二级不能合
-                            if (getID3 == max[2]) {       // 第三级不能合
-                                if (getID4 == max[3]) {      // 第四级不能合
-                                    nowID = getID;              // 下3级都不行 所以等于最大
-                                }else if (getID - getID4 <= 2) {    // 第四级能合 且是最大的下级
-                                    nowID = getID4;                 // 则为第四级
-                                }
-                            }else if (getID - getID3<= 2) {         // 第三级能合 且为最大下级
-                                if (getID3-getID4<=2) {             // 则判断第四级
-                                    nowID = getID4;                 // 能合 且为第三级下级
-                                }else {
-                                    nowID = getID3;                 // 不能合则为第三级
-                                }
-                            }
-                        }else if (getID - getID2 <= 2) {            // 第二级能和 且为最大下级
-                            if (getID2-getID3<=2) {                 // 第三级也能合 且为2下级
-                                if (getID3-getID4>=2) {             // 第四级也能合 且为3下级  
-                                    nowID = getID4;                 // 则为4
-                                }else {
-                                    nowID = getID3;                 // 4不行 则3
-                                }
-                            }else {
-                                nowID = getID2;                     // 3不行 则2
+                        NSLog(@"%d！！！！！！！",nowID);
+                        
+                        for (int i=0; i<6; i++) {
+                            for (int j=0; j<6; j++) {
+                                delGroup[i][j]= -1;
                             }
                         }
                         
+                        delCount = 0;
+                        mapUID[myx][myy] = nowID;
+                        mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                        NSLog(@"#####%d####",nowID);
+                        
+                        nowID = [self checkForUpdate:myx setY:myy withID:nowID];
+                        
+                        NSLog(@"%d####",nowID);
+                        [self delUnits]; 
+                        
                     }
+                    
+                    
                 }
                 break;
         }        
@@ -1766,7 +1842,6 @@
 
 -(void)delUnits{
 
-    nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
     
     if (nowID == mapUID[myx][myy] && mapUnitType[myx][myy] != 4 && nowID != -1) {
         delCount = 0; 

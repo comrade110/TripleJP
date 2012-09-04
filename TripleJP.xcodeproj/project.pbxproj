@@ -13,6 +13,7 @@
 		CE7944BD15C23B380002857F /* Items.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BB15C23B380002857F /* Items.plist */; };
 		CE7944C515C23DE20002857F /* ObjClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7944C415C23DE20002857F /* ObjClass.m */; };
 		CE7944C915C247FB0002857F /* ReflashUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7944C815C247FB0002857F /* ReflashUnit.m */; };
+		CE7A665615F5E09500A2A74C /* EmptyArea.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7A665515F5E09400A2A74C /* EmptyArea.m */; };
 		CE80B47315D2120800EB92E1 /* MapUnitController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE80B47215D2120800EB92E1 /* MapUnitController.m */; };
 		CE80B47615D23E6300EB92E1 /* UnitAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = CE80B47515D23E6300EB92E1 /* UnitAttributes.m */; };
 		CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = CE86D0CA15D35FD20057A67A /* StorageGroup.m */; };
@@ -172,6 +173,8 @@
 		CE7944C415C23DE20002857F /* ObjClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjClass.m; sourceTree = "<group>"; };
 		CE7944C715C247FB0002857F /* ReflashUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflashUnit.h; sourceTree = "<group>"; };
 		CE7944C815C247FB0002857F /* ReflashUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReflashUnit.m; sourceTree = "<group>"; };
+		CE7A665415F5E09400A2A74C /* EmptyArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmptyArea.h; path = ../EmptyArea.h; sourceTree = "<group>"; };
+		CE7A665515F5E09400A2A74C /* EmptyArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmptyArea.m; path = ../EmptyArea.m; sourceTree = "<group>"; };
 		CE80B47115D2120800EB92E1 /* MapUnitController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapUnitController.h; sourceTree = "<group>"; };
 		CE80B47215D2120800EB92E1 /* MapUnitController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapUnitController.m; sourceTree = "<group>"; };
 		CE80B47415D23E6300EB92E1 /* UnitAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitAttributes.h; sourceTree = "<group>"; };
@@ -525,6 +528,8 @@
 				CE75F1F515F05FFC00835AB7 /* Config.h */,
 				CE75F1F715F066E500835AB7 /* AnimateSprite.h */,
 				CE75F1F815F066E500835AB7 /* AnimateSprite.m */,
+				CE7A665415F5E09400A2A74C /* EmptyArea.h */,
+				CE7A665515F5E09400A2A74C /* EmptyArea.m */,
 				CEC4394715BF9F410088A8D1 /* IntroLayer.h */,
 				CEC4394815BF9F410088A8D1 /* IntroLayer.m */,
 				CEC4395315BF9FCD0088A8D1 /* LoadScene.h */,
@@ -1150,6 +1155,7 @@
 				CE80B47615D23E6300EB92E1 /* UnitAttributes.m in Sources */,
 				CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */,
 				CE75F1F915F066E500835AB7 /* AnimateSprite.m in Sources */,
+				CE7A665615F5E09500A2A74C /* EmptyArea.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,6 @@
 
 
 -(int)checkDirectionWithL:(int)leftNum withT:(int)topNum withR:(int)rightNum withB:(int)bottomNum{
-    NSLog(@"leftNum+topNum+rightNum+bottomNum = %d+%d+%d+%d",leftNum,topNum,rightNum,bottomNum);
     switch (leftNum+topNum+rightNum+bottomNum) {
         case 0:            
             return 0;

@@ -12,6 +12,7 @@
 #import "MapUnitController.h"
 #import "Config.h"
 #import "AnimateSprite.h"
+#import "EmptyArea.h"
 
 
 
@@ -59,9 +60,8 @@
     
     int nowID;
     
-    CCArray *storageArr;
     
-    CCArray *clearArr;                         // 判断需要合并后待删除的单位
+    CCArray *randomArr;                         // 飞的随机点
     
     CCArray *aroundSpriteTag;                  // 判断周围未存为组数组
     

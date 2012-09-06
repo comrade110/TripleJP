@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "IntroLayer.h"
+#import "MoveStep.h"
 
 @implementation AppController
 
@@ -113,6 +114,7 @@
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
+
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
@@ -126,6 +128,7 @@
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    
 	CC_DIRECTOR_END();
 }
 

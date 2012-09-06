@@ -13,8 +13,9 @@
 #import "Config.h"
 #import "AnimateSprite.h"
 #import "EmptyArea.h"
+#import "MoveStep.h"
 
-
+static
 
 @interface GameLayer : CCLayer {
     
@@ -25,6 +26,10 @@
     
     MapUnitController *unitController;
     
+    MoveStep *ms;                                //  计时与步数
+    
+    CCLabelAtlas *stepLabel;
+        
     CGRect unitRect;
     CGSize screenSize;
     CGRect mapRect;
@@ -135,6 +140,6 @@
     int mergeY[4];
     
 }
-
+@property(nonatomic,assign) int saveStep;
 
 @end

@@ -13,6 +13,8 @@
 
 @implementation GameLayer
 
+@synthesize saveStep;
+
 
 //  初始化地图状态
 
@@ -59,15 +61,6 @@
 
 
 
-//  精灵的CGRect
-
--(CGRect)AtlasRect:(CCSprite *)atlSpr
-{
-    CGRect rc = [atlSpr textureRect];
-    return CGRectMake( - rc.size.width / 2, -rc.size.height / 2, rc.size.width, rc.size.height); 
-}
-
-// map CGRect
 
 
 //   init check
@@ -840,8 +833,8 @@
             }
         }
         
-        
         NSString *nowUnitID = [[ReflashUnit node] getUnitID];
+        NSString *fontmap;
         
         intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
         intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
@@ -852,9 +845,10 @@
             
             [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"layout-hd.plist"];
             [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"texturePack-hd.plist"];
-            
             bgTiledBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"layout-hd.png"];
             refreshBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"texturePack-hd.png"];
+            
+            fontmap = @"title_score-hd.png";
             
         }else if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
             
@@ -863,6 +857,9 @@
             
             bgTiledBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"layout.png"];
             refreshBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"texturePack.png"];
+            
+            
+            fontmap = @"title_score.png";
         }
         
         
@@ -918,10 +915,66 @@
                 
             }
         }
+        //初始化进度条
         
+        time_t secnow;
+        time(&secnow);
+        
+        unsigned int nowtime = time(&secnow);
+        
+        NSLog(@"min : %d",nowtime);
+        
+        ms = [MoveStep shareMoveStep];
+    
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults objectForKey:@"utime"] != nil) {
+            NSInteger lasttime = [[userDefaults objectForKey:@"utime"] intValue];
+            
+            int laststep = [userDefaults integerForKey:@"step"];
+            NSLog(@"laststep:%d",laststep);
+            NSLog(@"right now");
+            if (laststep >= 300) {
+                ms.step = laststep;
+            }else {
+                NSLog(@"nowtime-lasttime=%d",nowtime-lasttime);
+                NSLog(@"nowtime-lasttime)/60=%d",(nowtime-lasttime)/3600);
+                ms.step =(nowtime-lasttime)/3600+laststep;
+            }
+            
+            NSLog(@"laoji");
+        }else {
+            ms.step = 300;
+            NSLog(@"laojibababi");
+        }
+        ms.utime = nowtime;
+        
+        [userDefaults setInteger:ms.step forKey:@"step"];
+        
+        NSLog(@"step:%d",ms.step);
+        CCSprite *pgbg= [CCSprite spriteWithSpriteFrameName:@"main_moveprogress.png"];
+        pgbg.position =ccp(247, 364);
+        
+        [userDefaults setObject:[NSString stringWithFormat:@"%ld",ms.utime] forKey:@"utime"];
+        
+        CCProgressTimer *ct = [CCProgressTimer progressWithSprite:pgbg];
+        CCProgressFromTo *ctft = [CCProgressFromTo actionWithDuration:60 from:0 to:100];
+        ct.position  = pgbg.position;
+        ct.type = kCCProgressTimerTypeBar;
+        ct.midpoint = ccp(0,0.5f);
+        ct.barChangeRate = ccp(1,0);
+        [ct runAction:ctft];
+        [self addChild:ct z:10 tag:90];
+        
+        // 步数文字
+        stepLabel = [[CCLabelAtlas alloc] initWithString:[NSString stringWithFormat:@"%d",ms.step] charMapFile:fontmap itemWidth:18 itemHeight:36 startCharMap:'0'];
+        stepLabel.scale = 0.5;
+        stepLabel.position = ccp(260,355);
+        [self addChild:stepLabel];
+
     }
     return self;
 }
+
 
 -(void)dragonMoveWithX:(int)i withY:(int)j{
     
@@ -1493,6 +1546,22 @@
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
         
+        if (mapUnitType[myx][myy] == 7) {
+            
+            mapUID[myx][myy] = -1;
+            mapUGT[myx][myy] = -1;
+            mapUnitType[myx][myy] = -1;
+            
+            [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy] cleanup:YES]; 
+            [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy]+600 cleanup:YES];
+            [self pavingHanlder];
+            return;
+        }else if (ms.step == 0) {
+            
+         //  提示  待完善
+            
+            return;
+        }
         if (mapUnitType[myx][myy]>0 && intType != 5) {
             return;
         }else if(intType != 5 && intType != 6){
@@ -1570,66 +1639,8 @@
                 
                 //  检测是否有挂逼的
                 
-                for (int i = 0; i<4; i++) {
-                    
-                    if (mergeX[i] != -1) {
-                        NSLog(@"do do %d %d",mergeX[i],mergeY[i]);
-                        nowID = [self checkForUpdate:mergeX[i] setY:mergeY[i] withID:mapUID[mergeX[i]][mergeY[i]]];
-                        
-                        
-                        if (nowID == mapUID[mergeX[i]][mergeY[i]] && nowID != -1) {
-                            delCount = 0; 
-                            
-                            for (int i =0; i<6; i++) {
-                                for (int j = 0 ; j<6; j++) {
-                                    if(delGroup[i][j] !=-1){
-                                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
-                                        [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
-                                        
-                                        mapUID[i][j] = -1;
-                                        mapUGT[i][j] = -1;
-                                        mapUnitType[i][j] = -1;
-                                        mapUnitScore[i][j] = 0;
-                                        
-                                        delGroup[i][j] =-1;
-                                        
-                                    }
-                                }
-                            }
-                            
-                            mapUID[mergeX[i]][mergeY[i]] = nowID;          //  新精灵grouptype为原来的groupto
-                            if (mergeX[i+1] != -1 && i<4) {
-                                
-                                mapUID[mergeX[i+1]][mergeY[i+1]] = nowID;
-                                mapUGT[mergeX[i+1]][mergeY[i+1]] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-                            }
-                            mapUGT[mergeX[i]][mergeY[i]] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-                            
-                            [refreshBatchNode removeChildByTag:mapSpriteTag[mergeX[i]][mergeY[i]] cleanup:YES];
-
-                            CCSprite *newUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
-                            
-                            
-                            //  给新精灵type数组赋值 以同步精灵属性
-                            
-                            
-                            mapUnitType[mergeX[i]][mergeY[i]] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
-                            
-                            mapUnitScore[mergeX[i]][mergeY[i]] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"score"];
-                            
-                            [refreshBatchNode addChild:newUnit z:myx+2 tag:mapSpriteTag[mergeX[i]][mergeY[i]]];
-                            
-                            
-                            [newUnit setPosition:CGPointMake(50*mergeY[i] + 25 +10, 50*(5-mergeX[i])+45+50)];
-                            
-                            mergeX[i] = -1;
-                            mergeY[i] = -1;
-                            
-                        }
-
-                    }
-                    
-                }
+                [self removeUnits];
+                
                 break;
                 
             case 4:
@@ -1668,6 +1679,7 @@
                     
                     nowID = [self checkForUpdate:myx setY:myy withID:mapUID[myx][myy]];
                     [self delUnits];
+                    
 
                     
                 }else if (mapUnitType[myx][myy] == 8) {
@@ -1685,6 +1697,8 @@
                     mapUGT[myx][myy] = -1;
                     mapUnitType[myx][myy] = -1;
                     mapUnitScore[myx][myy] = 0;
+                    
+                    [self dragonMoveHandler];
                 }
             
                 break;
@@ -1773,6 +1787,8 @@
                         refreshUnit =[CCSprite spriteWithSpriteFrameName:@"3001.png"];
                         [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
                         [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
+                        [self dragonMoveHandler];
+                        [self removeUnits];
                     }else {
                         
                         nowID = maxUID[0];
@@ -1810,6 +1826,8 @@
                         NSLog(@"%d####",nowID);
                         [self delUnits]; 
                         
+                        [self dragonMoveHandler];
+                        [self removeUnits];
                     }
                     
                     
@@ -1820,7 +1838,17 @@
 
 //       reflash mapbg
         [self pavingHanlder];
-
+        
+        
+//       步数减1
+        ms.step--;
+        stepLabel.string= [NSString stringWithFormat:@"%d",ms.step];
+        self.saveStep = ms.step;
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults] ;
+        [userDefaults setInteger:ms.step forKey:@"step"];
+        
+        NSLog(@"ms.step = %d",[userDefaults integerForKey:@"step"]);
 //       刷新单位
         NSLog(@"***%@.png***",nowUnitID);
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]];
@@ -1837,6 +1865,7 @@
         }else {
             intGroupType = -1;
         }
+        
     }
 }
 
@@ -1888,9 +1917,72 @@
 }
 
 
+-(void)removeUnits{
+    for (int i = 0; i<4; i++) {
+        
+        if (mergeX[i] != -1) {
+            NSLog(@"do do %d %d",mergeX[i],mergeY[i]);
+            nowID = [self checkForUpdate:mergeX[i] setY:mergeY[i] withID:mapUID[mergeX[i]][mergeY[i]]];
+            
+            
+            if (nowID == mapUID[mergeX[i]][mergeY[i]] && nowID != -1) {
+                delCount = 0; 
+                
+                for (int i =0; i<6; i++) {
+                    for (int j = 0 ; j<6; j++) {
+                        if(delGroup[i][j] !=-1){
+                            [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
+                            [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
+                            
+                            mapUID[i][j] = -1;
+                            mapUGT[i][j] = -1;
+                            mapUnitType[i][j] = -1;
+                            mapUnitScore[i][j] = 0;
+                            
+                            delGroup[i][j] =-1;
+                            
+                        }
+                    }
+                }
+                
+                mapUID[mergeX[i]][mergeY[i]] = nowID;          //  新精灵grouptype为原来的groupto
+                if (mergeX[i+1] != -1 && i<4) {
+                    
+                    mapUID[mergeX[i+1]][mergeY[i+1]] = nowID;
+                    mapUGT[mergeX[i+1]][mergeY[i+1]] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                }
+                mapUGT[mergeX[i]][mergeY[i]] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
+                
+                [refreshBatchNode removeChildByTag:mapSpriteTag[mergeX[i]][mergeY[i]] cleanup:YES];
+                
+                CCSprite *newUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
+                
+                
+                //  给新精灵type数组赋值 以同步精灵属性
+                
+                
+                mapUnitType[mergeX[i]][mergeY[i]] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"type"];
+                
+                mapUnitScore[mergeX[i]][mergeY[i]] =[[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"score"];
+                
+                [refreshBatchNode addChild:newUnit z:myx+2 tag:mapSpriteTag[mergeX[i]][mergeY[i]]];
+                
+                
+                [newUnit setPosition:CGPointMake(50*mergeY[i] + 25 +10, 50*(5-mergeX[i])+45+50)];
+                
+                mergeX[i] = -1;
+                mergeY[i] = -1;
+                
+            }
+            
+        }
+        
+    }
+
+}
 
 -(void)realloc{
-
+    [ms release]; 
     [super dealloc];
 }
 

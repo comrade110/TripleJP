@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE746DFE15F867BD00C0E36E /* MoveStep.m in Sources */ = {isa = PBXBuildFile; fileRef = CE746DFD15F867BD00C0E36E /* MoveStep.m */; };
+		CE746E0C15F88AF600C0E36E /* title_score-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CE746E0B15F88AF600C0E36E /* title_score-hd.png */; };
+		CE746E0E15F88AFD00C0E36E /* title_score.png in Resources */ = {isa = PBXBuildFile; fileRef = CE746E0D15F88AFD00C0E36E /* title_score.png */; };
 		CE75F1F915F066E500835AB7 /* AnimateSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = CE75F1F815F066E500835AB7 /* AnimateSprite.m */; };
 		CE79258815C6576D00D3582B /* MapTileAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = CE79258715C6576C00D3582B /* MapTileAttribute.m */; };
 		CE7944BC15C23B380002857F /* refreshUnit.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE7944BA15C23B380002857F /* refreshUnit.plist */; };
@@ -162,6 +165,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE746DFC15F867BD00C0E36E /* MoveStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MoveStep.h; path = ../MoveStep.h; sourceTree = "<group>"; };
+		CE746DFD15F867BD00C0E36E /* MoveStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MoveStep.m; path = ../MoveStep.m; sourceTree = "<group>"; };
+		CE746E0B15F88AF600C0E36E /* title_score-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_score-hd.png"; sourceTree = "<group>"; };
+		CE746E0D15F88AFD00C0E36E /* title_score.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_score.png; sourceTree = "<group>"; };
 		CE75F1F515F05FFC00835AB7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		CE75F1F715F066E500835AB7 /* AnimateSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimateSprite.h; sourceTree = "<group>"; };
 		CE75F1F815F066E500835AB7 /* AnimateSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimateSprite.m; sourceTree = "<group>"; };
@@ -536,6 +543,8 @@
 				CEC4395415BF9FCD0088A8D1 /* LoadScene.m */,
 				CEC4395515BF9FCD0088A8D1 /* LoadLayer.h */,
 				CEC4395615BF9FCD0088A8D1 /* LoadLayer.m */,
+				CE746DFC15F867BD00C0E36E /* MoveStep.h */,
+				CE746DFD15F867BD00C0E36E /* MoveStep.m */,
 				CEC4396915BFC47A0088A8D1 /* GameScene.h */,
 				CEC4396A15BFC47B0088A8D1 /* GameScene.m */,
 				CEC4396C15BFC4B20088A8D1 /* GameLayer.h */,
@@ -562,6 +571,8 @@
 		CEC437CA15BF9F3E0088A8D1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE746E0D15F88AFD00C0E36E /* title_score.png */,
+				CE746E0B15F88AF600C0E36E /* title_score-hd.png */,
 				CE7944BA15C23B380002857F /* refreshUnit.plist */,
 				CE7944BB15C23B380002857F /* Items.plist */,
 				CEB181F015BFCDCD00EC6ECC /* texturePack.plist */,
@@ -1014,6 +1025,8 @@
 				CEB181FF15BFCDCD00EC6ECC /* layout-hd.png in Resources */,
 				CE7944BC15C23B380002857F /* refreshUnit.plist in Resources */,
 				CE7944BD15C23B380002857F /* Items.plist in Resources */,
+				CE746E0C15F88AF600C0E36E /* title_score-hd.png in Resources */,
+				CE746E0E15F88AFD00C0E36E /* title_score.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1156,6 +1169,7 @@
 				CE86D0CB15D35FD20057A67A /* StorageGroup.m in Sources */,
 				CE75F1F915F066E500835AB7 /* AnimateSprite.m in Sources */,
 				CE7A665615F5E09500A2A74C /* EmptyArea.m in Sources */,
+				CE746DFE15F867BD00C0E36E /* MoveStep.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

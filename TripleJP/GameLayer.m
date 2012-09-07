@@ -801,11 +801,14 @@
     	
 }
 
+
 -(id)init{
     
     self = [super init];
     
     if (self != nil) {
+        
+
         
         
         for (int i =0; i<6; i++) {
@@ -928,17 +931,23 @@
     
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([userDefaults objectForKey:@"utime"] != nil) {
+            
+            
             NSInteger lasttime = [[userDefaults objectForKey:@"utime"] intValue];
+            
+            NSLog(@"lasttime=%d",lasttime);
             
             int laststep = [userDefaults integerForKey:@"step"];
             NSLog(@"laststep:%d",laststep);
             NSLog(@"right now");
             if (laststep >= 300) {
+                NSLog(@"lasttime=%d",lasttime);
                 ms.step = laststep;
             }else {
+                NSLog(@"lasttime~=%d",lasttime);
                 NSLog(@"nowtime-lasttime=%d",nowtime-lasttime);
-                NSLog(@"nowtime-lasttime)/60=%d",(nowtime-lasttime)/3600);
-                ms.step =(nowtime-lasttime)/3600+laststep;
+                NSLog(@"nowtime-lasttime)/60=%d",(nowtime-lasttime)/60);
+                ms.step =(nowtime-lasttime)/60+laststep;
             }
             
             NSLog(@"laoji");
@@ -948,13 +957,12 @@
         }
         ms.utime = nowtime;
         
-        [userDefaults setInteger:ms.step forKey:@"step"];
+//        [userDefaults setInteger:ms.step forKey:@"step"];
         
         NSLog(@"step:%d",ms.step);
         CCSprite *pgbg= [CCSprite spriteWithSpriteFrameName:@"main_moveprogress.png"];
         pgbg.position =ccp(247, 364);
         
-        [userDefaults setObject:[NSString stringWithFormat:@"%ld",ms.utime] forKey:@"utime"];
         
         CCProgressTimer *ct = [CCProgressTimer progressWithSprite:pgbg];
         CCProgressFromTo *ctft = [CCProgressFromTo actionWithDuration:60 from:0 to:100];
@@ -975,6 +983,14 @@
     return self;
 }
 
+-(void)saveData{
+
+    NSLog(@"调用了saveData");
+    [[NSUserDefaults standardUserDefaults] setInteger:ms.step forKey:@"step"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d",ms.utime] forKey:@"utime"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 
 -(void)dragonMoveWithX:(int)i withY:(int)j{
     
@@ -993,13 +1009,13 @@
         
         if (mapUnitType[i][j+1] != -1) {
             re = 0;
-
-
+            
+            
         }
         
         if (mapUnitType[i+1][j] != -1) {
             be = 0;
-
+            
         }
         if (le+te+re+be == 0) {
             if (ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
@@ -1025,12 +1041,12 @@
         
         if (mapUnitType[i][j-1] != -1 ) {
             le = 0;
-
+            
         }
         
         if (mapUnitType[i+1][j] != -1 ) {
             be = 0;
-
+            
         }
         
         if (le+te+re+be == 0) {
@@ -1039,7 +1055,7 @@
                 isNeedDel = NO;
             }
             isNeedMove = NO;
-
+            
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
                 [self dragonMoveWithX:i withY:j-1];
             }
@@ -1050,7 +1066,7 @@
         }else {
             isNeedDel = NO;
         }
-
+        
     }
     //  右下角
     if (i==5 && j==5) {
@@ -1265,14 +1281,25 @@
         if (le+te+re+be == 0) {
             
             if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
+                ischecked[i][j] = 1;
+                isNeedDel = NO;
             }
+            isNeedMove = NO;
+            
+            if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
+                [self dragonMoveWithX:i-1 withY:j];
+            }
+            if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
+            }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
+                [self dragonMoveWithX:i withY:j-1];
             }
         }else {
+            isNeedDel = NO;
         }
     }
     if (le+te+re+be == 0 && (ischecked[i-1][j] == 0 || ischecked[i][j+1] == 0 || ischecked[i][j-1] == 0 || ischecked[i+1][j] == 0)) {
@@ -1284,6 +1311,7 @@
         isDchecked[i][j] = 0;   //  If there are export is 0  避免判断时被归为消除成员中的一员
     }
 }
+
 
 
 // move function
@@ -1832,12 +1860,13 @@
 //       步数减1
         ms.step--;
         stepLabel.string= [NSString stringWithFormat:@"%d",ms.step];
-        self.saveStep = ms.step;
+        NSLog(@"%d",ms.step);
         
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults] ;
-        [userDefaults setInteger:ms.step forKey:@"step"];
-        
-        NSLog(@"ms.step = %d",[userDefaults integerForKey:@"step"]);
+//        
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults] ;
+//        [userDefaults setInteger:ms.step forKey:@"step"];
+//        
+//        NSLog(@"ms.step = %d",[userDefaults integerForKey:@"step"]);
 //       刷新单位
         NSLog(@"***%@.png***",nowUnitID);
         refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]];
@@ -1971,7 +2000,6 @@
 }
 
 -(void)realloc{
-    [ms release]; 
     [super dealloc];
 }
 

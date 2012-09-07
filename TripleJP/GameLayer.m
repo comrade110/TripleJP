@@ -1265,25 +1265,14 @@
         if (le+te+re+be == 0) {
             
             if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
-                ischecked[i][j] = 1;
-                isNeedDel = NO;
             }
-            isNeedMove = NO;
-            
-            if (mapUnitType[i-1][j] == 4 && isDchecked[i-1][j] == 0) {
-                [self dragonMoveWithX:i-1 withY:j];
-            }
-            if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
                 [self dragonMoveWithX:i withY:j+1];
-            }
             if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
                 [self dragonMoveWithX:i+1 withY:j];
             }
             if (mapUnitType[i][j-1] == 4 && isDchecked[i][j-1] == 0) {
-                [self dragonMoveWithX:i withY:j-1];
             }
         }else {
-            isNeedDel = NO;
         }
     }
     if (le+te+re+be == 0 && (ischecked[i-1][j] == 0 || ischecked[i][j+1] == 0 || ischecked[i][j-1] == 0 || ischecked[i+1][j] == 0)) {

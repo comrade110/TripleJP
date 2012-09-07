@@ -21,6 +21,7 @@
 	// Create the main window
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
+    
 
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
 	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
@@ -60,6 +61,7 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
+    
 	// If the 1st suffix is not found and if fallback is enabled then fallback suffixes are going to searched. If none is found, it will try with the name without suffix.
 	// On iPad HD  : "-ipadhd", "-ipad",  "-hd"
 	// On iPad     : "-ipad", "-hd"
@@ -88,6 +90,11 @@
 	// make main window visible
 	[window_ makeKeyAndVisible];
 	
+    
+    
+    gamelayer = [[GameLayer alloc] init];
+    
+    
 	return YES;
 }
 
@@ -101,6 +108,14 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setInteger:[[MoveStep shareMoveStep] step] forKey:@"step"];
+//    [userDefaults setObject:[NSString stringWithFormat:@"%ld",[[MoveStep shareMoveStep] utime]] forKey:@"utime"];
+//    NSLog(@"cena!!!");
+//    NSLog(@"%@~~",[userDefaults objectForKey:@"utime"]);
+//    [userDefaults synchronize];
+    
+    [gamelayer saveData];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
@@ -114,7 +129,14 @@
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setInteger:[[MoveStep shareMoveStep] step] forKey:@"step"];
+//    [userDefaults setObject:[NSString stringWithFormat:@"%ld",[[MoveStep shareMoveStep] utime]] forKey:@"utime"];
+//    NSLog(@"cena!!!");
+//    NSLog(@"%@~~",[userDefaults objectForKey:@"utime"]);
+//    [userDefaults synchronize];
+    
+    [gamelayer saveData];
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
@@ -128,7 +150,14 @@
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setInteger:[[MoveStep shareMoveStep] step] forKey:@"step"];
+//    [userDefaults setObject:[NSString stringWithFormat:@"%ld",[[MoveStep shareMoveStep] utime]] forKey:@"utime"];
+//    NSLog(@"cena!!!");
+//    NSLog(@"%@~~",[userDefaults objectForKey:@"utime"]);
+//    [userDefaults synchronize];
     
+    [gamelayer saveData];
 	CC_DIRECTOR_END();
 }
 
@@ -147,6 +176,8 @@
 - (void) dealloc
 {
 	[window_ release];
+    
+    [gamelayer release];
 	[navController_ release];
 
 	[super dealloc];

@@ -15,7 +15,7 @@
 #import "EmptyArea.h"
 #import "MoveStep.h"
 
-static
+
 
 @interface GameLayer : CCLayer {
     
@@ -141,5 +141,7 @@ static
     
 }
 @property(nonatomic,assign) int saveStep;
+
+-(void)saveData;
 
 @end

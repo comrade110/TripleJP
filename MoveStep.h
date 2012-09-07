@@ -12,9 +12,13 @@
 @interface MoveStep : CCNode {
     
 }
-@property(nonatomic,assign) int utime;
-@property(nonatomic,assign) int step;
+@property(nonatomic,readwrite) int utime;
+@property(nonatomic,readwrite) int step;
 
 +(MoveStep*)shareMoveStep;
+//
+//-(void)saveData;
+//
+//-(void)loadData;
 
 @end

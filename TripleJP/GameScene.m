@@ -15,7 +15,7 @@
     
     self = [super init];
     if (self != nil) {
-        GameLayer *gameLayer = [GameLayer node];
+        GameLayer *gameLayer = [[GameLayer alloc] init];
         
         [self addChild:gameLayer z:0];
     }

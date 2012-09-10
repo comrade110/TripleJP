@@ -28,7 +28,15 @@
     
     MoveStep *ms;                                //  计时与步数
     
+    CCSprite *pgbg;
+    
+    
+    CCProgressTimer *ct;
+    CCProgressFromTo *ctft;
+    
     CCLabelAtlas *stepLabel;
+    
+    BOOL timeStop;
         
     CGRect unitRect;
     CGSize screenSize;

@@ -947,7 +947,7 @@
                 NSLog(@"lasttime~=%d",lasttime);
                 NSLog(@"nowtime-lasttime=%d",nowtime-lasttime);
                 NSLog(@"nowtime-lasttime)/60=%d",(nowtime-lasttime)/60);
-                ms.step =(nowtime-lasttime)/60+laststep;
+                ms.step =(nowtime-lasttime)/60;
             }
             
             NSLog(@"laoji");
@@ -960,18 +960,28 @@
 //        [userDefaults setInteger:ms.step forKey:@"step"];
         
         NSLog(@"step:%d",ms.step);
-        CCSprite *pgbg= [CCSprite spriteWithSpriteFrameName:@"main_moveprogress.png"];
-        pgbg.position =ccp(247, 364);
-        
-        
-        CCProgressTimer *ct = [CCProgressTimer progressWithSprite:pgbg];
-        CCProgressFromTo *ctft = [CCProgressFromTo actionWithDuration:60 from:0 to:100];
-        ct.position  = pgbg.position;
-        ct.type = kCCProgressTimerTypeBar;
-        ct.midpoint = ccp(0,0.5f);
-        ct.barChangeRate = ccp(1,0);
-        [ct runAction:ctft];
-        [self addChild:ct z:10 tag:90];
+        if (ms.step>=300) {
+            timeStop = YES;
+        }else {
+            timeStop = NO;
+        }
+        if (!timeStop) {
+            pgbg= [CCSprite spriteWithSpriteFrameName:@"main_moveprogress.png"];
+            pgbg.position =ccp(247, 364);
+            
+            
+            ct = [CCProgressTimer progressWithSprite:pgbg];
+            ctft = [CCProgressFromTo actionWithDuration:60 from:0 to:100];
+            [ctft retain];
+            ct.position  = pgbg.position;
+            ct.type = kCCProgressTimerTypeBar;
+            ct.midpoint = ccp(0,0.5f);
+            ct.barChangeRate = ccp(1,0);
+            [self addChild:ct z:10 tag:90];  
+            [ct runAction:ctft];       
+            [self schedule:@selector(percentageUpdate:) interval:1.0f];
+        }
+
         
         // 步数文字
         stepLabel = [[CCLabelAtlas alloc] initWithString:[NSString stringWithFormat:@"%d",ms.step] charMapFile:fontmap itemWidth:18 itemHeight:36 startCharMap:'0'];
@@ -991,6 +1001,25 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+
+-(void)percentageUpdate:(ccTime)dt{
+    
+    if (ct.percentage == 100 && ms.step<300) {        
+        ct.percentage = 0;
+        ms.step++;
+        stepLabel.string = [NSString stringWithFormat:@"%d",ms.step]; 
+        if (ms.step != 300) {
+            [ct runAction:ctft]; 
+        }else {            
+            timeStop =YES;
+        }
+    }else if (ms.step<300 && timeStop) {
+        NSLog(@"ye");
+        timeStop = NO;
+        [ct runAction:ctft]; 
+    }
+    
+}
 
 -(void)dragonMoveWithX:(int)i withY:(int)j{
     
@@ -1608,6 +1637,7 @@
                     for (int i =0; i<6; i++) {
                         for (int j = 0 ; j<6; j++) {
                             if(delGroup[i][j] !=-1){
+                                
                                 [refreshBatchNode removeChildByTag:mapSpriteTag[i][j] cleanup:YES]; 
                                 [refreshBatchNode removeChildByTag:mapSpriteTag[i][j]+600 cleanup:YES];
                                 
@@ -2000,6 +2030,7 @@
 }
 
 -(void)realloc{
+    [ctft release];
     [super dealloc];
 }
 

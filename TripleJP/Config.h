@@ -7,3 +7,5 @@
 //
 
 #define BOMB_SPRITE_SHEET_CAPACITY 20
+
+#define STORE_ADD_NUM 99

@@ -836,7 +836,7 @@
             }
         }
         
-        NSString *nowUnitID = [[ReflashUnit node] getUnitID];
+        nowUnitID = [[ReflashUnit node] getUnitID];
         NSString *fontmap;
         
         intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
@@ -904,6 +904,18 @@
         [self addChild:bombFrame];
         
         
+        //*******  初始化左上储物
+        
+        storeArr = [[CCArray alloc] init];
+
+        
+        CCSprite *storeBox = [CCSprite spriteWithSpriteFrameName:@"depot.png"];
+        mapSpriteTag[0][0] = 0;
+        mapUID[0][0] = 0;
+        mapUnitType[0][0] = 0;
+        storeBox.position = ccp(35, 5*50+95);
+        [refreshBatchNode addChild:storeBox z:2 tag:mapSpriteTag[0][0]+STORE_ADD_NUM];
+        
         
         // 初始化背景
         [self mapBgInit];
@@ -968,7 +980,6 @@
         if (!timeStop) {
             pgbg= [CCSprite spriteWithSpriteFrameName:@"main_moveprogress.png"];
             pgbg.position =ccp(247, 364);
-            
             
             ct = [CCProgressTimer progressWithSprite:pgbg];
             ctft = [CCProgressFromTo actionWithDuration:60 from:0 to:100];
@@ -1583,13 +1594,61 @@
     
     CGPoint touchPoint = [self convertTouchToNodeSpace:touch];
     
-    NSString *nowUnitID = [[ReflashUnit node] getUnitID];
+    nowUnitID = [[ReflashUnit node] getUnitID];
     
     myx = 5- mapTileY;
     
     myy = mapTileX;
     
     if (CGRectContainsPoint(tileRect, touchPoint)) {
+        
+        if (myx ==0 && myy ==0) {
+            // 若未存储
+            if (mapUnitType[0][0] ==0) {
+                
+                [refreshUnit removeFromParentAndCleanup:YES];
+                
+                mapUID[0][0] = intID+STORE_ADD_NUM;
+                mapUGT[0][0] = intGroupType+STORE_ADD_NUM;
+                mapUnitType[0][0] = intType+STORE_ADD_NUM;
+                mapUnitScore[0][0] = intScore+STORE_ADD_NUM;
+                mapSpriteTag[0][0] = 0; 
+                
+                refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",intID]];
+                refreshUnit.position = ccp(35,50*5+95);
+                refreshUnit.scale = 0.9f;
+                refreshUnit.tag = 0;
+                refreshUnit.zOrder = 3;
+                [refreshBatchNode addChild:refreshUnit z:3 tag:0];
+                [self creatNewUnit];
+            }else {
+                
+                [storeArr addObject:[NSNumber numberWithInt:intID]];
+                [storeArr addObject:[NSNumber numberWithInt:intGroupType]];
+                [storeArr addObject:[NSNumber numberWithInt:intType]];
+                [storeArr addObject:[NSNumber numberWithInt:intScore]]; 
+                [refreshUnit removeFromParentAndCleanup:YES];
+                NSLog(@"store:%d",intID);
+                
+                intID = mapUID[0][0]-STORE_ADD_NUM;
+                intGroupType = mapUGT[0][0]-STORE_ADD_NUM;
+                intType = mapUnitType[0][0]-STORE_ADD_NUM;
+                intScore = mapUnitScore[0][0]-STORE_ADD_NUM;
+                
+                [[refreshBatchNode getChildByTag:0] removeFromParentAndCleanup:YES];
+                refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",intID]];
+                refreshUnit.position =ccp(screenSize.width*0.5f, 380);
+                [refreshBatchNode addChild:refreshUnit z:2];
+                mapUID[0][0] = 0;
+                mapUGT[0][0] = 0;
+                mapUnitType[0][0] = 0;
+                mapUnitScore[0][0] = 0;
+                mapSpriteTag[0][0] = 0; 
+                
+            }
+            return;
+            
+        }
         
         
         if (mapUnitType[myx][myy] == 7) {
@@ -1897,24 +1956,43 @@
 //        [userDefaults setInteger:ms.step forKey:@"step"];
 //        
 //        NSLog(@"ms.step = %d",[userDefaults integerForKey:@"step"]);
-//       刷新单位
-        NSLog(@"***%@.png***",nowUnitID);
-        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]];
-        [refreshBatchNode addChild:refreshUnit z:2];
-        
-        [refreshUnit setPosition:CGPointMake(screenSize.width*0.5f, 380)]; 
-        
-        intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
-        intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
-        intScore = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"score"];
-        if (intType < 4) {
-            
-            intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
-        }else {
-            intGroupType = -1;
-        }
+        [self creatNewUnit];
         
     }
+}
+
+-(void)creatNewUnit{
+    //       刷新单位
+    NSLog(@"***%@.png***",nowUnitID);
+    
+    if ([storeArr count] == 4) {
+        intID = [[storeArr objectAtIndex:0] intValue];
+        intGroupType = [[storeArr objectAtIndex:1] intValue];
+        intType = [[storeArr objectAtIndex:2] intValue];
+        intScore = [[storeArr objectAtIndex:3] intValue];
+        NSLog(@"intID:%d",intID);
+        refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",intID]];
+        [refreshBatchNode addChild:refreshUnit z:2];
+        [refreshUnit setPosition:ccp(screenSize.width*0.5f, 380)]; 
+        [storeArr removeAllObjects];
+        
+        return;
+    }
+    refreshUnit = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@.png",nowUnitID]];
+    [refreshBatchNode addChild:refreshUnit z:2];
+    
+    [refreshUnit setPosition:ccp(screenSize.width*0.5f, 380)]; 
+    
+    intType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"type"];
+    intID = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"ID"];
+    intScore = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"score"];
+    if (intType < 4) {
+        
+        intGroupType = [[UnitAttributes node] getUnitAttrWithKey:nowUnitID withSubKey:@"groupto"];
+    }else {
+        intGroupType = -1;
+    }
+
 }
 
 -(void)delUnits{
@@ -2031,6 +2109,7 @@
 
 -(void)realloc{
     [ctft release];
+    [storeArr release];
     [super dealloc];
 }
 

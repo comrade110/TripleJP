@@ -30,6 +30,8 @@
     
     CCSprite *pgbg;
     
+    CCArray *storeArr;                           //  存储reflashunit
+    
     
     CCProgressTimer *ct;
     CCProgressFromTo *ctft;
@@ -81,6 +83,8 @@
     AnimateSprite *asp;                        //  动画效果
     
     NSMutableArray *rowItems;
+    
+    NSString *nowUnitID;
     
     NSValue *miValue;
     

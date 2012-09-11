@@ -132,7 +132,7 @@
 //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 //    [userDefaults setInteger:[[MoveStep shareMoveStep] step] forKey:@"step"];
 //    [userDefaults setObject:[NSString stringWithFormat:@"%ld",[[MoveStep shareMoveStep] utime]] forKey:@"utime"];
-    NSLog(@"cena!!!~");
+//    NSLog(@"cena!!!");
 //    NSLog(@"%@~~",[userDefaults objectForKey:@"utime"]);
 //    [userDefaults synchronize];
     [gamelayer saveData];

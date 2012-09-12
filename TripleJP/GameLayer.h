@@ -21,6 +21,7 @@
     
     CCSprite *playBg;
     CCSprite *refreshUnit;
+    CCSprite *newSprite;
     CCSpriteBatchNode *bgTiledBatchNode;
     CCSpriteBatchNode *refreshBatchNode;
     
@@ -49,8 +50,7 @@
     int intGroupType;                                //  初始化的精灵的groupType
     int intType;                                //  初始化的精灵的type
     int intScore;                                //  初始化的精灵的分数
-    
-//    BOOL singleGroup;                             //  周围单个的精灵 是否需要与当前精灵一起存为数组  当当前精灵被合并后  不存数组  
+     
     
     
     int mapTileX;
@@ -58,6 +58,9 @@
     
     int myx;
     int myy;
+    
+    int lastmyx;
+    int lastmyy;
     
     int mapUID[6][6];                           // mapUnitID
     
@@ -75,6 +78,11 @@
     
     int nowID;
     
+    BOOL isFirstTouch;
+    
+    BOOL isPut;
+    
+    CCSprite *firstTouchBG;
     
     CCArray *randomArr;                         // 飞的随机点
     
@@ -85,9 +93,7 @@
     NSMutableArray *rowItems;
     
     NSString *nowUnitID;
-    
-    NSValue *miValue;
-    
+        
     BOOL isNeedGroup;                          // 是否合并
     
     BOOL isLeftEmpty;                          // 判断某个点左边是否有单位存在，没有则YES，反之NO;
@@ -152,7 +158,6 @@
     int mergeY[4];
     
 }
-@property(nonatomic,assign) int saveStep;
 
 -(void)saveData;
 

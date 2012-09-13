@@ -1606,23 +1606,11 @@
     
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
-        NSLog(@"lastmyx:%d lastmyy:%d\n  myx:%d myy:%d\n",lastmyx,lastmyy,myx,myy);
-        if (lastmyx == myx && lastmyy == myy) {
-            isFirstTouch = NO;
-            NSLog(@"noonononon");
-        }else {
-            if ([refreshBatchNode getChildByTag:FIRST_TOUCH_BG_TAG]) {
-                [refreshBatchNode removeChildByTag:FIRST_TOUCH_BG_TAG cleanup:YES];
-            }
-            
-            isFirstTouch = YES;
-        }
-        
         if (myx ==0 && myy ==0) {
             // 若未存储
             if (mapUnitType[0][0] ==0) {
                 
-                [refreshUnit removeFromParentAndCleanup:YES];
+                [newSprite removeFromParentAndCleanup:YES];
                 
                 mapUID[0][0] = intID+STORE_ADD_NUM;
                 mapUGT[0][0] = intGroupType+STORE_ADD_NUM;
@@ -1705,12 +1693,32 @@
         //    获取groupType数值
         
         nowID = intID;
-        if (isFirstTouch) {
-            
-            if ([refreshBatchNode getChildByTag:mapSpriteTag[lastmyx][lastmyx]+800]) {
-                NSLog(@"的确有");
-                [refreshBatchNode removeChildByTag:mapSpriteTag[lastmyx][lastmyx]+800 cleanup:YES];
+        for (int i =0; i<6; i++) {
+            for (int j = 0 ; j<6; j++) {
+                if(delGroup[i][j] !=-1){
+                    [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] stopActionByTag:i*10+j];
+                    CCMoveTo *resetPositionACT =[CCMoveTo actionWithDuration:0.5f position:ccp(50*j+25+10, 50*(5-i)+95)];
+                    [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] runAction:resetPositionACT];
+                    delGroup[i][j] = -1;
+                }
             }
+        }
+        if (lastmyx == myx && lastmyy == myy) {
+            isFirstTouch = NO;
+            NSLog(@"noonononon");
+        }else {
+            if ([refreshBatchNode getChildByTag:FIRST_TOUCH_BG_TAG]) {
+                [refreshBatchNode removeChildByTag:FIRST_TOUCH_BG_TAG cleanup:YES];
+            }
+            if ([refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG]) {
+                [refreshBatchNode removeChildByTag:FIRST_TOUCH_SP_TAG cleanup:YES];
+            }
+            NSLog(@"yyyyyyy");
+            isFirstTouch = YES;
+        }
+        
+        
+        if (isFirstTouch) {
             
             lastmyx = myx;
             lastmyy = myy;
@@ -1719,10 +1727,15 @@
             [refreshUnit setPosition:ccp(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
             firstTouchBG = [CCSprite spriteWithSpriteFrameName:@"main_add.png"];
             firstTouchBG.position = ccp(tileRect.origin.x + 25, tileRect.origin.y+25);
-            [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]+800];
+            [refreshBatchNode addChild:refreshUnit z:myx+2 tag:FIRST_TOUCH_SP_TAG];
             [refreshBatchNode addChild:firstTouchBG z:myx+1 tag:FIRST_TOUCH_BG_TAG];
         }else {
-
+            
+            [newSprite removeFromParentAndCleanup:YES];
+            
+            [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeFromParentAndCleanup:YES];
+            
+            [firstTouchBG removeFromParentAndCleanup:YES];
         }
         
         switch (intType) {
@@ -1733,34 +1746,16 @@
                 delCount = 0; 
                 if (nowID > intID) {
                     if (isFirstTouch) {
-                        NSLog(@"cccccccccccccc");
-                        for (int i =0; i<6; i++) {
-                            for (int j = 0 ; j<6; j++) {
-                                if(delGroup[i][j] !=-1){
-                                    CCMoveBy *actMove = [CCMoveBy actionWithDuration:0.5f position:ccp((myy-j)*7,(i-myx)*7)];
-                                    CCSequence *seq = [CCSequence actions:actMove,[actMove reverse], nil];
-                                    CCRepeatForever *actRepeat = [CCRepeatForever actionWithAction:seq];
-                                    [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] runAction:actRepeat];
-                                    
-                                    delGroup[i][j] = -1;
-                                }
-                            }
-                        }
-                        mapUID[myx][myy] = -1;
-                        mapUGT[myx][myy] = -1;
-                        mapUnitType[myx][myy] = -1;
-                        mapUnitScore[myx][myy] = 0;
+                        
+                        [self repeatAction];
 
                         return;
                     }else {
                         
                         NSLog(@"dddddddddd");
-                        [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy] cleanup:YES];
                         
                         [self removeDelGroup];
                     }
-                    
-                    [firstTouchBG removeFromParentAndCleanup:YES];
                     mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
                     mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
                     
@@ -1785,6 +1780,7 @@
                 }else if(nowID == intID){
                     if (isFirstTouch) {
                        //   第一次点击不改变属性  所有属性还是原来的值 
+                        
                         mapUID[myx][myy] = -1;
                         mapUGT[myx][myy] = -1;
                         mapUnitType[myx][myy] = -1;
@@ -1792,8 +1788,8 @@
                         NSLog(@"geili geili");
                         return;
                     }
-                    [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy] cleanup:YES];
-                    [firstTouchBG removeFromParentAndCleanup:YES];
+//                    [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeAllChildrenWithCleanup:YES];
+//                    [firstTouchBG removeFromParentAndCleanup:YES];
                     refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
                     [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
                     [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
@@ -1832,7 +1828,7 @@
                     
                 }else if(mapUnitType[myx][myy] == 4){
                     
-                    [refreshUnit removeFromParentAndCleanup:YES];
+                    [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeAllChildrenWithCleanup:YES];
                     asp = [AnimateSprite node];
                     asp.position =CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+40); 
                     [self addChild:asp];
@@ -1857,11 +1853,12 @@
                     [refreshUnit removeFromParentAndCleanup:YES];
                 }else {
                     if (isFirstTouch) {
+                        
                         return;
                     }
-                    [refreshUnit removeFromParentAndCleanup:YES];
-                    
-                    [firstTouchBG removeFromParentAndCleanup:YES];
+//                    [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeAllChildrenWithCleanup:YES];
+//                    
+//                    [firstTouchBG removeFromParentAndCleanup:YES];
                     
                     asp = [AnimateSprite node];
                     asp.position =CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+ 40); 
@@ -1878,12 +1875,12 @@
             
                 break;
             case 6:
-                if (mapUnitType[myx][myy] != -1) {
+                if (mapUnitType[myx][myy] != -1 ) {
                     
                     return;
                     
                 }else {
-                     [refreshUnit removeFromParentAndCleanup:YES];
+//                     [refreshUnit removeFromParentAndCleanup:YES];
                     
                     int aroundUGT[4];
                     aroundUGT[0] = mapUGT[myx-1][myy];
@@ -1959,6 +1956,8 @@
                             mapUID[myx][myy] = 3001;
                             mapUGT[myx][myy] = 3002;
                             mapUnitType[myx][myy]= 3;
+                            
+                            NSLog(@"mei~~~####");
                             refreshUnit =[CCSprite spriteWithSpriteFrameName:@"3001.png"];
                             [refreshUnit setPosition:CGPointMake(tileRect.origin.x + 25, tileRect.origin.y+refreshUnit.contentSize.height*0.5)];
                             [refreshBatchNode addChild:refreshUnit z:myx+2 tag:mapSpriteTag[myx][myy]];
@@ -1990,15 +1989,20 @@
                         delCount = 0;
                         mapUID[myx][myy] = nowID;
                         mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-                        NSLog(@"#####%d####",nowID);
                         
                         nowID = [self checkForUpdate:myx setY:myy withID:nowID];
                         
-                        NSLog(@"%d####",nowID);
-                        [self delUnits]; 
+                        BOOL isDel = [self delUnits];
                         
-                        [self dragonMoveHandler];
-                        [self removeUnits];
+                        
+                        if (!isDel) {
+                            return;
+                        }else {
+                            NSLog(@"cacacacacaca");
+                            [self dragonMoveHandler];
+                            [self removeUnits];
+                        }
+                        
                     }
                     
                     
@@ -2023,7 +2027,6 @@
 //        NSLog(@"ms.step = %d",[userDefaults integerForKey:@"step"]);
         
         isFirstTouch = YES;
-        [newSprite removeFromParentAndCleanup:YES];
         
         [self creatNewUnit];
         
@@ -2065,41 +2068,28 @@
 
 }
 
--(void)delUnits{
+-(BOOL)delUnits{
 
-    
+    NSLog(@"nowId:%d,mapUID:%d",nowID,mapUID[myx][myy]);
     if (nowID == mapUID[myx][myy] && mapUnitType[myx][myy] != 4 && nowID != -1) {
         delCount = 0; 
         
         if (isFirstTouch) {
-            for (int i =0; i<6; i++) {
-                for (int j = 0 ; j<6; j++) {
-                    if(delGroup[i][j] !=-1){
-                        CCMoveBy *actMove = [CCMoveBy actionWithDuration:0.5f position:ccp((myy-j)*7,(i-myx)*7)];
-                        CCSequence *seq = [CCSequence actions:actMove,[actMove reverse], nil];
-                        CCRepeatForever *actRepeat = [CCRepeatForever actionWithAction:seq];
-                        [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] runAction:actRepeat];
-                        
-                        delGroup[i][j] = -1;
-                    }
-                }
-            }
-            mapUID[myx][myy] = -1;
-            mapUGT[myx][myy] = -1;
-            mapUnitType[myx][myy] = -1;
-            mapUnitScore[myx][myy] = 0;
+            
+            newSprite.opacity = 150;
+            [self repeatAction];
             
             
-            return;            
+            return NO;            
         }else {
-            [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy] cleanup:YES];
+//            [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeAllChildrenWithCleanup:YES];
             [self removeDelGroup];
         }
         
-        [firstTouchBG removeFromParentAndCleanup:YES];
+//        [firstTouchBG removeFromParentAndCleanup:YES];
         mapUID[myx][myy] = nowID;          //  新精灵grouptype为原来的groupto
         mapUGT[myx][myy] = [[UnitAttributes node] getUnitAttrWithKey:[NSString stringWithFormat:@"%d",nowID] withSubKey:@"groupto"];
-        
+        NSLog(@"what the hell!");
         
         refreshUnit =[CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%d.png",nowID]];
         
@@ -2118,9 +2108,9 @@
         
         isFirstTouch = YES;
         
-        
     }
-
+    
+    return YES;
 }
 
 
@@ -2136,31 +2126,17 @@
                 delCount = 0; 
                 
                 if (isFirstTouch) {
-                    for (int i =0; i<6; i++) {
-                        for (int j = 0 ; j<6; j++) {
-                            if(delGroup[i][j] !=-1){
-                                CCMoveBy *actMove = [CCMoveBy actionWithDuration:0.5f position:ccp((myy-j)*7,(i-myx)*7)];
-                                CCSequence *seq = [CCSequence actions:actMove,[actMove reverse], nil];
-                                CCRepeatForever *actRepeat = [CCRepeatForever actionWithAction:seq];
-                                [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] runAction:actRepeat];
-                                
-                                delGroup[i][j] = -1;
-                            }
-                        }
-                    }
-                    mapUID[myx][myy] = -1;
-                    mapUGT[myx][myy] = -1;
-                    mapUnitType[myx][myy] = -1;
-                    mapUnitScore[myx][myy] = 0;
+                    
+                    [self repeatAction];
                     
                     
                     return;
                 }else {
-                    [refreshBatchNode removeChildByTag:mapSpriteTag[myx][myy] cleanup:YES];
+//                    [[refreshBatchNode getChildByTag:FIRST_TOUCH_SP_TAG] removeAllChildrenWithCleanup:YES];
                     [self removeDelGroup];
                 }
                 
-                [firstTouchBG removeFromParentAndCleanup:YES];
+//                [firstTouchBG removeFromParentAndCleanup:YES];
                 
                 mapUID[mergeX[i]][mergeY[i]] = nowID;          //  新精灵grouptype为原来的groupto
                 if (mergeX[i+1] != -1 && i<4) {
@@ -2189,7 +2165,6 @@
                 
                 mergeX[i] = -1;
                 mergeY[i] = -1;
-                
                 isFirstTouch = YES;
                 
             }
@@ -2199,6 +2174,29 @@
     }
 
 }
+
+-(void)repeatAction{
+    
+    for (int i =0; i<6; i++) {
+        for (int j = 0 ; j<6; j++) {
+            if(delGroup[i][j] !=-1){
+                CCMoveBy *actMove = [CCMoveBy actionWithDuration:0.5f position:ccp((myy-j)*6,(i-myx)*6)];
+                CCSequence *seq = [CCSequence actions:actMove,[actMove reverse], nil];
+                CCRepeatForever *actRepeat = [CCRepeatForever actionWithAction:seq];
+                actRepeat.tag = i*10+j;
+                [[refreshBatchNode getChildByTag:mapSpriteTag[i][j]] runAction:actRepeat];
+                
+//                delGroup[i][j] = -1;
+            }
+        }
+    }
+    mapUID[myx][myy] = -1;
+    mapUGT[myx][myy] = -1;
+    mapUnitType[myx][myy] = -1;
+    mapUnitScore[myx][myy] = 0;
+
+}
+
 -(void)removeDelGroup{
 
     for (int i =0; i<6; i++) {

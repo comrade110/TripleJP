@@ -11,3 +11,5 @@
 #define STORE_ADD_NUM 99
 
 #define FIRST_TOUCH_BG_TAG 1001
+
+#define FIRST_TOUCH_SP_TAG 1002

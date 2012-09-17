@@ -80,6 +80,8 @@
     
     BOOL isFirstTouch;
     
+    BOOL beBombed;
+    
     BOOL isPut;
     
     CCSprite *firstTouchBG;

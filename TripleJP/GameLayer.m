@@ -1002,8 +1002,9 @@
         // 其他
         lastmyx = -1;
         lastmyy = -1;
+        
         isPut = NO;
-
+        isFilled = NO;
     }
     return self;
 }
@@ -1045,54 +1046,65 @@
     re = 3;
     be = 4;
     
-    //  左上角
-    if (i==0 && j==0) {
-        
+    if (isFilled == YES) {
         le = 0;
         te = 0;
-        
-        if (mapUnitType[i][j+1] != -1) {
-            re = 0;
-            
-            
-        }
-        
-        if (mapUnitType[i+1][j] != -1) {
-            be = 0;
-            
-        }
-        if (le+te+re+be == 0) {
-            if (ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
-                ischecked[i][j] = 1;
-                isNeedDel = NO;
-            }
-            isNeedMove = NO;
-            if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
-                [self dragonMoveWithX:i withY:j+1];
-            }
-            if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
-                [self dragonMoveWithX:i+1 withY:j];
-            }
-        }else {
-            isNeedDel = NO;
-        }
-        
-    }//  右上角
+        re = 0;
+        be = 0;
+    }
+    
+//    //  左上角
+//    if (i==0 && j==0) {
+//        
+//        le = 0;
+//        te = 0;
+//        
+//        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002 ) {
+//            re = 0;
+//        }
+//        
+//        if (mapUnitType[i+1][j] != -1 && mapUID[i+1][j] !=4002) {
+//            be = 0;            
+//        }
+//        
+//        if (le+te+re+be == 0) {
+//            if (ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
+//                ischecked[i][j] = 1;
+//                isNeedDel = NO;
+//            }
+//            isNeedMove = NO;
+//            if (mapUnitType[i][j+1] == 4 && isDchecked[i][j+1] == 0) {
+//                [self dragonMoveWithX:i withY:j+1];
+//            }
+//            if (mapUnitType[i+1][j] == 4 && isDchecked[i+1][j] == 0) {
+//                [self dragonMoveWithX:i+1 withY:j];
+//            }
+//        }else {
+//            isNeedDel = NO;
+//        }
+//        
+//    }
+    //  右上角
     if (i==0 && j==5) {
         
         te = 0;
         re = 0;
         
-        if (mapUnitType[i][j-1] != -1 ) {
+        if (mapUnitType[i][j-1] != -1  && mapUID[i][j-1] !=4002) {
             le = 0;
             
         }
         
-        if (mapUnitType[i+1][j] != -1 ) {
+        if (mapUnitType[i+1][j] != -1  && mapUID[i+1][j] !=4002) {
             be = 0;
             
         }
-        
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i+1][j] ==4002) {
+            isNeedMove = NO;
+        }
         if (le+te+re+be == 0) {
             if (ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
                 ischecked[i][j] = 1;
@@ -1114,16 +1126,22 @@
     }
     //  右下角
     if (i==5 && j==5) {
-        
+            
         re = 0;
         be = 0;
         
-        if (mapUnitType[i][j-1] != -1) {
+        if (mapUnitType[i][j-1] != -1 && mapUID[i][j-1] !=4002) {
             le = 0;
         }
         
-        if (mapUnitType[i-1][j] != -1) {
+        if (mapUnitType[i-1][j] != -1 && mapUID[i-1][j] !=4002) {
             te = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i-1][j] == 1|| ischecked[i][j-1] == 1) {
@@ -1147,12 +1165,18 @@
         le = 0;
         be = 0;
         
-        if (mapUnitType[i-1][j] != -1) {
+        if (mapUnitType[i-1][j] != -1 && mapUID[i-1][j] !=4002) {
             te = 0;
         }
         
-        if (mapUnitType[i][j+1] != -1) {
+        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002) {
             re = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j+1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1) {
@@ -1176,14 +1200,23 @@
         
         te = 0;
         
-        if (mapUnitType[i][j-1] != -1) {
+        if (mapUnitType[i][j-1] != -1 && mapUID[i][j-1] !=4002) {
             le = 0;
         }
-        if (mapUnitType[i][j+1] != -1) {
+        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002) {
             re = 0;
         }
-        if (mapUnitType[i+1][j] != -1) {
+        if (mapUnitType[i+1][j] != -1 && mapUID[i+1][j] !=4002) {
             be = 0;
+        }
+        if (mapUID[i][j+1] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i+1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
@@ -1211,14 +1244,23 @@
         
         le = 0;
         
-        if (mapUnitType[i-1][j]!= -1) {
+        if (mapUnitType[i-1][j]!= -1 && mapUID[i-1][j] !=4002) {
             te = 0;
         }
-        if (mapUnitType[i][j+1] != -1) {
+        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002) {
             re = 0;
         }
-        if (mapUnitType[i+1][j] != -1) {
+        if (mapUnitType[i+1][j] != -1 && mapUID[i+1][j] !=4002) {
             be = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j+1] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i+1][j] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i+1][j] == 1) {
@@ -1245,14 +1287,23 @@
         
         re = 0;
         
-        if (mapUnitType[i-1][j] != -1) {
+        if (mapUnitType[i-1][j] != -1 && mapUID[i-1][j] !=4002) {
             te = 0;
         }
-        if (mapUnitType[i+1][j] != -1) {
+        if (mapUnitType[i+1][j] != -1 && mapUID[i+1][j] !=4002) {
             be = 0;
         }
-        if (mapUnitType[i][j-1] != -1) {
+        if (mapUnitType[i][j-1] != -1 && mapUID[i][j-1] !=4002) {
             le = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i+1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i-1][j] == 1 || ischecked[i][j-1] == 1 || ischecked[i+1][j] == 1) {
@@ -1278,14 +1329,23 @@
         
         be = 0;
         
-        if (mapUnitType[i][j-1] != -1) {
+        if (mapUnitType[i][j-1] != -1 && mapUID[i][j-1] !=4002) {
             le = 0;
         }
-        if (mapUnitType[i-1][j] != -1) {
+        if (mapUnitType[i-1][j] != -1 && mapUID[i-1][j] !=4002) {
             te = 0;
         }
-        if (mapUnitType[i][j+1] != -1) {
+        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002) {
             re = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j+1] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             if (ischecked[i-1][j] == 1 || ischecked[i][j+1] == 1 || ischecked[i][j-1] == 1) {
@@ -1310,17 +1370,29 @@
     //中间
     if (i>0 && i<5 && j>0 && j<5) {
         
-        if (mapUnitType[i-1][j] != -1) {
+        if (mapUnitType[i-1][j] != -1 && mapUID[i-1][j] !=4002) {
             te = 0;
         }
-        if (mapUnitType[i][j+1] != -1) {
+        if (mapUnitType[i][j+1] != -1 && mapUID[i][j+1] !=4002) {
             re = 0;
         }
-        if (mapUnitType[i+1][j] != -1) {
+        if (mapUnitType[i+1][j] != -1 && mapUID[i+1][j] !=4002) {
             be = 0;
         }
-        if (mapUnitType[i][j-1] != -1) {
+        if (mapUnitType[i][j-1] != -1 && mapUID[i][j-1] !=4002) {
             le = 0;
+        }
+        if (mapUID[i-1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j+1] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i+1][j] ==4002) {
+            isNeedMove = NO;
+        }
+        if (mapUID[i][j-1] ==4002) {
+            isNeedMove = NO;
         }
         if (le+te+re+be == 0) {
             
@@ -1365,13 +1437,69 @@
 
     int moveXArr[36] = {0,1,0,2,1,0,3,2,1,0,4,3,2,1,0,5,4,3,2,1,0,5,4,3,2,1,5,4,3,2,5,4,3,5,4,5};
     int moveYArr[36] = {0,0,1,0,1,2,0,1,2,3,0,1,2,3,4,0,1,2,3,4,5,1,2,3,4,5,2,3,4,5,3,4,5,4,5,5};
-
+    for (int k=0; k<36; k++) {
+        int i=moveXArr[k];
+        int j=moveYArr[k];
+        if (mapUID[i][j] == 4002 && ischecked[i][j] == 0) {
+            
+            NSLog(@"caodan!!!");
+            randomArr = [CCArray array];
+            
+            for (int i=0; i<6; i++) {
+                for (int j=0; j<6; j++) {
+                    if (mapUnitType[i][j] == -1) {
+                        
+                        EmptyArea *ea = [EmptyArea node];
+                        ea.xnum = i;
+                        ea.ynum = j;
+                        [randomArr addObject:ea];
+                    }
+                }
+            }
+            
+            if ([randomArr count] == 0) {
+                
+            }else {
+                
+                mapUGT[i][j] = -1;
+                mapUID[i][j] = -1;
+                mapUnitType[i][j] = -1;
+                EmptyArea *eat = [EmptyArea node];
+                
+                int rdc = arc4random()%[randomArr count];
+                
+                NSLog(@"()()%d()",rdc);
+                
+                eat = [randomArr objectAtIndex:rdc];
+                
+                mapUID[eat.xnum][eat.ynum] = 4002;
+                mapUnitType[eat.xnum][eat.ynum] = 4;
+                ischecked[eat.xnum][eat.ynum] = 1;
+                ccBezierConfig cfig;
+                if (eat.ynum>j) {
+                    
+                    cfig.controlPoint_1 = ccp(50*j+25+abs(j-eat.ynum)*10, 50*(5-i)+95+150);
+                    cfig.controlPoint_2 = ccp(50*eat.ynum+25-abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
+                }else {
+                    cfig.controlPoint_1 = ccp(50*j+25-abs(j-eat.ynum)*10, 50*(5-i)+95+150);
+                    cfig.controlPoint_2 = ccp(50*eat.ynum+25+abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
+                }
+                [refreshBatchNode getChildByTag:i*10+j].zOrder = 10;
+                cfig.endPosition = ccp(50*eat.ynum+25+10, 50*(5-eat.xnum)+95);
+                CCBezierTo *bezier = [CCBezierTo actionWithDuration:0.75f bezier:cfig];
+                [[refreshBatchNode getChildByTag:i*10+j] runAction:bezier];
+                [refreshBatchNode getChildByTag:i*10+j].tag = eat.xnum*10+eat.ynum;
+                
+                [refreshBatchNode getChildByTag:i*10+j].zOrder = eat.xnum+2;
+            }
+            
+        }
+    }
     for (int k=0; k<36; k++) {
         int i=moveXArr[k];
         int j=moveYArr[k];
         if (mapUID[i][j] == 4001 && ischecked[i][j] == 0) {
             
-            NSLog(@"~~check I = %d J = %d    ischecked[i][j] = %d~~",i,j,ischecked[i][j]);
             for (int i =0; i<6; i++) {
                 for (int j = 0 ; j<6; j++) {
                     isDchecked[i][j] =0;
@@ -1507,60 +1635,6 @@
                 break;
         }
         }
-        if (mapUID[i][j] == 4002 && ischecked[i][j] == 0) {
-            
-            NSLog(@"caodan!!!");
-            randomArr = [CCArray array];
-            
-            for (int i=0; i<6; i++) {
-                for (int j=0; j<6; j++) {
-                    if (mapUnitType[i][j] == -1) {
-                        
-                        EmptyArea *ea = [EmptyArea node];
-                        ea.xnum = i;
-                        ea.ynum = j;
-                        [randomArr addObject:ea];
-                    }
-                }
-            }
-            
-        if ([randomArr count] == 0) {
-            
-        }else {
-            
-            mapUGT[i][j] = -1;
-            mapUID[i][j] = -1;
-            mapUnitType[i][j] = -1;
-            EmptyArea *eat = [EmptyArea node];
-            
-            int rdc = arc4random()%[randomArr count];
-            
-            NSLog(@"()()%d()",rdc);
-            
-            eat = [randomArr objectAtIndex:rdc];
-            
-            mapUID[eat.xnum][eat.ynum] = 4002;
-            mapUnitType[eat.xnum][eat.ynum] = 4;
-            ischecked[eat.xnum][eat.ynum] = 1;
-            ccBezierConfig cfig;
-            if (eat.ynum>j) {
-                
-                cfig.controlPoint_1 = ccp(50*j+25+abs(j-eat.ynum)*10, 50*(5-i)+95+150);
-                cfig.controlPoint_2 = ccp(50*eat.ynum+25-abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
-            }else {
-                cfig.controlPoint_1 = ccp(50*j+25-abs(j-eat.ynum)*10, 50*(5-i)+95+150);
-                cfig.controlPoint_2 = ccp(50*eat.ynum+25+abs(j-eat.ynum)*10, 50*(5-eat.xnum)+95+150);
-            }
-            [refreshBatchNode getChildByTag:i*10+j].zOrder = 10;
-            cfig.endPosition = ccp(50*eat.ynum+25+10, 50*(5-eat.xnum)+95);
-            CCBezierTo *bezier = [CCBezierTo actionWithDuration:0.75f bezier:cfig];
-            [[refreshBatchNode getChildByTag:i*10+j] runAction:bezier];
-            [refreshBatchNode getChildByTag:i*10+j].tag = eat.xnum*10+eat.ynum;
-            
-            [refreshBatchNode getChildByTag:i*10+j].zOrder = eat.xnum+2;
-        }
-            
-        }
         
     }
 
@@ -1614,7 +1688,10 @@
     if (CGRectContainsPoint(tileRect, touchPoint)) {
         
         
-        //  停止上次的动画
+        //  停止上次的动画 同时判断地图是否填满
+        
+        
+        int filledcount = 0;
         for (int i =0; i<6; i++) {
             for (int j = 0 ; j<6; j++) {
                 if(delGroup[i][j] !=-1){
@@ -1622,8 +1699,13 @@
                     [refreshBatchNode getChildByTag:mapSpriteTag[i][j]].position =ccp(50*j+25+10, 50*(5-i)+95);
                     delGroup[i][j] = -1;
                 }
+                if (mapUnitType[i][j] !=-1) {
+                    filledcount ++;
+                }
             }
         }
+        filledcount >0?(isFilled =NO):(isFilled =YES);
+        filledcount = 0;
         // 存储 
         
         if (myx ==0 && myy ==0) {
@@ -2130,6 +2212,16 @@
         isFirstTouch = YES;
         
         [self creatNewUnit];
+        
+        for (int i =0; i<6; i++) {
+            for (int j = 0 ; j<6; j++) {
+                
+                if (mapUnitType[i][j] !=-1) {
+                    filledcount ++;
+                }
+            }
+        }
+        filledcount >0?(isFilled =NO):(isFilled =YES);
         
     }
 }

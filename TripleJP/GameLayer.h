@@ -84,6 +84,8 @@
     
     BOOL isPut;
     
+    BOOL isFilled;                               // 地图是否已被填满
+    
     CCSprite *firstTouchBG;
     
     CCArray *randomArr;                         // 飞的随机点
